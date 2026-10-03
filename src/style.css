@@ -64,10 +64,11 @@
   left: -1px;
   width: 10px;
   height: 10px;
+  box-sizing: border-box;
   border-top: 2px solid #ff6b00;
   border-left: 2px solid #ff6b00;
   pointer-events: none;
-  z-index: 10;
+  z-index: 30;
 }
 
 .hud-panel::after {
@@ -77,10 +78,11 @@
   right: -1px;
   width: 10px;
   height: 10px;
+  box-sizing: border-box;
   border-bottom: 2px solid #ff6b00;
   border-right: 2px solid #ff6b00;
   pointer-events: none;
-  z-index: 10;
+  z-index: 30;
 }
 
 /* Secondary corner notches for 4-corner HUD framing */
@@ -91,10 +93,11 @@
   right: -1px;
   width: 10px;
   height: 10px;
+  box-sizing: border-box;
   border-top: 2px solid #ff6b00;
   border-right: 2px solid #ff6b00;
   pointer-events: none;
-  z-index: 10;
+  z-index: 30;
 }
 
 .hud-corners-ticks::after {
@@ -104,10 +107,11 @@
   left: -1px;
   width: 10px;
   height: 10px;
+  box-sizing: border-box;
   border-bottom: 2px solid #ff6b00;
   border-left: 2px solid #ff6b00;
   pointer-events: none;
-  z-index: 10;
+  z-index: 30;
 }
 
 /* Division Holographic Scanline Overlay */

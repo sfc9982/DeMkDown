@@ -188,6 +188,7 @@ function t(key, fallback = '') {
 function setLanguage(lang) {
   if (!TRANSLATIONS[lang]) lang = 'en';
   state.currentLang = lang;
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
   localStorage.setItem('demkdown_lang', lang);
   localStorage.setItem('demark_lang', lang);
 

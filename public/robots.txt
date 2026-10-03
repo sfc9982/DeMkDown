@@ -1,0 +1,6 @@
+# Robots.txt for DeMkDown (https://demkdown.pages.dev)
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://demkdown.pages.dev/sitemap.xml

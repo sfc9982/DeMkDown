@@ -10,8 +10,11 @@
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
   <meta name="theme-color" content="#06090e" />
 
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://demark-3pj.pages.dev/" />
+  <!-- Canonical URL & Multilingual Alternates -->
+  <link rel="canonical" href="https://demkdown.pages.dev/" />
+  <link rel="alternate" hreflang="en" href="https://demkdown.pages.dev/" />
+  <link rel="alternate" hreflang="zh" href="https://demkdown.pages.dev/" />
+  <link rel="alternate" hreflang="x-default" href="https://demkdown.pages.dev/" />
 
   <!-- Open Graph / Facebook / Discord -->
   <meta property="og:type" content="website" />
@@ -39,15 +42,27 @@
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "DeMkDown",
+    "alternateName": ["DeMark", "DeMark Down"],
     "url": "https://demkdown.pages.dev/",
-    "description": "High-performance AST-based Markdown stripper and AI conversational fluff filter.",
+    "logo": "https://demkdown.pages.dev/og-image.png",
+    "image": "https://demkdown.pages.dev/og-image.png",
+    "description": "High-performance AST-based Markdown stripper and AI conversational fluff filter. Strip Markdown formatting and robotic filler from ChatGPT, Claude, DeepSeek, and Gemini in real time.",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript. Requires HTML5.",
+    "softwareVersion": "1.0.0",
     "offers": {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "USD"
-    }
+    },
+    "featureList": [
+      "AST-based Markdown stripping without regex corruption",
+      "AI conversational fluff and boilerplate remover",
+      "Table to Aligned Plain Text, TSV, or CSV",
+      "Real-time visual character-level Diff View",
+      "Zero telemetry, 100% client-side local privacy"
+    ]
   }
   </script>
 
@@ -69,6 +84,14 @@
   </script>
 </head>
 <body class="h-full flex flex-col bg-[#06090e] text-slate-100 antialiased selection:bg-orange-500/30 selection:text-orange-200">
+  <noscript>
+    <div style="padding: 1.5rem; background: #090e17; color: #f8fafc; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; text-align: center; border-bottom: 2px solid #ea580c;">
+      <h1 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 0.5rem; color: #ff6b00;">DeMkDown — Clean Markdown Stripper &amp; AI Fluff Remover</h1>
+      <p style="max-width: 700px; margin: 0 auto; line-height: 1.6; color: #94a3b8; font-size: 0.875rem;">
+        High-performance AST-based Markdown stripper and AI conversational fluff filter. Strip headings, bold, inline code, code fences, blockquotes, tables, and AI opening/closing fluff from ChatGPT, Claude, Gemini, and DeepSeek responses in real time. Please enable JavaScript to run DeMkDown in your browser.
+      </p>
+    </div>
+  </noscript>
 
   <!-- Top Navigation Header -->
   <header class="border-b border-orange-500/20 bg-[#090e17]/85 backdrop-blur-md sticky top-0 z-30 px-4 lg:px-6 py-2">

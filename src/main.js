@@ -336,7 +336,6 @@ function processText() {
   const charsUnit = t('chars', 'chars');
   const wordsUnit = t('words', 'words');
   const linesUnit = t('lines', 'lines');
-  const cleanerUnit = t('cleanerBadge', 'cleaner');
 
   // Update Input Badges
   inputBadgeEl.textContent = `${stats.inputLength.toLocaleString()} ${charsUnit} • ${stats.inputWords.toLocaleString()} ${wordsUnit}`;
@@ -347,7 +346,8 @@ function processText() {
 
   if (state.viewMode !== 'diff') {
     if (stats.inputLength > 0 && stats.charReductionPercent > 0) {
-      badgeReductionEl.textContent = `-${stats.charReductionPercent}% ${cleanerUnit}`;
+      badgeReductionEl.textContent = `-${stats.charReductionPercent}%`;
+      badgeReductionEl.title = `-${stats.charReduction.toLocaleString()} ${charsUnit}`;
       badgeReductionEl.classList.remove('hidden');
     } else {
       badgeReductionEl.classList.add('hidden');

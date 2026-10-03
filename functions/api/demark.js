@@ -10,6 +10,7 @@ const MAX_BODY_SIZE = 1 * 1024 * 1024;
  * Falls back to the request's own origin for Pages preview deployments.
  */
 const ALLOWED_ORIGINS = [
+  'https://demkdown.alocal.host',
   'https://demkdown.pages.dev',
   'https://demark-3pj.pages.dev',
   'https://demark.pages.dev',

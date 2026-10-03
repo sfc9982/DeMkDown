@@ -2,12 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://demkdown.pages.dev/</loc>
+    <loc>https://demkdown.alocal.host/</loc>
     <lastmod>2026-10-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://demkdown.pages.dev/" />
-    <xhtml:link rel="alternate" hreflang="zh" href="https://demkdown.pages.dev/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://demkdown.pages.dev/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://demkdown.alocal.host/" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://demkdown.alocal.host/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://demkdown.alocal.host/" />
   </url>
 </urlset>

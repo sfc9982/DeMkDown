@@ -194,4 +194,31 @@ if (rLinkRemove.result.includes('Cloudflare Pages') || rLinkRemove.result.includ
 }
 console.log('Links options test passed! Sample url_only output:', rLinkUrlPlain.result);
 
+console.log('\n--- TEST 9: HEURISTIC AI SENTENCE PATTERNS & INTRA-PARAGRAPH PREFIX PRUNING ---');
+// 1. Chinese intra-paragraph opening fluff
+const zhInlineOpening = `好的，很高兴为您解答！微服务拆分的核心原则是按业务领域划分，以保证高内聚和自治性。`;
+const rZhInline = demark(zhInlineOpening);
+console.log('Intra-paragraph ZH Result:\n' + rZhInline.result);
+if (rZhInline.result.includes('好的，很高兴为您解答') || !rZhInline.result.includes('微服务拆分的核心原则是按业务领域划分')) {
+  throw new Error('Chinese intra-paragraph opening fluff pruning failed!');
+}
+
+// 2. English intra-paragraph opening fluff
+const enInlineOpening = `Certainly! Here is the explanation: The Paxos algorithm relies on two distinct phases to achieve consensus.`;
+const rEnInline = demark(enInlineOpening);
+console.log('Intra-paragraph EN Result:\n' + rEnInline.result);
+if (rEnInline.result.includes('Certainly!') || !rEnInline.result.includes('The Paxos algorithm relies on two distinct phases')) {
+  throw new Error('English intra-paragraph opening fluff pruning failed!');
+}
+
+// 3. Heuristic transition before code
+const transitionCodeSample = `针对该业务场景，下面演示具体的拦截器配置：\n\n\`\`\`typescript\nconst auth = new AuthMiddleware();\n\`\`\``;
+const rTrans = demark(transitionCodeSample);
+console.log('Transition Result:\n' + rTrans.result);
+if (rTrans.result.includes('下面演示具体的拦截器配置')) {
+  throw new Error('Heuristic transition before code block failed to strip!');
+}
+
+console.log('Heuristic AI sentence pattern tests passed!');
+
 console.log('\n--- ALL MULTILINGUAL & DEEP AI FLUFF TESTS PASSED! ---');

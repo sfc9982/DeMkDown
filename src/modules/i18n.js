@@ -120,7 +120,7 @@ export const TRANSLATIONS = {
     linkRemove: '整块删除超链接',
     linkPreserve: '保留 Markdown 链接',
     optStripLists: '去除列表序号与圆点',
-    optCleanFluff: '✨ 过滤 AI 语气与废话套话',
+    optCleanFluff: '✨ 过滤 AI 句式',
     
     // Presets
     presetMax: '极致纯净',

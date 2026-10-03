@@ -644,6 +644,48 @@ Cheers and happy coding!`,
 如有疑问欢迎随时交流，期待您的反馈！`,
     targetFluff: '如有疑问欢迎随时交流，期待您的反馈！',
   },
+
+  // --- Category 7: Heuristic AI Syntactic Patterns & Intra-Paragraph Openers (启发式AI句式与句内剪枝) ---
+  {
+    id: 'POS_HEUR_ZH_01',
+    category: 'HeuristicSyntax',
+    language: 'zh',
+    description: 'Chinese intra-paragraph opening fluff before substantive architecture explanation',
+    input: `好的，很高兴为您解答！微服务拆分的核心原则是按业务领域划分，以保证高内聚和自治性。`,
+    targetFluff: '好的，很高兴为您解答！',
+  },
+  {
+    id: 'POS_HEUR_EN_01',
+    category: 'HeuristicSyntax',
+    language: 'en',
+    description: 'English intra-paragraph conversational opener before substantive Paxos explanation',
+    input: `Certainly! Here is the explanation: The Paxos algorithm relies on two distinct phases to achieve consensus.`,
+    targetFluff: 'Certainly! Here is the explanation:',
+  },
+  {
+    id: 'POS_HEUR_ZH_02',
+    category: 'HeuristicSyntax',
+    language: 'zh',
+    description: 'Heuristic lead-in pointer phrase before code block',
+    input: `针对该业务场景，下面演示具体的拦截器配置：
+
+\`\`\`typescript
+const auth = new AuthMiddleware();
+\`\`\``,
+    targetFluff: '下面演示具体的拦截器配置：',
+  },
+  {
+    id: 'POS_HEUR_ZH_03',
+    category: 'HeuristicSyntax',
+    language: 'zh',
+    description: 'Heuristic lead-in pointer phrase before table',
+    input: `以下为各项核心性能参数指标对比：
+
+| 指标 | 目标 |
+| :--- | :--- |
+| 延迟 | 10ms |`,
+    targetFluff: '以下为各项核心性能参数指标对比：',
+  },
 ];
 
 /**

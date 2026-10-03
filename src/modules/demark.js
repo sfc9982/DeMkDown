@@ -166,6 +166,247 @@ export function cleanSelfReferences(text = '') {
 }
 
 /**
+ * Defensive empirical / quantitative / technical metric detector.
+ * Returns true if text contains concrete numbers, benchmarks, complexity, ports, code tokens, etc.
+ * Used as a strong safeguard against false positives on technical domain content.
+ */
+export function isQuantitativeOrTechnical(text = '') {
+  if (!text) return false;
+  // 1. Quantitative measurements and metrics: e.g. 42%, 18ms, 120,000 QPS, 100MB, 256MB, 2ms, 300 秒, 99.8%
+  if (/\d+(?:\.\d+)?\s*(?:%|ms|毫秒|秒|QPS|ops\/s|MB|GB|TB|kbps|Mbps|tokens|条|个|次|节点|并发|bit|byte)\b/i.test(text)) {
+    return true;
+  }
+  // 2. Algorithm complexity: e.g. O(N^2), O(log n), O(1)
+  if (/O\([a-zA-Z0-9_\^\s\*\+\-]+\)/.test(text)) {
+    return true;
+  }
+  // 3. Network addresses, ports, protocols, standards: e.g. 127.0.0.1, :8080, RFC 7231, HTTP/2, TLS 1.3
+  if (/(?:\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b|:\d{2,5}\b|RFC\s*\d+|HTTP\/\d|TLS\s*\d|OAuth2|JWT)/i.test(text)) {
+    return true;
+  }
+  // 4. Configuration parameters, OS kernel flags, specific tech names with properties:
+  // e.g. vm.max_map_count, innodb_buffer_pool_size, client_max_body_size, nginx.conf
+  if (/\b(?:vm\.max_map_count|innodb_buffer_pool_size|client_max_body_size|[a-z0-9_]+(?:\.[a-z0-9_]+)+)\b/i.test(text)) {
+    return true;
+  }
+  // 5. Explicit technical invariants / mutex / license terms
+  if (/(?:thread-safe|mutex|CSRF|MIT (?:License|协议)|foreign key|OOM Killer|ZGC|CMS|Kafka|Elasticsearch|PostgreSQL|Redis)/i.test(text)) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Heuristic Evaluation for AI Opening Preambles & Conversational Greetings.
+ * Evaluates position, conversational markers, echoing questions, and length.
+ * Returns { isPreamble: boolean, score: number, splittablePrefixLength?: number }
+ */
+export function evaluatePreambleHeuristic(text = '', index = 0, total = 1) {
+  if (!text || index > 1) return { isPreamble: false, score: 0 };
+  const trimmed = text.trim();
+
+  // Check if paragraph starts with a standalone conversational fluff prefix followed by substantive content
+  const zhPrefixRegex = /^(?:(?:好的|没问题|当然可以)[，,！!。：: ]+(?:很高兴为您解答|我(?:来|会|将)为您|下面为您|这是为您|针对您(?:提出)?的.*?[，,：:]|请查看|根据您的需求)?|(?:很高兴为您解答|根据您的需求|收到您的需求|这是一个非常好的问题|如您所愿)[，,！!：: ]+)\s*/i;
+  const enPrefixRegex = /^(?:(?:Certainly|Sure thing|Sure|Of course|Great question|Happy to help|Glad to help|No problem)!\s*(?:(?:Here (?:is|are)|Below (?:is|are)|I'd be glad to help|Let me break down).*?[:.!\n]\s*)?|(?:Certainly|Sure thing|Sure|Of course|Definitely|No problem)[,.]\s+(?:here (?:is|are)|below (?:is|are)|I'd be (?:glad|happy)|I (?:can|will) (?:help|provide|explain|show|give)|let me|let's|as requested|to answer|what you (?:asked|need))[^\n.:!]*[:.!\n]\s*)/i;
+
+  const prefixMatch = trimmed.match(zhPrefixRegex) || trimmed.match(enPrefixRegex);
+
+  if (prefixMatch && prefixMatch[0].length > 0 && prefixMatch[0].length < trimmed.length) {
+    const remainder = trimmed.slice(prefixMatch[0].length).trim();
+    // Check if remainder is itself AI conversational delivery, pointer, or greeting wrap-up
+    const isFluffRemainder =
+      /^(?:(?:下面|以下|接下来|这里)(?:我(?:将|来))?(?:是)?(?:为[您你]|向[您你])?(?:详细)?(?:介绍|梳理|整理|解答|提供|演示|说明|分析|方案|核心|代码|配置)|(?:我(?:将|来))(?:为[您你]|向[您你])(?:详细)?(?:介绍|梳理|整理|解答|提供|演示|说明|分析)|(?:为[您你]|向[您你])(?:整理|提供|准备|梳理)如下|.*?(?:如下|所示|详见下表|：|:)[\s]*$)/i.test(remainder) ||
+      /^(?:I(?:'d| would) be (?:glad|happy)|I (?:can|will) (?:help|provide|explain|show|give)|let me (?:show|explain|break down)|here (?:is|are)|below (?:is|are)|to answer your question|as requested)/i.test(remainder);
+
+    if (remainder.length > 5 && !isFluffRemainder) {
+      return {
+        isPreamble: false,
+        score: 75,
+        splittablePrefixLength: prefixMatch[0].length,
+      };
+    }
+  }
+
+  // Fast exact regex match against strict AI preamble patterns for pure opener paragraphs
+  for (const pat of AI_PREAMBLE_PATTERNS) {
+    if (pat.test(trimmed)) {
+      return { isPreamble: true, score: 100 };
+    }
+  }
+
+  // Heuristic scoring for emerging or variant AI openings
+  let score = 0;
+
+  // Position bonus
+  if (index === 0) score += 35;
+  else if (index === 1) score += 20;
+
+  // Conversational acknowledgement / greeting tokens (must be exclamatory or combined with delivery)
+  if (/^(?:好的|没问题|当然可以)[，,！!。：: ]+(?:很高兴为您解答|下面为您|这是为您|针对您(?:提出)?的|根据您的需求)/i.test(trimmed)) {
+    score += 45;
+  }
+  if (/^(?:Certainly|Sure thing|Sure|Of course|Definitely|No problem|Glad to help|Happy to help|Great question)!\s*(?:here|below|let|as|I)/i.test(trimmed)) {
+    score += 45;
+  }
+
+  // AI Delivery / Intent markers
+  if (/(?:下面为您|这是为您|请查看|针对您(?:提出)?的|根据您的需求|这里是|为您整理如下|为您提供如下|已为您|请参考以下)/i.test(trimmed)) {
+    score += 25;
+  }
+  if (/(?:here (?:is|are)|below (?:is|are)|let me break down|as requested|to answer your question|what you need to know)/i.test(trimmed)) {
+    score += 25;
+  }
+
+  // Length heuristics: AI preambles are typically brief announcements (< 120 chars)
+  if (trimmed.length <= 60) score += 15;
+  else if (trimmed.length > 150) score -= 30;
+
+  // Safeguard: if contains dense technical definitions or quantitative data, penalize heavily
+  if (isQuantitativeOrTechnical(trimmed)) {
+    score -= 60;
+  }
+
+  return { isPreamble: score >= 65, score };
+}
+
+/**
+ * Heuristic Evaluation for Lead-in Transitions before structured blocks (code, table, list, heading).
+ * Checks follower element, announcement verbs, colons, and brevity.
+ */
+export function evaluateTransitionHeuristic(text = '', nextNodeType = null) {
+  if (!text) return { isTransition: false, score: 0 };
+  const trimmed = text.trim();
+
+  // Fast exact regex match
+  for (const pat of TRANSITION_PATTERNS) {
+    if (pat.test(trimmed)) {
+      return { isTransition: true, score: 100 };
+    }
+  }
+
+  let score = 0;
+
+  // Follower structure bonus
+  if (['code', 'table', 'list', 'heading'].includes(nextNodeType)) {
+    score += 35;
+  } else {
+    // If not immediately before code/table/list/heading, unlikely to be a pure transition pointer
+    return { isTransition: false, score: 0 };
+  }
+
+  // Trailing punctuation: colons or period
+  if (/[:：]$/.test(trimmed)) {
+    score += 25;
+  }
+
+  // Pointer vocabulary (Chinese)
+  if (/(?:以下|下面|如下|示例如下|具体如下|代码如下|表格如下|配置如下|参考如下|步骤如下|如下表所示|详见下表|如下所示)/i.test(trimmed)) {
+    score += 35;
+  }
+  // Pointer vocabulary (English)
+  if (/(?:here is|below is|the following|take a look at|as follows|see below|here's how|let's take a look)/i.test(trimmed)) {
+    score += 35;
+  }
+
+  // Length heuristic: Transitions are concise pointer statements (usually <= 60 chars)
+  if (trimmed.length <= 40) score += 25;
+  else if (trimmed.length <= 70) score += 15;
+  else if (trimmed.length > 100) score -= 40;
+
+  // Safeguard: If it explains why/how with substantive technical rationale, protect it
+  if (isQuantitativeOrTechnical(trimmed)) {
+    score -= 60;
+  }
+
+  return { isTransition: score >= 65, score };
+}
+
+/**
+ * Heuristic Evaluation for Boilerplate AI Disclaimers & Caution Notices.
+ * Distinguishes AI template warnings ("仅供参考", "replace API_KEY") from genuine system engineering warnings.
+ */
+export function evaluateDisclaimerHeuristic(text = '') {
+  if (!text) return { isDisclaimer: false, score: 0 };
+  const trimmed = text.trim();
+
+  // Fast exact regex match
+  for (const pat of DISCLAIMER_PATTERNS) {
+    if (pat.test(trimmed)) {
+      return { isDisclaimer: true, score: 100 };
+    }
+  }
+
+  // Absolute domain defense against production engineering warnings
+  if (isQuantitativeOrTechnical(trimmed)) {
+    return { isDisclaimer: false, score: 0 };
+  }
+
+  let score = 0;
+
+  // Disclaimer header token
+  if (/^(?:(?:温馨)?提示|注意|特别注意|注意事项|免责声明|Note:|Important Note:|Disclaimer:|Warning:|Caution:)\s*[:：]/i.test(trimmed)) {
+    score += 30;
+  }
+
+  // AI template fluff phrases
+  if (/(?:仅供(?:学习|参考|演示|测试)|仅作为?示例|不构成(?:任何)?(?:投资|财务|法律|医疗)?建议|替换为?(?:你|您)?的实际(?:API[ _-]?KEY|密钥|token|凭证))/i.test(trimmed)) {
+    score += 50;
+  }
+  if (/(?:for (?:educational|demonstration|testing|reference) purposes only|not (?:legal|financial|medical|investment) advice|replace with your (?:actual|real) (?:API[ _-]?key|token|credentials))/i.test(trimmed)) {
+    score += 50;
+  }
+
+  return { isDisclaimer: score >= 65, score };
+}
+
+/**
+ * Heuristic Evaluation for Empty Platitude Conclusions.
+ * Detects buzzword-laden empty wrap-ups while strictly protecting empirical findings and metric summaries.
+ */
+export function evaluateConclusionHeuristic(text = '', index = 0, total = 1) {
+  if (!text || total < 2 || index < total - 2) return { isConclusion: false, score: 0 };
+  const trimmed = text.trim();
+
+  // Fast exact regex match
+  for (const pat of EMPTY_CONCLUSION_PATTERNS) {
+    if (pat.test(trimmed)) {
+      if (!isQuantitativeOrTechnical(trimmed)) {
+        return { isConclusion: true, score: 100 };
+      }
+    }
+  }
+
+  // Quantitative metrics veto: Protect all empirical summaries!
+  if (isQuantitativeOrTechnical(trimmed)) {
+    return { isConclusion: false, score: 0 };
+  }
+
+  let score = 0;
+
+  // Position bonus (last or penultimate node)
+  if (index === total - 1) score += 35;
+  else if (index === total - 2) score += 20;
+
+  // Wrap-up connectives
+  if (/^(?:总而言之|综上所述|总的来说|总体而言|总结来说)[，,]/i.test(trimmed)) {
+    score += 35;
+  }
+  if (/^(?:In conclusion|To summarize|To sum up|All in all|In summary)[,\s]/i.test(trimmed)) {
+    score += 35;
+  }
+
+  // Platitude buzzwords (empty grandstanding)
+  if (/(?:打下坚实|事半功倍|走向成功|迈上新台阶|长足的进步|无往不利|立于不败之地|美好未来|低耦合的企业级架构)/i.test(trimmed)) {
+    score += 35;
+  }
+  if (/(?:stand the test of time|great foundation|best practices and success|scalable and resilient|future success)/i.test(trimmed)) {
+    score += 35;
+  }
+
+  return { isConclusion: score >= 65, score };
+}
+
+/**
  * Multilingual word counting supporting English, Latin, CJK, and Cyrillic scripts
  */
 export function countWords(text = '') {
@@ -614,17 +855,35 @@ export function cleanAIToneAndFluff(tree, options, stats) {
       const node = children[i];
       if (node.type === 'paragraph') {
         const text = toString(node).trim();
-        let matched = false;
-        for (const pat of AI_PREAMBLE_PATTERNS) {
-          if (pat.test(text)) {
-            children.splice(i, 1);
-            stats.strippedCounts.fluff = (stats.strippedCounts.fluff || 0) + 1;
-            i--;
-            matched = true;
-            break;
-          }
+        const evalRes = evaluatePreambleHeuristic(text, i, children.length);
+        if (evalRes.isPreamble) {
+          children.splice(i, 1);
+          stats.strippedCounts.fluff = (stats.strippedCounts.fluff || 0) + 1;
+          i--;
+          continue;
         }
-        if (matched) continue;
+        // Heuristic intra-paragraph preamble pruning
+        if (evalRes.splittablePrefixLength && node.children && node.children.length > 0) {
+          let remainingToCut = evalRes.splittablePrefixLength;
+          while (node.children.length > 0 && remainingToCut > 0) {
+            const firstChild = node.children[0];
+            const val = firstChild.value || toString(firstChild);
+            if (val.length <= remainingToCut) {
+              remainingToCut -= val.length;
+              node.children.shift();
+            } else {
+              if (firstChild.type === 'text') {
+                firstChild.value = firstChild.value.slice(remainingToCut).replace(/^[\s，,：:!！。]+/, '');
+              }
+              remainingToCut = 0;
+            }
+          }
+          if (node.children.length === 0) {
+            children.splice(i, 1);
+            i--;
+          }
+          stats.strippedCounts.fluff = (stats.strippedCounts.fluff || 0) + 1;
+        }
       }
     }
   }
@@ -644,29 +903,19 @@ export function cleanAIToneAndFluff(tree, options, stats) {
     }
   }
 
-  // 3. Redundant lead-in transitions before code, table, list
+  // 3. Redundant lead-in transitions before code, table, list, or heading
   if (options.cleanAITransitions !== false) {
     for (let i = 0; i < children.length - 1; i++) {
       const node = children[i];
       const nextNode = children[i + 1];
-      if (
-        node.type === 'paragraph' &&
-        (nextNode.type === 'code' || nextNode.type === 'table' || nextNode.type === 'list')
-      ) {
+      if (node.type === 'paragraph') {
         const text = toString(node).trim();
-        // Only strip if short pure pointer phrase (<= 80 chars) without multi-clause background explanation
-        if (text.length <= 80) {
-          let matched = false;
-          for (const pat of TRANSITION_PATTERNS) {
-            if (pat.test(text)) {
-              children.splice(i, 1);
-              stats.strippedCounts.fluff = (stats.strippedCounts.fluff || 0) + 1;
-              i--;
-              matched = true;
-              break;
-            }
-          }
-          if (matched) continue;
+        const evalRes = evaluateTransitionHeuristic(text, nextNode ? nextNode.type : null);
+        if (evalRes.isTransition) {
+          children.splice(i, 1);
+          stats.strippedCounts.fluff = (stats.strippedCounts.fluff || 0) + 1;
+          i--;
+          continue;
         }
       }
     }
@@ -678,17 +927,13 @@ export function cleanAIToneAndFluff(tree, options, stats) {
       const node = children[i];
       if (node.type === 'paragraph' || node.type === 'blockquote') {
         const text = toString(node).trim();
-        let matched = false;
-        for (const pat of DISCLAIMER_PATTERNS) {
-          if (pat.test(text)) {
-            children.splice(i, 1);
-            stats.strippedCounts.fluff = (stats.strippedCounts.fluff || 0) + 1;
-            i--;
-            matched = true;
-            break;
-          }
+        const evalRes = evaluateDisclaimerHeuristic(text);
+        if (evalRes.isDisclaimer) {
+          children.splice(i, 1);
+          stats.strippedCounts.fluff = (stats.strippedCounts.fluff || 0) + 1;
+          i--;
+          continue;
         }
-        if (matched) continue;
       }
     }
   }
@@ -699,20 +944,12 @@ export function cleanAIToneAndFluff(tree, options, stats) {
       const node = children[i];
       if (node.type === 'paragraph') {
         const text = toString(node).trim();
-        // Protect conclusions containing concrete quantitative metrics (e.g. 42%, 18ms, 1000 QPS)
-        const hasQuantitativeMetrics = /\d+(?:\.\d+)?\s*(?:%|ms|毫秒|秒|QPS|ops\/s|MB|GB|TB|kbps|Mbps|tokens)/i.test(text);
-        if (!hasQuantitativeMetrics) {
-          let matched = false;
-          for (const pat of EMPTY_CONCLUSION_PATTERNS) {
-            if (pat.test(text)) {
-              children.splice(i, 1);
-              stats.strippedCounts.fluff = (stats.strippedCounts.fluff || 0) + 1;
-              i--;
-              matched = true;
-              break;
-            }
-          }
-          if (matched) continue;
+        const evalRes = evaluateConclusionHeuristic(text, i, children.length);
+        if (evalRes.isConclusion) {
+          children.splice(i, 1);
+          stats.strippedCounts.fluff = (stats.strippedCounts.fluff || 0) + 1;
+          i--;
+          continue;
         }
       }
     }
@@ -738,20 +975,26 @@ export function removeAIFluff(text, stats) {
   let paragraphs = text.split(/\n\n+/);
   if (paragraphs.length === 0) return text;
 
-  // Check first 1-2 paragraphs for opening fluff
+  // Check first 1-2 paragraphs for opening fluff & heuristic prefix
   for (let i = 0; i < Math.min(2, paragraphs.length); i++) {
     const p = paragraphs[i].trim();
-    let matched = false;
-    for (const pattern of AI_PREAMBLE_PATTERNS) {
-      if (pattern.test(p)) {
-        paragraphs.splice(i, 1);
-        stats.strippedCounts.fluff = (stats.strippedCounts.fluff || 0) + 1;
-        i--;
-        matched = true;
-        break;
-      }
+    const evalRes = evaluatePreambleHeuristic(p, i, paragraphs.length);
+    if (evalRes.isPreamble) {
+      paragraphs.splice(i, 1);
+      stats.strippedCounts.fluff = (stats.strippedCounts.fluff || 0) + 1;
+      i--;
+      continue;
     }
-    if (matched) continue;
+    if (evalRes.splittablePrefixLength) {
+      const remaining = p.slice(evalRes.splittablePrefixLength).replace(/^[\s，,：:!！。]+/, '');
+      if (remaining) {
+        paragraphs[i] = remaining;
+      } else {
+        paragraphs.splice(i, 1);
+        i--;
+      }
+      stats.strippedCounts.fluff = (stats.strippedCounts.fluff || 0) + 1;
+    }
   }
 
   // Check last paragraph for closing fluff

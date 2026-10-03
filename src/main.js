@@ -1,6 +1,12 @@
 import { demark, DEFAULT_OPTIONS } from './modules/demark.js';
 import { SAMPLES } from './modules/samples.js';
 import { TRANSLATIONS } from './modules/i18n.js';
+import {
+  computeLineDiff,
+  computeTextDiff,
+  renderLineDiffHTML,
+  renderTextDiffHTML,
+} from './modules/diff.js';
 
 /**
  * Safely replace SVG icon path content without innerHTML (XSS-safe)
@@ -25,6 +31,8 @@ const LANG_LABELS = {
 const state = {
   options: { ...DEFAULT_OPTIONS },
   currentLang: localStorage.getItem('demark_lang') || (navigator.language.startsWith('zh') ? 'zh' : 'en'),
+  viewMode: 'clean', // 'clean' | 'diff'
+  diffMode: 'text',  // 'text' | 'line'
   lastResult: '',
   lastStats: null,
 };
@@ -38,6 +46,17 @@ const langCurrentLabel = document.getElementById('langCurrentLabel');
 
 const inputEl = document.getElementById('inputMarkdown');
 const outputEl = document.getElementById('outputClean');
+
+// View & Diff Mode Switchers
+const viewModeClean = document.getElementById('viewModeClean');
+const viewModeDiff = document.getElementById('viewModeDiff');
+const diffModeSelector = document.getElementById('diffModeSelector');
+const diffModeText = document.getElementById('diffModeText');
+const diffModeLine = document.getElementById('diffModeLine');
+const diffContainer = document.getElementById('diffContainer');
+const diffStatsBadge = document.getElementById('diffStatsBadge');
+const diffDeletionsCount = document.getElementById('diffDeletionsCount');
+const diffAdditionsCount = document.getElementById('diffAdditionsCount');
 
 const inputBadgeEl = document.getElementById('inputBadgeStats');
 const outputBadgeEl = document.getElementById('outputBadgeStats');
@@ -223,6 +242,82 @@ function readOptionsFromControls() {
 }
 
 /**
+ * Render Diff View (Line or Text mode)
+ */
+function renderDiffView() {
+  if (!diffContainer) return;
+  const oldText = inputEl.value;
+  const newText = state.lastResult;
+  const noChangesLabel = t('diffNoChanges', 'No differences detected. Content is identical.');
+
+  if (state.diffMode === 'line') {
+    const lineDiff = computeLineDiff(oldText, newText);
+    diffContainer.innerHTML = renderLineDiffHTML(lineDiff, { noChanges: noChangesLabel });
+    if (diffDeletionsCount) diffDeletionsCount.textContent = `-${lineDiff.stats.deletions}`;
+    if (diffAdditionsCount) diffAdditionsCount.textContent = `+${lineDiff.stats.additions}`;
+  } else {
+    const textDiff = computeTextDiff(oldText, newText);
+    diffContainer.innerHTML = renderTextDiffHTML(textDiff, { noChanges: noChangesLabel });
+    if (diffDeletionsCount) diffDeletionsCount.textContent = `-${textDiff.stats.deletions}`;
+    if (diffAdditionsCount) diffAdditionsCount.textContent = `+${textDiff.stats.additions}`;
+  }
+}
+
+/**
+ * Switch between Clean and Diff view
+ */
+function switchViewMode(mode) {
+  state.viewMode = mode;
+  if (mode === 'clean') {
+    if (viewModeClean) viewModeClean.className = 'px-2.5 py-0.5 rounded-md bg-indigo-600 text-white font-medium shadow-sm transition';
+    if (viewModeDiff) viewModeDiff.className = 'px-2.5 py-0.5 rounded-md text-slate-400 hover:text-slate-200 transition flex items-center gap-1';
+    if (outputEl) outputEl.classList.remove('hidden');
+    if (diffContainer) diffContainer.classList.add('hidden');
+    if (diffModeSelector) {
+      diffModeSelector.classList.add('hidden');
+      diffModeSelector.classList.remove('inline-flex');
+    }
+    if (diffStatsBadge) {
+      diffStatsBadge.classList.add('hidden');
+      diffStatsBadge.classList.remove('flex');
+    }
+    if (state.lastStats?.inputLength > 0 && state.lastStats?.charReductionPercent > 0) {
+      badgeReductionEl.classList.remove('hidden');
+    }
+  } else {
+    if (viewModeDiff) viewModeDiff.className = 'px-2.5 py-0.5 rounded-md bg-indigo-600 text-white font-medium shadow-sm transition flex items-center gap-1';
+    if (viewModeClean) viewModeClean.className = 'px-2.5 py-0.5 rounded-md text-slate-400 hover:text-slate-200 transition';
+    if (outputEl) outputEl.classList.add('hidden');
+    if (diffContainer) diffContainer.classList.remove('hidden');
+    if (diffModeSelector) {
+      diffModeSelector.classList.remove('hidden');
+      diffModeSelector.classList.add('inline-flex');
+    }
+    if (diffStatsBadge) {
+      diffStatsBadge.classList.remove('hidden');
+      diffStatsBadge.classList.add('flex');
+    }
+    badgeReductionEl.classList.add('hidden');
+    renderDiffView();
+  }
+}
+
+/**
+ * Switch Diff Mode (Text vs Line)
+ */
+function switchDiffMode(mode) {
+  state.diffMode = mode;
+  if (mode === 'text') {
+    if (diffModeText) diffModeText.className = 'px-2 py-0.5 rounded-md bg-indigo-600 text-white font-medium transition';
+    if (diffModeLine) diffModeLine.className = 'px-2 py-0.5 rounded-md text-slate-400 hover:text-slate-200 transition';
+  } else {
+    if (diffModeLine) diffModeLine.className = 'px-2 py-0.5 rounded-md bg-indigo-600 text-white font-medium transition';
+    if (diffModeText) diffModeText.className = 'px-2 py-0.5 rounded-md text-slate-400 hover:text-slate-200 transition';
+  }
+  renderDiffView();
+}
+
+/**
  * Core processing function: runs AST-based DeMark on input text
  */
 function processText() {
@@ -250,11 +345,13 @@ function processText() {
   // Update Output Badges
   outputBadgeEl.textContent = `${stats.outputLength.toLocaleString()} ${charsUnit} • ${stats.outputWords.toLocaleString()} ${wordsUnit}`;
 
-  if (stats.inputLength > 0 && stats.charReductionPercent > 0) {
-    badgeReductionEl.textContent = `-${stats.charReductionPercent}% ${cleanerUnit}`;
-    badgeReductionEl.classList.remove('hidden');
-  } else {
-    badgeReductionEl.classList.add('hidden');
+  if (state.viewMode !== 'diff') {
+    if (stats.inputLength > 0 && stats.charReductionPercent > 0) {
+      badgeReductionEl.textContent = `-${stats.charReductionPercent}% ${cleanerUnit}`;
+      badgeReductionEl.classList.remove('hidden');
+    } else {
+      badgeReductionEl.classList.add('hidden');
+    }
   }
 
   // Update stripped elements telemetry (safe DOM construction — no innerHTML)
@@ -276,6 +373,11 @@ function processText() {
   }
 
   outputPerfEl.textContent = `${elapsed}ms`;
+
+  // Render Diff View if active
+  if (state.viewMode === 'diff') {
+    renderDiffView();
+  }
 }
 
 /**
@@ -433,7 +535,7 @@ inputEl.addEventListener('drop', (e) => {
   }
 });
 
-// Mode Switchers
+// Output Mode Switchers (Plain vs Markdown)
 modePlainBtn.addEventListener('click', () => {
   state.options.outputMode = 'plain';
   syncControlsFromState();
@@ -445,6 +547,14 @@ modeMarkdownBtn.addEventListener('click', () => {
   syncControlsFromState();
   processText();
 });
+
+// View Mode Switchers (Clean vs Diff)
+if (viewModeClean) viewModeClean.addEventListener('click', () => switchViewMode('clean'));
+if (viewModeDiff) viewModeDiff.addEventListener('click', () => switchViewMode('diff'));
+
+// Diff Sub-mode Switchers (Text vs Line)
+if (diffModeText) diffModeText.addEventListener('click', () => switchDiffMode('text'));
+if (diffModeLine) diffModeLine.addEventListener('click', () => switchDiffMode('line'));
 
 // Option Toggles
 const optionInputs = [

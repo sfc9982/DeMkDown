@@ -49,9 +49,16 @@ export const TRANSLATIONS = {
     presetDefault: 'Default',
     presetKeepCode: 'Keep Code',
     
-    // Panels
+    // Panels & Views
     inputTitle: 'Raw AI Markdown Input',
     outputTitle: 'Clean Output',
+    viewClean: 'Clean',
+    viewDiff: 'Diff View',
+    diffModeText: 'Text',
+    diffModeLine: 'Line',
+    diffNoChanges: 'No differences detected. Content is identical.',
+    diffDeletionsLabel: 'deletions',
+    diffAdditionsLabel: 'additions',
     btnPaste: 'Paste',
     btnClear: 'Clear',
     btnCopy: 'Copy Text',
@@ -127,9 +134,16 @@ export const TRANSLATIONS = {
     presetDefault: '默认配置',
     presetKeepCode: '保留代码表格',
     
-    // Panels
+    // Panels & Views
     inputTitle: '原始 AI Markdown 输入',
     outputTitle: '净化输出结果',
+    viewClean: '净文',
+    viewDiff: '差异对比',
+    diffModeText: '文本模式',
+    diffModeLine: '按行对比',
+    diffNoChanges: '未检测到差异，内容完全一致。',
+    diffDeletionsLabel: '处删除',
+    diffAdditionsLabel: '处调整',
     btnPaste: '粘贴',
     btnClear: '清空',
     btnCopy: '复制文本',

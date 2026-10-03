@@ -185,71 +185,6 @@ var mu sync.RWMutex
 选择合理的分区键（Partition Key）即可保证单机读写均匀分布。`,
     targetFluff: '如您所愿，为您准备的解答如下：',
   },
-  {
-    id: 'POS_PREAMBLE_JA_01',
-    category: 'Preamble',
-    language: 'ja',
-    description: 'Japanese "承知いたしました" edge compute opener',
-    input: `承知いたしました。以下にエッジ分散処理の利点をまとめました：
-
-エッジコンピューティングはユーザー近くで低遅延処理を実現します。`,
-    targetFluff: '承知いたしました',
-  },
-  {
-    id: 'POS_PREAMBLE_JA_02',
-    category: 'Preamble',
-    language: 'ja',
-    description: 'Japanese "もちろんです" setup procedure opener',
-    input: `もちろんです！ご質問の件について、詳細な設定手順をお答えいたします：
-
-1. パッケージマネージャを更新する
-2. 設定ファイルを適用する`,
-    targetFluff: 'もちろんです！ご質問の件について',
-  },
-  {
-    id: 'POS_PREAMBLE_ES_01',
-    category: 'Preamble',
-    language: 'es',
-    description: 'Spanish "Por supuesto" concurrency opener',
-    input: `¡Por supuesto! Con mucho gusto te explico cómo funciona la concurrencia en Go.
-
-Las goroutines son subprocesos ligeros administrados por el runtime de Go.`,
-    targetFluff: '¡Por supuesto! Con mucho gusto',
-  },
-  {
-    id: 'POS_PREAMBLE_ES_02',
-    category: 'Preamble',
-    language: 'es',
-    description: 'Spanish "Aquí tienes la solución" opener',
-    input: `Aquí tienes la solución detallada para conectar tu base de datos PostgreSQL:
-
-\`\`\`bash
-psql -h localhost -U postgres
-\`\`\``,
-    targetFluff: 'Aquí tienes la solución',
-  },
-  {
-    id: 'POS_PREAMBLE_FR_01',
-    category: 'Preamble',
-    language: 'fr',
-    description: 'French "Bien sûr" quicksort explanation opener',
-    input: `Bien sûr ! Voici l'explication détaillée de l'algorithme de tri rapide :
-
-Le tri rapide utilise le principe de diviser pour régner.`,
-    targetFluff: 'Bien sûr ! Voici',
-  },
-  {
-    id: 'POS_PREAMBLE_DE_01',
-    category: 'Preamble',
-    language: 'de',
-    description: 'German "Natürlich" bash compression opener',
-    input: `Natürlich! Hier ist der angeforderte Bash-Befehl zum Komprimieren der Logdateien:
-
-\`\`\`bash
-tar -czvf logs.tar.gz /var/log/*.log
-\`\`\``,
-    targetFluff: 'Natürlich! Hier ist',
-  },
 
   // --- Category 2: Redundant Lead-in Transitions (过渡引导句) ---
   {
@@ -411,36 +346,6 @@ avg = sum(weights[i] * vals[i] for i in range(n))
 | PostgreSQL | 读已提交 (RC) |`,
     targetFluff: '详见下表：',
   },
-  {
-    id: 'POS_TRANS_JA_01',
-    category: 'Transition',
-    language: 'ja',
-    description: 'Japanese pointer before sample code',
-    input: `非同期 I/O を利用することで接続数を最大化できます。
-
-以下がサーバー起動用のサンプルコードです：
-
-\`\`\`javascript
-const app = express();
-app.listen(8080);
-\`\`\``,
-    targetFluff: '以下がサーバー起動用のサンプルコードです：',
-  },
-  {
-    id: 'POS_TRANS_ES_01',
-    category: 'Transition',
-    language: 'es',
-    description: 'Spanish pointer before benchmark table',
-    input: `Comparativa de serialización en microservicios.
-
-Consulta la siguiente tabla comparativa de rendimiento:
-
-| Protocolo | Latencia |
-| :--- | :--- |
-| gRPC | 1.1ms |
-| REST | 4.2ms |`,
-    targetFluff: 'Consulta la siguiente tabla comparativa de rendimiento:',
-  },
 
   // --- Category 3: Disclaimers & Placeholder Warnings (模板化免责与密钥提示) ---
   {
@@ -542,16 +447,6 @@ Warning: The above credentials are placeholders; please replace with your produc
 
 免责声明：本内容仅供参考，不构成任何医疗或法律建议。`,
     targetFluff: '免责声明：本内容仅供参考',
-  },
-  {
-    id: 'POS_DISC_JA_01',
-    category: 'Disclaimer',
-    language: 'ja',
-    description: 'Japanese ご注意 APIキー置き換え disclaimer',
-    input: `認証ヘッダーを付与してリクエストを送信します。
-
-ご注意：本コードは教育目的のサンプルです。本番環境で使用する前に必ずAPIキーを置き換えてください。`,
-    targetFluff: 'ご注意：本コードは教育目的のサンプルです',
   },
 
   // --- Category 4: Empty Platitude Conclusions (空洞的套话总结) ---
@@ -748,46 +643,6 @@ Cheers and happy coding!`,
 
 如有疑问欢迎随时交流，期待您的反馈！`,
     targetFluff: '如有疑问欢迎随时交流，期待您的反馈！',
-  },
-  {
-    id: 'POS_POSTAMBLE_JA_01',
-    category: 'Postamble',
-    language: 'ja',
-    description: 'Japanese "お役に立てれば幸いです" closing',
-    input: `設定ファイルを更新した後はデーモンの再起動を実行してください。
-
-上記の内容がお役に立てれば幸いです。何かご不明な点がございましたらお気軽にお知らせください！`,
-    targetFluff: 'お役に立てれば幸いです',
-  },
-  {
-    id: 'POS_POSTAMBLE_ES_01',
-    category: 'Postamble',
-    language: 'es',
-    description: 'Spanish "Espero que esto te sea de ayuda" closing',
-    input: `El servicio escucha en el puerto 8080 y responde con cabeceras de compresión gzip.
-
-¡Espero que esto te sea de ayuda! Saludos y buen día.`,
-    targetFluff: 'Espero que esto te sea de ayuda',
-  },
-  {
-    id: 'POS_POSTAMBLE_FR_01',
-    category: 'Postamble',
-    language: 'fr',
-    description: 'French "J\'espère que cela vous aide" closing',
-    input: `Les micro-services communiquent via gRPC pour minimiser la latence réseau.
-
-J'espère que cela vous aide ! N'hésitez pas si vous avez d'autres questions, bonne journée !`,
-    targetFluff: "J'espère que cela vous aide",
-  },
-  {
-    id: 'POS_POSTAMBLE_DE_01',
-    category: 'Postamble',
-    language: 'de',
-    description: 'German "Ich hoffe das hilft weiter" closing',
-    input: `Die Datenbankverbindung wird über einen Verbindungspool verwaltet.
-
-Ich hoffe, dass das hilft weiter! Lassen Sie mich wissen, falls Sie weitere Fragen haben. Viele Grüße!`,
-    targetFluff: 'Ich hoffe, dass das hilft weiter',
   },
 ];
 

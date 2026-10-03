@@ -1,24 +1,66 @@
 import { demark, DEFAULT_OPTIONS } from '../../src/modules/demark.js';
 
 /**
- * Standard CORS headers for Cloudflare Pages Functions
+ * Maximum allowed request body size (1 MB) to prevent DoS via oversized payloads
  */
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  'Access-Control-Max-Age': '86400',
+const MAX_BODY_SIZE = 1 * 1024 * 1024;
+
+/**
+ * Allowed CORS origins — set to your deployed domain(s).
+ * Falls back to the request's own origin for Pages preview deployments.
+ */
+const ALLOWED_ORIGINS = [
+  'https://demark-3pj.pages.dev',
+  'https://demark.pages.dev',
+];
+
+/**
+ * Resolve the Access-Control-Allow-Origin value for a given request.
+ * Only reflects the origin if it's in the allow-list or is a *.pages.dev preview.
+ */
+function resolveOrigin(request) {
+  const origin = request.headers.get('Origin') || '';
+  if (ALLOWED_ORIGINS.includes(origin)) return origin;
+  // Allow Cloudflare Pages preview deployments (*.demark-3pj.pages.dev)
+  if (/^https:\/\/[a-z0-9-]+\.demark-3pj\.pages\.dev$/.test(origin)) return origin;
+  // Local development
+  if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return origin;
+  return ALLOWED_ORIGINS[0]; // default; browser will block if mismatch
+}
+
+/**
+ * Build CORS headers scoped to the requesting origin
+ */
+function corsHeaders(request) {
+  return {
+    'Access-Control-Allow-Origin': resolveOrigin(request),
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Max-Age': '86400',
+    'Vary': 'Origin',
+  };
+}
+
+/**
+ * Standard security response headers
+ */
+const SECURITY_HEADERS = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
 };
 
 /**
  * Helper to build JSON responses using native Web Standard Response API
  */
-function jsonResponse(data, status = 200) {
+function jsonResponse(data, status = 200, request = null) {
   return new Response(JSON.stringify(data, null, 2), {
     status,
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
-      ...CORS_HEADERS,
+      ...SECURITY_HEADERS,
+      ...(request ? corsHeaders(request) : {}),
     },
   });
 }
@@ -26,17 +68,20 @@ function jsonResponse(data, status = 200) {
 /**
  * OPTIONS handler for CORS preflight
  */
-export async function onRequestOptions() {
+export async function onRequestOptions(context) {
   return new Response(null, {
     status: 204,
-    headers: CORS_HEADERS,
+    headers: {
+      ...corsHeaders(context.request),
+      ...SECURITY_HEADERS,
+    },
   });
 }
 
 /**
  * GET handler: Returns API documentation and default options schema
  */
-export async function onRequestGet() {
+export async function onRequestGet(context) {
   return jsonResponse({
     service: 'DeMark API',
     description: 'Cloudflare Pages serverless endpoint to strip unwanted Markdown from AI-generated text using Unified/Remark AST parsing.',
@@ -53,7 +98,7 @@ export async function onRequestGet() {
       },
     },
     defaultOptions: DEFAULT_OPTIONS,
-  });
+  }, 200, context.request);
 }
 
 /**
@@ -62,15 +107,48 @@ export async function onRequestGet() {
 export async function onRequestPost(context) {
   const { request } = context;
 
+  // Enforce request body size limit to prevent denial-of-service
+  const contentLength = parseInt(request.headers.get('content-length') || '0', 10);
+  if (contentLength > MAX_BODY_SIZE) {
+    return jsonResponse(
+      { success: false, error: `Request body too large. Maximum allowed size is ${MAX_BODY_SIZE / 1024}KB.` },
+      413,
+      request
+    );
+  }
+
   // Verify content type
   const contentType = request.headers.get('content-type') || '';
   let payload;
 
   try {
+    let text = '';
+    if (request.body) {
+      const reader = request.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let totalLength = 0;
+      
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        if (value) {
+          totalLength += value.length;
+          if (totalLength > MAX_BODY_SIZE) {
+            return jsonResponse(
+              { success: false, error: `Request body too large. Maximum allowed size is ${MAX_BODY_SIZE / 1024}KB.` },
+              413,
+              request
+            );
+          }
+          text += decoder.decode(value, { stream: true });
+        }
+      }
+      text += decoder.decode();
+    }
+
     if (contentType.includes('application/json')) {
-      payload = await request.json();
+      payload = text ? JSON.parse(text) : {};
     } else {
-      const text = await request.text();
       payload = { markdown: text };
     }
   } catch (err) {
@@ -78,13 +156,23 @@ export async function onRequestPost(context) {
       {
         success: false,
         error: 'Invalid request body. Expected JSON with "markdown" field or raw text.',
-        details: err.message,
       },
-      400
+      400,
+      request
     );
   }
 
   const markdown = typeof payload.markdown === 'string' ? payload.markdown : '';
+
+  // Enforce markdown field size limit
+  if (markdown.length > MAX_BODY_SIZE) {
+    return jsonResponse(
+      { success: false, error: `Markdown field too large. Maximum allowed size is ${MAX_BODY_SIZE / 1024}KB.` },
+      413,
+      request
+    );
+  }
+
   const options = typeof payload.options === 'object' && payload.options !== null ? payload.options : {};
 
   try {
@@ -94,15 +182,16 @@ export async function onRequestPost(context) {
       success: true,
       result,
       stats,
-    });
+    }, 200, request);
   } catch (err) {
+    // Never expose internal error details to the client
     return jsonResponse(
       {
         success: false,
         error: 'Failed to process markdown AST.',
-        details: err.message,
       },
-      500
+      500,
+      request
     );
   }
 }

@@ -2,6 +2,11 @@
 node_modules/
 .npm/
 
+# Environment secrets (never commit!)
+.env
+.env.local
+.env.*.local
+
 # Build artifacts
 dist/
 dist-functions/

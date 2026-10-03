@@ -2,19 +2,29 @@ import { demark, DEFAULT_OPTIONS } from './modules/demark.js';
 import { SAMPLES } from './modules/samples.js';
 import { TRANSLATIONS } from './modules/i18n.js';
 
+/**
+ * Safely replace SVG icon path content without innerHTML (XSS-safe)
+ */
+const SVG_NS = 'http://www.w3.org/2000/svg';
+function setSvgPath(svgEl, d, strokeWidth = '2') {
+  while (svgEl.firstChild) svgEl.removeChild(svgEl.firstChild);
+  const path = document.createElementNS(SVG_NS, 'path');
+  path.setAttribute('stroke-linecap', 'round');
+  path.setAttribute('stroke-linejoin', 'round');
+  path.setAttribute('stroke-width', strokeWidth);
+  path.setAttribute('d', d);
+  svgEl.appendChild(path);
+}
+
 const LANG_LABELS = {
   en: 'English (US)',
   zh: '简体中文',
-  ja: '日本語',
-  es: 'Español',
-  de: 'Deutsch',
-  fr: 'Français',
 };
 
 // Application State
 const state = {
   options: { ...DEFAULT_OPTIONS },
-  currentLang: localStorage.getItem('demark_lang') || (navigator.language.startsWith('zh') ? 'zh' : navigator.language.startsWith('ja') ? 'ja' : navigator.language.startsWith('es') ? 'es' : navigator.language.startsWith('de') ? 'de' : navigator.language.startsWith('fr') ? 'fr' : 'en'),
+  currentLang: localStorage.getItem('demark_lang') || (navigator.language.startsWith('zh') ? 'zh' : 'en'),
   lastResult: '',
   lastStats: null,
 };
@@ -64,8 +74,6 @@ const btnSampleChat = document.getElementById('btnSampleChat');
 const btnSampleCode = document.getElementById('btnSampleCode');
 const btnSampleTable = document.getElementById('btnSampleTable');
 const btnSampleChinese = document.getElementById('btnSampleChinese');
-const btnSampleJapanese = document.getElementById('btnSampleJapanese');
-const btnSampleSpanish = document.getElementById('btnSampleSpanish');
 const btnSampleStress = document.getElementById('btnSampleStress');
 
 // Preset Buttons
@@ -249,16 +257,23 @@ function processText() {
     badgeReductionEl.classList.add('hidden');
   }
 
-  // Update stripped elements telemetry
+  // Update stripped elements telemetry (safe DOM construction — no innerHTML)
   const counts = stats.strippedCounts;
-  statsBadgesEl.innerHTML = `
-    <span class="px-1.5 py-0.5 rounded bg-slate-800 ${counts.headings ? 'text-indigo-300 font-semibold' : 'text-slate-400'}">${counts.headings || 0} ${t('optHeadings', 'headings')}</span>
-    <span class="px-1.5 py-0.5 rounded bg-slate-800 ${counts.emphasis ? 'text-indigo-300 font-semibold' : 'text-slate-400'}">${counts.emphasis || 0} ${t('optEmphasis', 'bold/italic')}</span>
-    <span class="px-1.5 py-0.5 rounded bg-slate-800 ${counts.codeBlocks ? 'text-indigo-300 font-semibold' : 'text-slate-400'}">${counts.codeBlocks || 0} ${t('codeBlocksLabel', 'code').replace(':', '')}</span>
-    <span class="px-1.5 py-0.5 rounded bg-slate-800 ${counts.tables ? 'text-indigo-300 font-semibold' : 'text-slate-400'}">${counts.tables || 0} ${t('tablesLabel', 'tables').replace(':', '')}</span>
-    <span class="px-1.5 py-0.5 rounded bg-slate-800 ${counts.blockquotes ? 'text-indigo-300 font-semibold' : 'text-slate-400'}">${counts.blockquotes || 0} ${t('optBlockquotes', 'quotes')}</span>
-    <span class="px-1.5 py-0.5 rounded bg-slate-800 ${counts.fluff ? 'text-amber-300 font-semibold' : 'text-slate-400'}">${counts.fluff || 0} fluff</span>
-  `;
+  const badgeData = [
+    { count: counts.headings, label: t('optHeadings', 'headings'), highlight: 'text-indigo-300' },
+    { count: counts.emphasis, label: t('optEmphasis', 'bold/italic'), highlight: 'text-indigo-300' },
+    { count: counts.codeBlocks, label: t('codeBlocksLabel', 'code').replace(':', ''), highlight: 'text-indigo-300' },
+    { count: counts.tables, label: t('tablesLabel', 'tables').replace(':', ''), highlight: 'text-indigo-300' },
+    { count: counts.blockquotes, label: t('optBlockquotes', 'quotes'), highlight: 'text-indigo-300' },
+    { count: counts.fluff, label: 'fluff', highlight: 'text-amber-300' },
+  ];
+  statsBadgesEl.textContent = '';
+  for (const { count, label, highlight } of badgeData) {
+    const span = document.createElement('span');
+    span.className = `px-1.5 py-0.5 rounded bg-slate-800 ${count ? `${highlight} font-semibold` : 'text-slate-400'}`;
+    span.textContent = `${count || 0} ${label}`;
+    statsBadgesEl.appendChild(span);
+  }
 
   outputPerfEl.textContent = `${elapsed}ms`;
 }
@@ -279,9 +294,7 @@ async function copyOutput() {
     btnCopy.classList.replace('bg-indigo-600', 'bg-emerald-600');
     btnCopy.classList.replace('hover:bg-indigo-500', 'hover:bg-emerald-500');
 
-    iconCopy.innerHTML = `
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-    `;
+    setSvgPath(iconCopy, 'M5 13l4 4L19 7', '2.5');
 
     showToast(t('toastCopied', 'Cleaned text copied to clipboard!'));
 
@@ -289,9 +302,7 @@ async function copyOutput() {
       textCopy.textContent = t('btnCopy', 'Copy Text');
       btnCopy.classList.replace('bg-emerald-600', 'bg-indigo-600');
       btnCopy.classList.replace('hover:bg-emerald-500', 'hover:bg-indigo-500');
-      iconCopy.innerHTML = `
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-      `;
+      setSvgPath(iconCopy, 'M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z', '2');
     }, 1800);
   } catch (err) {
     outputEl.select();
@@ -397,6 +408,21 @@ inputEl.addEventListener('drop', (e) => {
   inputEl.classList.remove('ring-2', 'ring-indigo-500');
   if (e.dataTransfer && e.dataTransfer.files.length > 0) {
     const file = e.dataTransfer.files[0];
+    // Validate file type — only accept text-based files
+    const ALLOWED_TYPES = ['text/plain', 'text/markdown', 'text/x-markdown', 'text/html', 'application/json', 'text/csv'];
+    const ALLOWED_EXTENSIONS = /\.(md|markdown|txt|text|html|htm|json|csv|log|rst|adoc|yaml|yml|toml|xml)$/i;
+    const isTypeAllowed = !file.type || ALLOWED_TYPES.includes(file.type) || file.type.startsWith('text/');
+    const isExtAllowed = ALLOWED_EXTENSIONS.test(file.name);
+    if (!isTypeAllowed && !isExtAllowed) {
+      showToast('Unsupported file type. Please drop a text or Markdown file.');
+      return;
+    }
+    // Enforce 5 MB size limit
+    const MAX_FILE_SIZE = 5 * 1024 * 1024;
+    if (file.size > MAX_FILE_SIZE) {
+      showToast('File too large (max 5 MB).');
+      return;
+    }
     const reader = new FileReader();
     reader.onload = (event) => {
       inputEl.value = event.target.result;
@@ -502,8 +528,6 @@ btnSampleChat.addEventListener('click', () => loadSample('conversational'));
 btnSampleCode.addEventListener('click', () => loadSample('technicalCode'));
 btnSampleTable.addEventListener('click', () => loadSample('tablesAndData'));
 if (btnSampleChinese) btnSampleChinese.addEventListener('click', () => loadSample('chinese'));
-if (btnSampleJapanese) btnSampleJapanese.addEventListener('click', () => loadSample('japanese'));
-if (btnSampleSpanish) btnSampleSpanish.addEventListener('click', () => loadSample('spanish'));
 if (btnSampleStress) btnSampleStress.addEventListener('click', () => loadSample('messyMarkdown'));
 
 // Modal Controls
@@ -538,4 +562,4 @@ window.addEventListener('keydown', (e) => {
 // Initialize on page load
 setLanguage(state.currentLang);
 syncControlsFromState();
-loadSample(state.currentLang === 'zh' ? 'chinese' : state.currentLang === 'ja' ? 'japanese' : state.currentLang === 'es' ? 'spanish' : 'conversational');
+loadSample(state.currentLang === 'zh' ? 'chinese' : 'conversational');

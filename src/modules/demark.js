@@ -74,7 +74,7 @@ export function padEndVisual(str = '', targetWidth = 0) {
 
 /**
  * Multilingual AI conversational opening detection patterns
- * Supports English, Chinese (Simplified/Traditional), Japanese, Spanish, French, German, Korean, Portuguese
+ * Supports English and Chinese (Simplified/Traditional)
  */
 export const AI_PREAMBLE_PATTERNS = [
   // English exclamatory or direct conversational greeting
@@ -94,30 +94,6 @@ export const AI_PREAMBLE_PATTERNS = [
   /^(?:好的|没问题)[，,！!。]?$/i,
   /^(?:很高兴为您解答|根据您的需求|收到您的需求|这是一个非常好的问题|如您所愿)[，,！!：: ]?.*$/i,
   /^(?:针对您提出的关于.*的问题[，,]?下面为您|为您生成的方案如下|为您准备的解答如下|为您整理如下)[，,！!：: ]?.*$/i,
-
-  // Japanese
-  /^(?:もちろんです|承知いたしました|かしこまりました|ご質問ありがとうございます)[。、！!：: ]*.*$/i,
-  /^(?:以下に|以下が|以下をご参照ください|ご要望の|お答えいたします|ご質問の件について)[。、！!：: ]+(?:まとめ|コード|概要|回答|詳細).*$/i,
-
-  // Spanish
-  /^(?:¡?(?:Por supuesto|Claro que sí|Claro|Con gusto|Absolutamente|Con mucho gusto|Es un placer ayudarte))[!.,: ]+.*$/i,
-  /^(?:Aquí tienes|A continuación|Como solicitaste)[!.,: ]+(?:la|el|los|las|un|una)?\s*(?:solución|código|resumen|explicación|respuesta).*$/i,
-
-  // French
-  /^(?:Bien sûr|Certainement|Avec plaisir|Absolument|Ravi de vous aider|C'est une excellente question)[!.,: ]+.*$/i,
-  /^(?:Voici|Ci-dessous|Comme demandé)[!.,: ]+(?:la|le|les|un|une)?\s*(?:solution|code|résumé|explication|réponse).*$/i,
-
-  // German
-  /^(?:Sicher|Natürlich|Sehr gerne|Wie gewünscht|Gerne helfe ich|Das ist eine gute Frage)[!.,: ]+.*$/i,
-  /^(?:Hier ist|Hier sind|Im Folgenden finden Sie)[!.,: ]+(?:die|der|das|ein|eine)?\s*(?:Lösung|Code|Zusammenfassung|Erklärung|Antwort).*$/i,
-
-  // Korean
-  /^(?:네[!,.]?|물론입니다[!,.]?|질문해 주셔서 감사합니다|도움이 되어 기쁩니다|문의하신 내용에 대해)[!,.: ]*.*$/i,
-  /^(?:요청하신|아래는|다음은)[!,.: ]+(?:코드|내용|설명|요약|해결책).*$/i,
-
-  // Portuguese
-  /^(?:Com certeza|Claro|Com prazer|Conforme solicitado|Ótima pergunta)[!.,: ]+.*$/i,
-  /^(?:Aqui está|Abaixo está)[!.,: ]+(?:o|a|os|as|um|uma)?\s*(?:código|solução|resumo|explicação|resposta).*$/i,
 ];
 
 /**
@@ -129,29 +105,11 @@ export const AI_POSTAMBLE_PATTERNS = [
 
   // Chinese: anchored to sentence or line start
   /(?:^|[.!?。！？]\s*)(?:(?:希望(?:这(?:些)?|以上(?:内容|方案|建议|步骤)?)?(?:对您|对你)?有(?:所)?(?:帮助|启发|参考|裨益)|如果(?:您|你)有任何(?:其他)?(?:问题|疑问)|如有疑问[，,]?欢迎|祝您(?:工作|生活|学习)?顺利|期待您的反馈|随时向我提问)[^\n]*)$/i,
-
-  // Japanese
-  /(?:^|[.!?。！？]\s*)(?:(?:(?:上記の内容が)?お役に立てれば幸いです|(?:何か)?ご不明な点(?:やご質問)?がございましたら|よろしくお願い(?:いたし|致し)ます)[^\n]*)$/i,
-
-  // Spanish
-  /(?:^|[.!?。！？]\s*)(?:(?:¡?Espero que esto te (?:sea de ayuda|sirva)|¡?No dudes en (?:preguntar|consultar)|¡?Quedo a tu disposición|Saludos)[^\n]*)$/i,
-
-  // French
-  /(?:^|[.!?。！？]\s*)(?:(?:J'espère que cela vous aide|N'hésitez pas si vous avez d'autres questions|Cordialement|Bonne journée)[^\n]*)$/i,
-
-  // German
-  /(?:^|[.!?。！？]\s*)(?:(?:Ich hoffe(?:,| dass) das hilft(?: Ihnen)? weiter|Lassen Sie mich wissen, falls Sie weitere Fragen haben|Viele Grüße)[^\n]*)$/i,
-
-  // Korean
-  /(?:^|[.!?。！？]\s*)(?:(?:도움이 되기를 바랍니다|추가 질문이 있으시면 언제든지 말씀해 주세요|감사합니다)[^\n]*)$/i,
-
-  // Portuguese
-  /(?:^|[.!?。！？]\s*)(?:(?:Espero que isso ajude|Se tiver alguma dúvida, estou à disposição|Abraços)[^\n]*)$/i,
 ];
 
 /**
  * Redundant 1-line lead-in transitions immediately preceding tables, code blocks, or lists
- * Strictly matches pure pointers (length <= 60 chars) without substantive prose
+ * Strictly matches pure pointers (length <= 80 chars) without substantive prose
  */
 export const TRANSITION_PATTERNS = [
   // Chinese pure pointer phrases (length <= 80 chars)
@@ -161,12 +119,6 @@ export const TRANSITION_PATTERNS = [
 
   // English pure pointer phrases (length <= 80 chars)
   /^[\s]*(?:(?:Here|Below) (?:is|are|'s)|The following|Check out (?:the|this)|See (?:the|below)|Let's (?:take a look at|dive into)|Here's how (?:to|you can))[\s]+.*[:：.]?$/i,
-
-  // Japanese
-  /^[\s]*(?:以下が|以下に|以下の)[^：:\n]{0,25}?(?:コード|表|内容|設定|手順|サンプル)?(?:を(?:参照|ご覧|ご確認)ください|です|になります|の通りです)?[\s]*[:：.]?$/i,
-
-  // Spanish
-  /^[\s]*(?:A continuación tienes|Aquí tienes|El siguiente código|La siguiente tabla|Consulta (?:el siguiente|la siguiente))[^：:\n]{0,35}?[:：.]?$/i,
 ];
 
 /**
@@ -182,9 +134,6 @@ export const DISCLAIMER_PATTERNS = [
   // English AI boilerplate
   /^(?:(?:Important |Please )?Note:|Disclaimer:|Warning:|Caution:|Keep in mind(?: that)?:?|Notice:)\s*[^\n]*(?:for (?:educational|demonstration|testing|reference)(?:\s+(?:and|or)\s+(?:educational|demonstration|testing|reference))? purposes only|not (?:legal|financial|medical|investment)(?:\s+or\s+(?:legal|financial|medical|investment))? advice|(?:does not|not) constitute (?:legal|financial|medical|investment)(?:\s+or\s+(?:legal|financial|medical|investment))? advice|replace (?:(?:your|the|this|with your)\s+)?(?:actual\s+|real\s+|production\s+)?[^\n]*(?:API[ _-]?key|key|token|credentials|secret|password)|only an? example|intended as a template|replace with your)[^.\n]*/i,
   /^(?:Please note that as an AI language model|As an AI language model, I)[^.\n]*/i,
-
-  // Japanese AI boilerplate
-  /^(?:(?:ご注意|注意|注意事項|免責事項)[：:][^.\n]*(?:参考程度|サンプル|APIキーを置き換|自己责任|自己責任|教育目的))[^.\n]*/i,
 ];
 
 /**

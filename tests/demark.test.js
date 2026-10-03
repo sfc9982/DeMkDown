@@ -76,21 +76,7 @@ if (r4.result.includes('好的，根据您的需求') || r4.result.includes('希
 }
 console.log('Chinese fluff stripped successfully! Word count:', r4.stats.outputWords);
 
-console.log('\n--- TEST 5: MULTILINGUAL JAPANESE FLUFF STRIPPING ---');
-const jaSample = `# システム概要
 
-承知いたしました。以下にエッジ分散処理の利点をまとめました：
-
-**超高速**な処理と*高可用性*を実現します。
-
-お役に立てれば幸いです。何かご不明な点がございましたらお気軽にお知らせください！`;
-
-const r5 = demark(jaSample);
-console.log('Result:\n' + r5.result);
-if (r5.result.includes('承知いたしました') || r5.result.includes('お役に立てれば幸いです')) {
-  throw new Error('Japanese fluff was not stripped!');
-}
-console.log('Japanese fluff stripped successfully!');
 
 console.log('\n--- TEST 6: DEEP AI FLUFF & BOILERPLATE REMOVAL (CHINESE) ---');
 const deepZhSample = `好的，很高兴为您解答！根据您的需求，下面我将为您详细介绍现代前端微服务架构。

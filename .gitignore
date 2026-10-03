@@ -20,3 +20,6 @@ yarn-error.log*
 Thumbs.db
 .vscode/
 .idea/
+
+_worker.bundle
+_worker.js

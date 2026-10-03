@@ -86,7 +86,7 @@ export async function onRequestOptions(context) {
  */
 export async function onRequestGet(context) {
   return jsonResponse({
-    service: 'DeMark API',
+    service: 'DeMkDown API',
     description: 'Cloudflare Pages serverless endpoint to strip unwanted Markdown from AI-generated text using Unified/Remark AST parsing.',
     runtime: 'Cloudflare V8 / Pages Functions',
     usage: {

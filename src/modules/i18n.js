@@ -3,7 +3,7 @@
  */
 export const TRANSLATIONS = {
   en: {
-    appTitle: 'DeMark',
+    appTitle: 'DeMkDown',
     versionBadge: 'v1.0 AST',
     edgeBadge: 'Cloudflare Pages',
     appSubtitle: 'Strip unwanted Markdown formatting from AI-generated text',
@@ -104,7 +104,7 @@ export const TRANSLATIONS = {
   },
 
   zh: {
-    appTitle: 'DeMark',
+    appTitle: 'DeMkDown',
     versionBadge: 'v1.0 语法树',
     edgeBadge: 'Cloudflare Pages',
     appSubtitle: '精准剔除 AI 生成文本中多余的 Markdown 格式与客套废话',

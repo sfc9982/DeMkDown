@@ -125,7 +125,7 @@ Let me know if you would like me to export these numbers to CSV!`,
 \`\`\`javascript
 export default {
   async fetch(request, env) {
-    return new Response("DeMark 服务正常运行！", {
+    return new Response("DeMkDown 服务正常运行！", {
       headers: { "content-type": "text/plain;charset=utf-8" },
     });
   }

@@ -598,12 +598,12 @@ function downloadOutput() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `demark-clean-output.${ext}`;
+  a.download = `demkdown-clean-output.${ext}`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  showToast(`${t('toastDownloaded', 'Downloaded')} (demark-clean-output.${ext})`);
+  showToast(`${t('toastDownloaded', 'Downloaded')} (demkdown-clean-output.${ext})`);
 }
 
 /**

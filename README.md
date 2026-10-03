@@ -1,4 +1,4 @@
-# DeMark ⚡
+# DeMkDown ⚡
 
 > **AST-Based AI Markdown Stripper for Cloudflare Pages**  
 > Strip unwanted Markdown formatting, code fences, tables, emphasis, and AI conversational fluff from LLM-generated responses with zero latency and complete structural accuracy.
@@ -10,7 +10,7 @@
 
 ---
 
-## 🌟 Why DeMark?
+## 🌟 Why DeMkDown?
 
 AI models (ChatGPT, Claude, Gemini, DeepSeek, Copilot) frequently output responses loaded with Markdown formatting:
 - `### Heading 3`
@@ -23,7 +23,7 @@ AI models (ChatGPT, Claude, Gemini, DeepSeek, Copilot) frequently output respons
 When copying this text into corporate emails, Jira tickets, Slack, Word documents, Google Docs, Notion, or plaintext inputs, this formatting creates clutter and requires tedious manual cleanup.
 
 ### The AST Advantage (Unified & Remark)
-Unlike regex-based search-and-replace tools that break on nested elements, multiline fences, or asterisks inside URLs, **DeMark uses an AST (Abstract Syntax Tree)** powered by `unified`, `remark-parse`, and `remark-gfm`:
+Unlike regex-based search-and-replace tools that break on nested elements, multiline fences, or asterisks inside URLs, **DeMkDown uses an AST (Abstract Syntax Tree)** powered by `unified`, `remark-parse`, and `remark-gfm`:
 - **Deterministic**: Understands the syntax tree hierarchy (no broken code fences or mangled inline symbols).
 - **Isomorphic**: Runs client-side in the browser for **zero-latency instant feedback** AND in the Cloudflare V8 runtime via **Cloudflare Pages Functions**.
 - **Configurable**: Fine-grained toggles for every Markdown element.
@@ -129,7 +129,7 @@ Generates optimized static assets in `dist/`.
 
 ## ☁️ Cloudflare Pages Functions API
 
-DeMark includes a serverless Cloudflare Pages Function located at `functions/api/demark.js`. It utilizes native Web Standard APIs (`Request`, `Response`, `fetch`) compatible with the Cloudflare V8 runtime.
+DeMkDown includes a serverless Cloudflare Pages Function located at `functions/api/demark.js`. It utilizes native Web Standard APIs (`Request`, `Response`, `fetch`) compatible with the Cloudflare V8 runtime.
 
 ### Endpoint: `POST /api/demark`
 

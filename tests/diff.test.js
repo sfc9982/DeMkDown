@@ -25,10 +25,10 @@ console.log('✓ XSS Safety Escaping passed');
 
 // 2. Tokenize Text Test
 console.log('\n--- TEST 2: Tokenize Text ---');
-const tokens = tokenizeText('Hello 世界! **DeMark** 123');
+const tokens = tokenizeText('Hello 世界! **DeMkDown** 123');
 console.log('Tokens:', tokens);
-// Expected: ['Hello', ' ', '世', '界', '!', ' ', '*', '*', 'DeMark', '*', '*', ' ', '123']
-if (!tokens.includes('Hello') || !tokens.includes('世') || !tokens.includes('界') || !tokens.includes('DeMark')) {
+// Expected: ['Hello', ' ', '世', '界', '!', ' ', '*', '*', 'DeMkDown', '*', '*', ' ', '123']
+if (!tokens.includes('Hello') || !tokens.includes('世') || !tokens.includes('界') || !tokens.includes('DeMkDown')) {
   throw new Error(`tokenizeText did not separate tokens properly: ${JSON.stringify(tokens)}`);
 }
 console.log('✓ Tokenize Text passed');
@@ -121,8 +121,8 @@ console.log('✓ Identical Content test passed');
 
 // 8. Chinese Markdown Diffing
 console.log('\n--- TEST 8: Chinese Markdown Diffing ---');
-const zhRaw = '当然，请看以下内容：\n\n### 核心功能\n**DeMark** 可以快速过滤 AI 语气。';
-const zhClean = '核心功能\nDeMark 可以快速过滤 AI 语气。';
+const zhRaw = '当然，请看以下内容：\n\n### 核心功能\n**DeMkDown** 可以快速过滤 AI 语气。';
+const zhClean = '核心功能\nDeMkDown 可以快速过滤 AI 语气。';
 const zhDiff = computeTextDiff(zhRaw, zhClean);
 
 if (zhDiff.stats.deletions === 0) {

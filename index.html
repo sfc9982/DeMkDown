@@ -3,50 +3,81 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DeMark — AST-Based AI Markdown Stripper</title>
-  <meta name="description" content="Strip unwanted Markdown formatting, code fences, tables, emphasis, and AI conversational fluff in multiple languages using AST parsing. Built for Cloudflare Pages." />
+  <title>DeMark — Clean Markdown Stripper</title>
   <link rel="stylesheet" href="./src/style.css" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m7 15 5 5 5-5'/><path d='m7 9 5-5 5 5'/></svg>" />
 </head>
 <body class="h-full flex flex-col bg-slate-950 text-slate-100 antialiased selection:bg-indigo-500/30 selection:text-indigo-200">
 
   <!-- Top Navigation Header -->
-  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur-md sticky top-0 z-30 px-4 lg:px-6 py-3">
+  <header class="border-b border-slate-800/80 bg-slate-900/90 backdrop-blur-md sticky top-0 z-30 px-4 lg:px-6 py-2.5">
     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
       
-      <!-- Brand & Info -->
+      <!-- Brand -->
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 ring-1 ring-white/20">
-          <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 ring-1 ring-white/20 shrink-0">
+          <svg class="w-4.5 h-4.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
           </svg>
         </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <span id="txtAppTitle" data-i18n="appTitle" class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-100 to-indigo-200 bg-clip-text text-transparent">DeMark</span>
-            <span data-i18n="versionBadge" class="text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">v1.0 AST</span>
-            <span data-i18n="edgeBadge" class="hidden sm:inline-flex text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">Cloudflare Pages</span>
-          </div>
-          <p id="txtAppSubtitle" data-i18n="appSubtitle" class="text-xs text-slate-400 hidden sm:block">Strip unwanted Markdown formatting from AI-generated text</p>
+        <div class="flex items-center gap-2">
+          <span id="txtAppTitle" data-i18n="appTitle" class="text-lg font-bold tracking-tight bg-gradient-to-r from-white via-slate-100 to-indigo-200 bg-clip-text text-transparent">DeMark</span>
+          <span data-i18n="versionBadge" class="text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">AST</span>
         </div>
       </div>
 
-      <!-- Quick Preset Samples, Mode Switcher, and Language Selector -->
+      <!-- Quick Preset Samples, Mode Switcher, and Custom Language Selector -->
       <div class="flex items-center flex-wrap gap-2">
         
-        <!-- Language Selector -->
-        <div class="flex items-center gap-1.5 bg-slate-800 border border-slate-700/80 rounded-lg px-2.5 py-1 text-xs">
-          <svg class="w-3.5 h-3.5 text-indigo-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
-          </svg>
-          <select id="langSelect" class="bg-transparent text-slate-200 text-xs focus:outline-none cursor-pointer">
-            <option value="en">English (US)</option>
-            <option value="zh">简体中文 (Chinese)</option>
-            <option value="ja">日本語 (Japanese)</option>
-            <option value="es">Español (Spanish)</option>
-            <option value="de">Deutsch (German)</option>
-            <option value="fr">Français (French)</option>
-          </select>
+        <!-- Custom Language Dropdown -->
+        <div class="relative" id="langDropdownContainer">
+          <button
+            id="langDropdownBtn"
+            type="button"
+            class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-750 border border-slate-700/80 hover:border-slate-600 text-xs font-medium text-slate-200 transition shadow-sm cursor-pointer select-none"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <svg class="w-3.5 h-3.5 text-indigo-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+            </svg>
+            <span id="langCurrentLabel">English (US)</span>
+            <svg class="w-3 h-3 text-slate-400 transition-transform duration-200" id="langChevron" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          <!-- Custom Theme Dropdown Menu -->
+          <div
+            id="langMenu"
+            class="absolute right-0 mt-1.5 w-44 rounded-xl bg-slate-900 border border-slate-700/90 shadow-2xl py-1 z-50 hidden opacity-0 scale-95 transition-all duration-150 ring-1 ring-black/50 backdrop-blur-xl"
+            role="menu"
+          >
+            <button type="button" data-lang="en" class="lang-option w-full flex items-center justify-between px-3 py-1.5 text-xs text-slate-200 hover:bg-indigo-600/20 hover:text-indigo-200 transition text-left cursor-pointer rounded-lg mx-auto">
+              <span>English (US)</span>
+              <span class="check-icon text-indigo-400 text-xs font-bold">✓</span>
+            </button>
+            <button type="button" data-lang="zh" class="lang-option w-full flex items-center justify-between px-3 py-1.5 text-xs text-slate-300 hover:bg-indigo-600/20 hover:text-indigo-200 transition text-left cursor-pointer rounded-lg mx-auto">
+              <span>简体中文</span>
+              <span class="check-icon text-indigo-400 text-xs font-bold hidden">✓</span>
+            </button>
+            <button type="button" data-lang="ja" class="lang-option w-full flex items-center justify-between px-3 py-1.5 text-xs text-slate-300 hover:bg-indigo-600/20 hover:text-indigo-200 transition text-left cursor-pointer rounded-lg mx-auto">
+              <span>日本語</span>
+              <span class="check-icon text-indigo-400 text-xs font-bold hidden">✓</span>
+            </button>
+            <button type="button" data-lang="es" class="lang-option w-full flex items-center justify-between px-3 py-1.5 text-xs text-slate-300 hover:bg-indigo-600/20 hover:text-indigo-200 transition text-left cursor-pointer rounded-lg mx-auto">
+              <span>Español</span>
+              <span class="check-icon text-indigo-400 text-xs font-bold hidden">✓</span>
+            </button>
+            <button type="button" data-lang="de" class="lang-option w-full flex items-center justify-between px-3 py-1.5 text-xs text-slate-300 hover:bg-indigo-600/20 hover:text-indigo-200 transition text-left cursor-pointer rounded-lg mx-auto">
+              <span>Deutsch</span>
+              <span class="check-icon text-indigo-400 text-xs font-bold hidden">✓</span>
+            </button>
+            <button type="button" data-lang="fr" class="lang-option w-full flex items-center justify-between px-3 py-1.5 text-xs text-slate-300 hover:bg-indigo-600/20 hover:text-indigo-200 transition text-left cursor-pointer rounded-lg mx-auto">
+              <span>Français</span>
+              <span class="check-icon text-indigo-400 text-xs font-bold hidden">✓</span>
+            </button>
+          </div>
         </div>
 
         <!-- Sample Presets Buttons -->
@@ -113,7 +144,7 @@
         <!-- Code Blocks Handling -->
         <div class="inline-flex items-center gap-1.5">
           <span data-i18n="codeBlocksLabel" class="text-slate-400">Code Blocks:</span>
-          <select id="optCodeBlocks" class="bg-slate-800 text-slate-200 border border-slate-700 rounded px-2 py-0.5 text-xs focus:outline-none focus:border-indigo-500">
+          <select id="optCodeBlocks" class="bg-slate-800 text-slate-200 border border-slate-700/80 rounded-md px-2 py-0.5 text-xs focus:outline-none focus:border-indigo-500 cursor-pointer">
             <option value="unwrap" data-i18n="codeUnwrap" selected>Unwrap (Keep Code)</option>
             <option value="remove" data-i18n="codeRemove">Strip Completely</option>
             <option value="preserve" data-i18n="codePreserve">Preserve Fences (```)</option>
@@ -123,7 +154,7 @@
         <!-- Tables Handling -->
         <div class="inline-flex items-center gap-1.5">
           <span data-i18n="tablesLabel" class="text-slate-400">Tables:</span>
-          <select id="optTables" class="bg-slate-800 text-slate-200 border border-slate-700 rounded px-2 py-0.5 text-xs focus:outline-none focus:border-indigo-500">
+          <select id="optTables" class="bg-slate-800 text-slate-200 border border-slate-700/80 rounded-md px-2 py-0.5 text-xs focus:outline-none focus:border-indigo-500 cursor-pointer">
             <option value="plain" data-i18n="tablePlain" selected>Aligned Plain Text</option>
             <option value="tsv" data-i18n="tableTSV">TSV (Excel / Sheets)</option>
             <option value="csv" data-i18n="tableCSV">CSV</option>
@@ -135,7 +166,7 @@
         <!-- Links Handling -->
         <div class="inline-flex items-center gap-1.5">
           <span data-i18n="linksLabel" class="text-slate-400">Links:</span>
-          <select id="optLinks" class="bg-slate-800 text-slate-200 border border-slate-700 rounded px-2 py-0.5 text-xs focus:outline-none focus:border-indigo-500">
+          <select id="optLinks" class="bg-slate-800 text-slate-200 border border-slate-700/80 rounded-md px-2 py-0.5 text-xs focus:outline-none focus:border-indigo-500 cursor-pointer">
             <option value="text_only" data-i18n="linkTextOnly" selected>Anchor Text Only</option>
             <option value="text_and_url" data-i18n="linkTextUrl">Text + (URL)</option>
             <option value="remove" data-i18n="linkRemove">Strip Completely</option>
@@ -152,7 +183,7 @@
         <!-- AI Conversational Fluff Cleaner -->
         <label class="inline-flex items-center gap-1.5 cursor-pointer select-none font-medium text-indigo-300 bg-indigo-950/40 border border-indigo-800/40 px-2 py-0.5 rounded">
           <input type="checkbox" id="optCleanFluff" checked class="w-3.5 h-3.5 rounded border-indigo-700 bg-slate-900 text-indigo-500 focus:ring-0 focus:ring-offset-0 transition cursor-pointer" />
-          <span data-i18n="optCleanFluff">✨ Strip AI Fluff (Multilingual)</span>
+          <span data-i18n="optCleanFluff">✨ Strip AI Fluff</span>
         </label>
 
       </div>
@@ -211,8 +242,7 @@
         </div>
 
         <!-- Input Footer Info -->
-        <div class="px-4 py-2 bg-slate-900/40 border-t border-slate-800/80 text-[11px] text-slate-500 flex items-center justify-between">
-          <span data-i18n="inputFooter">Remark AST Parsing Enabled</span>
+        <div class="px-4 py-2 bg-slate-900/40 border-t border-slate-800/80 text-[11px] text-slate-500 flex items-center justify-end">
           <span id="inputLinesCount">0 lines</span>
         </div>
 
@@ -276,25 +306,6 @@
     </div>
   </main>
 
-  <!-- Live Stats Strip -->
-  <footer class="border-t border-slate-800 bg-slate-900/80 px-4 lg:px-6 py-2.5 text-xs text-slate-400">
-    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center gap-3">
-        <span class="inline-flex items-center gap-1.5">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-          <span data-i18n="zeroLatency">Zero-Latency Client Engine</span>
-        </span>
-        <span>•</span>
-        <span data-i18n="v8Compatible" class="text-slate-500">Cloudflare V8 Compatible AST Processor</span>
-      </div>
-      <div class="flex items-center gap-3 text-slate-500">
-        <span data-i18n="poweredBy">Powered by Unified + Remark + GFM</span>
-        <span>•</span>
-        <a href="https://developers.cloudflare.com/pages/functions/" target="_blank" rel="noopener noreferrer" class="hover:text-slate-300 transition underline">Cloudflare Pages Docs</a>
-      </div>
-    </div>
-  </footer>
-
   <!-- API Documentation Modal -->
   <div id="apiModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
@@ -317,11 +328,11 @@
         </p>
 
         <div>
-          <h3 class="font-semibold text-slate-100 mb-1.5">cURL Example (Multilingual):</h3>
-          <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-emerald-400 font-mono overflow-x-auto select-all">curl -X POST https://demark.pages.dev/api/demark \
+          <h3 class="font-semibold text-slate-100 mb-1.5">cURL Example:</h3>
+          <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-emerald-400 font-mono overflow-x-auto select-all">curl -X POST https://demark-3pj.pages.dev/api/demark \
   -H "Content-Type: application/json" \
   -d '{
-    "markdown": "# 云原生微服务\n好的，根据您的需求，以下是核心内容：**高可用**且*极速响应*。\n希望以上内容对您有所帮助！",
+    "markdown": "# 标题\n好的，以下是为您整理的内容：**高可用**。\n希望对您有所帮助！",
     "options": {
       "outputMode": "plain",
       "stripHeadings": true,
@@ -349,14 +360,12 @@ console.log(result);</pre>
           <h3 class="font-semibold text-slate-100 mb-1.5">Response Schema:</h3>
           <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-amber-300 font-mono overflow-x-auto">{
   "success": true,
-  "result": "云原生微服务\n高可用且极速响应。",
+  "result": "标题\n高可用。",
   "stats": {
-    "inputLength": 68,
-    "outputLength": 16,
-    "inputWords": 8,
-    "outputWords": 2,
-    "charReductionPercent": 76.5,
-    "strippedCounts": { "headings": 1, "emphasis": 2, "fluff": 2 }
+    "inputLength": 38,
+    "outputLength": 8,
+    "charReductionPercent": 78.9,
+    "strippedCounts": { "headings": 1, "emphasis": 1, "fluff": 2 }
   }
 }</pre>
         </div>

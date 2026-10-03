@@ -2,6 +2,15 @@ import { demark, DEFAULT_OPTIONS } from './modules/demark.js';
 import { SAMPLES } from './modules/samples.js';
 import { TRANSLATIONS } from './modules/i18n.js';
 
+const LANG_LABELS = {
+  en: 'English (US)',
+  zh: '简体中文',
+  ja: '日本語',
+  es: 'Español',
+  de: 'Deutsch',
+  fr: 'Français',
+};
+
 // Application State
 const state = {
   options: { ...DEFAULT_OPTIONS },
@@ -11,7 +20,12 @@ const state = {
 };
 
 // DOM Element References
-const langSelect = document.getElementById('langSelect');
+const langDropdownContainer = document.getElementById('langDropdownContainer');
+const langDropdownBtn = document.getElementById('langDropdownBtn');
+const langMenu = document.getElementById('langMenu');
+const langChevron = document.getElementById('langChevron');
+const langCurrentLabel = document.getElementById('langCurrentLabel');
+
 const inputEl = document.getElementById('inputMarkdown');
 const outputEl = document.getElementById('outputClean');
 
@@ -79,13 +93,31 @@ function t(key, fallback = '') {
 }
 
 /**
- * Switch UI language dynamically
+ * Switch UI language dynamically and update custom dropdown state
  */
 function setLanguage(lang) {
   if (!TRANSLATIONS[lang]) lang = 'en';
   state.currentLang = lang;
   localStorage.setItem('demark_lang', lang);
-  langSelect.value = lang;
+
+  if (langCurrentLabel) {
+    langCurrentLabel.textContent = LANG_LABELS[lang] || 'English (US)';
+  }
+
+  // Update checkmarks in custom dropdown menu
+  document.querySelectorAll('.lang-option').forEach((opt) => {
+    const optLang = opt.getAttribute('data-lang');
+    const checkIcon = opt.querySelector('.check-icon');
+    if (optLang === lang) {
+      opt.classList.add('bg-indigo-600/20', 'text-indigo-200', 'font-medium');
+      opt.classList.remove('text-slate-300');
+      if (checkIcon) checkIcon.classList.remove('hidden');
+    } else {
+      opt.classList.remove('bg-indigo-600/20', 'text-indigo-200', 'font-medium');
+      opt.classList.add('text-slate-300');
+      if (checkIcon) checkIcon.classList.add('hidden');
+    }
+  });
 
   // Update text of all elements with data-i18n
   document.querySelectorAll('[data-i18n]').forEach((el) => {
@@ -102,6 +134,31 @@ function setLanguage(lang) {
 
   // Re-run process to refresh localized badges
   processText();
+}
+
+/**
+ * Toggle custom language dropdown menu
+ */
+function toggleLangDropdown(open) {
+  if (!langMenu) return;
+  const shouldOpen = typeof open === 'boolean' ? open : langMenu.classList.contains('hidden');
+  if (shouldOpen) {
+    langMenu.classList.remove('hidden');
+    requestAnimationFrame(() => {
+      langMenu.classList.remove('opacity-0', 'scale-95');
+      langMenu.classList.add('opacity-100', 'scale-100');
+      if (langChevron) langChevron.classList.add('rotate-180');
+      if (langDropdownBtn) langDropdownBtn.setAttribute('aria-expanded', 'true');
+    });
+  } else {
+    langMenu.classList.remove('opacity-100', 'scale-100');
+    langMenu.classList.add('opacity-0', 'scale-95');
+    if (langChevron) langChevron.classList.remove('rotate-180');
+    if (langDropdownBtn) langDropdownBtn.setAttribute('aria-expanded', 'false');
+    setTimeout(() => {
+      langMenu.classList.add('hidden');
+    }, 150);
+  }
 }
 
 /**
@@ -297,9 +354,27 @@ function loadSample(sampleKey) {
 
 // Event Listeners
 
-// Language selection
-langSelect.addEventListener('change', (e) => {
-  setLanguage(e.target.value);
+// Custom Language Dropdown listeners
+if (langDropdownBtn) {
+  langDropdownBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleLangDropdown();
+  });
+}
+
+document.querySelectorAll('.lang-option').forEach((opt) => {
+  opt.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const lang = opt.getAttribute('data-lang');
+    setLanguage(lang);
+    toggleLangDropdown(false);
+  });
+});
+
+document.addEventListener('click', (e) => {
+  if (langDropdownContainer && !langDropdownContainer.contains(e.target)) {
+    toggleLangDropdown(false);
+  }
 });
 
 // Input typing
@@ -456,6 +531,7 @@ window.addEventListener('keydown', (e) => {
   }
   if (e.key === 'Escape') {
     closeModal();
+    toggleLangDropdown(false);
   }
 });
 

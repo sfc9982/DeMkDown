@@ -27,15 +27,44 @@ const LANG_LABELS = {
   zh: '简体中文',
 };
 
+/**
+ * Safely load user options from browser storage
+ */
+function loadSavedOptions() {
+  try {
+    const raw = localStorage.getItem('demkdown_options') || localStorage.getItem('demark_options');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === 'object') {
+        return { ...DEFAULT_OPTIONS, ...parsed };
+      }
+    }
+  } catch (e) {
+    console.warn('Failed to parse saved options from localStorage:', e);
+  }
+  return { ...DEFAULT_OPTIONS };
+}
+
+/**
+ * Persist user options into browser storage
+ */
+function saveOptionsToStorage() {
+  try {
+    localStorage.setItem('demkdown_options', JSON.stringify(state.options));
+  } catch (e) {
+    console.warn('Failed to save options to localStorage:', e);
+  }
+}
+
 // Application State
 const state = {
-  options: { ...DEFAULT_OPTIONS },
-  currentLang: localStorage.getItem('demark_lang') || (navigator.language.startsWith('zh') ? 'zh' : 'en'),
-  optionsCollapsed: localStorage.getItem('demark_options_collapsed') === 'true',
+  options: loadSavedOptions(),
+  currentLang: localStorage.getItem('demkdown_lang') || localStorage.getItem('demark_lang') || (navigator.language.startsWith('zh') ? 'zh' : 'en'),
+  optionsCollapsed: (localStorage.getItem('demkdown_options_collapsed') || localStorage.getItem('demark_options_collapsed')) === 'true',
   widthMode: localStorage.getItem('demkdown_width_mode') || 'standard',
   theme: localStorage.getItem('demkdown_theme') || 'system',
-  viewMode: 'clean', // 'clean' | 'diff'
-  diffMode: 'text',  // 'text' | 'line'
+  viewMode: localStorage.getItem('demkdown_view_mode') || 'clean', // 'clean' | 'diff'
+  diffMode: localStorage.getItem('demkdown_diff_mode') || 'text',  // 'text' | 'line'
   lastResult: '',
   lastStats: null,
 };
@@ -159,6 +188,7 @@ function t(key, fallback = '') {
 function setLanguage(lang) {
   if (!TRANSLATIONS[lang]) lang = 'en';
   state.currentLang = lang;
+  localStorage.setItem('demkdown_lang', lang);
   localStorage.setItem('demark_lang', lang);
 
   if (langCurrentLabel) {
@@ -458,6 +488,7 @@ function readOptionsFromControls() {
   state.options.stripLists = optStripLists.checked;
   state.options.cleanAIFluff = optCleanFluff.checked;
 
+  saveOptionsToStorage();
   updateConfigSummary();
 }
 
@@ -513,6 +544,7 @@ function updateConfigSummary() {
  */
 function setOptionsCollapsed(collapsed) {
   state.optionsCollapsed = Boolean(collapsed);
+  localStorage.setItem('demkdown_options_collapsed', state.optionsCollapsed ? 'true' : 'false');
   localStorage.setItem('demark_options_collapsed', state.optionsCollapsed ? 'true' : 'false');
 
   if (!optionsBody) return;
@@ -567,6 +599,7 @@ function renderDiffView() {
  */
 function switchViewMode(mode) {
   state.viewMode = mode;
+  localStorage.setItem('demkdown_view_mode', mode);
   if (mode === 'clean') {
     if (viewModeClean) viewModeClean.className = 'px-3.5 py-1 bg-orange-600 text-white font-semibold shadow-[0_0_12px_rgba(255,107,0,0.5)] border border-orange-400/50 transition';
     if (viewModeDiff) viewModeDiff.className = 'px-3.5 py-1 text-slate-400 hover:text-orange-300 transition flex items-center gap-1.5';
@@ -606,6 +639,7 @@ function switchViewMode(mode) {
  */
 function switchDiffMode(mode) {
   state.diffMode = mode;
+  localStorage.setItem('demkdown_diff_mode', mode);
   if (mode === 'text') {
     if (diffModeText) diffModeText.className = 'px-2.5 py-1 bg-orange-600 text-white font-medium transition shadow-[0_0_10px_rgba(255,107,0,0.4)]';
     if (diffModeLine) diffModeLine.className = 'px-2.5 py-1 text-slate-400 hover:text-orange-300 transition';
@@ -892,12 +926,14 @@ inputEl.addEventListener('drop', (e) => {
 // Output Mode Switchers (Plain vs Markdown)
 modePlainBtn.addEventListener('click', () => {
   state.options.outputMode = 'plain';
+  saveOptionsToStorage();
   syncControlsFromState();
   processText();
 });
 
 modeMarkdownBtn.addEventListener('click', () => {
   state.options.outputMode = 'markdown';
+  saveOptionsToStorage();
   syncControlsFromState();
   processText();
 });
@@ -959,6 +995,7 @@ btnPresetMax.addEventListener('click', () => {
     cleanAIFluff: true,
     normalizeWhitespace: true,
   };
+  saveOptionsToStorage();
   syncControlsFromState();
   processText();
   showToast(t('presetMax', 'Applied Max Strip preset'));
@@ -966,6 +1003,7 @@ btnPresetMax.addEventListener('click', () => {
 
 btnPresetDefault.addEventListener('click', () => {
   state.options = { ...DEFAULT_OPTIONS };
+  saveOptionsToStorage();
   syncControlsFromState();
   processText();
   showToast(t('presetDefault', 'Reset to Default rules'));
@@ -982,6 +1020,7 @@ btnPresetPreserveCode.addEventListener('click', () => {
     stripBlockquotes: true,
     cleanAIFluff: true,
   };
+  saveOptionsToStorage();
   syncControlsFromState();
   processText();
   showToast(t('presetKeepCode', 'Applied Preserve Code & Tables preset'));
@@ -1054,4 +1093,10 @@ applyTheme(state.theme, false);
 setLanguage(state.currentLang);
 syncControlsFromState();
 setOptionsCollapsed(state.optionsCollapsed);
+if (state.viewMode !== 'clean') {
+  switchViewMode(state.viewMode);
+}
+if (state.diffMode !== 'text') {
+  switchDiffMode(state.diffMode);
+}
 loadSample(state.currentLang === 'zh' ? 'chinese' : 'conversational');

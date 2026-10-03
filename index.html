@@ -5,25 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DeMark — Clean Markdown Stripper</title>
   <link rel="stylesheet" href="./src/style.css" />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m7 15 5 5 5-5'/><path d='m7 9 5-5 5 5'/></svg>" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff6b00' stroke-width='2' stroke-linecap='square' stroke-linejoin='miter'><circle cx='12' cy='12' r='8'/><path d='M12 2v4m0 12v4M2 12h4m12 0h4'/></svg>" />
 </head>
-<body class="h-full flex flex-col bg-slate-950 text-slate-100 antialiased selection:bg-indigo-500/30 selection:text-indigo-200">
+<body class="h-full flex flex-col bg-[#06090e] text-slate-100 antialiased selection:bg-orange-500/30 selection:text-orange-200">
 
   <!-- Top Navigation Header -->
-  <header class="border-b border-slate-800/80 bg-slate-900/90 backdrop-blur-md sticky top-0 z-30 px-4 lg:px-6 py-3">
+  <header class="border-b border-orange-500/20 bg-[#090e17]/85 backdrop-blur-md sticky top-0 z-30 px-4 lg:px-6 py-2.5">
     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
       
       <!-- Brand & Version -->
       <div class="flex items-center gap-3.5">
-        <div class="w-10 h-10 bg-gradient-to-tr from-indigo-500 via-indigo-600 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/25 ring-1 ring-white/20 shrink-0">
-          <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        <div class="w-10 h-10 bg-gradient-to-tr from-orange-600 via-amber-600 to-orange-500 flex items-center justify-center shadow-lg shadow-orange-600/30 ring-1 ring-orange-400/40 shrink-0">
+          <svg class="w-5 h-5 text-white animate-shd-beacon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2.2" d="M12 2v4m0 12v4M2 12h4m12 0h4m-3.5-6.5l-2.8 2.8m-7.4 7.4l-2.8 2.8m0-13l2.8 2.8m7.4 7.4l2.8 2.8" />
+            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" />
           </svg>
         </div>
         <div class="flex items-center gap-2.5">
-          <span id="txtAppTitle" data-i18n="appTitle" class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-100 to-indigo-200 bg-clip-text text-transparent">DeMark</span>
-          <span data-i18n="versionBadge" class="text-xs font-semibold tracking-wider uppercase px-2.5 py-0.5 bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">AST</span>
-          <span data-i18n="edgeBadge" class="hidden sm:inline-block text-xs font-medium px-2 py-0.5 bg-slate-800/80 text-slate-400 border border-slate-700/60">Cloudflare Pages</span>
+          <span id="txtAppTitle" data-i18n="appTitle" class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-100 to-orange-200 bg-clip-text text-transparent font-mono">DeMark</span>
+          <span data-i18n="versionBadge" class="text-xs font-semibold tracking-wider uppercase px-2 py-0.5 bg-orange-500/15 text-orange-400 border border-orange-500/30 font-mono">SHD//AST</span>
+          <span data-i18n="edgeBadge" class="hidden sm:inline-block text-xs font-medium px-2 py-0.5 bg-slate-900/80 text-orange-400/80 border border-orange-500/20 font-mono">ISAC-V8</span>
         </div>
       </div>
 
@@ -31,19 +32,19 @@
       <div class="flex items-center flex-wrap gap-2.5">
         
         <!-- Sample Presets Buttons -->
-        <div class="flex items-center bg-slate-900 border border-slate-750 p-1 text-xs text-slate-300 shadow-sm">
-          <span data-i18n="sampleLabel" class="px-2.5 text-slate-400 hidden lg:inline font-medium">Sample:</span>
-          <button id="btnSampleChat" data-i18n="sampleChat" class="px-3 py-1 hover:bg-slate-800 hover:text-white transition font-medium">Chatbot</button>
-          <button id="btnSampleCode" data-i18n="sampleCode" class="px-3 py-1 hover:bg-slate-800 hover:text-white transition font-medium">Code</button>
-          <button id="btnSampleTable" data-i18n="sampleTable" class="px-3 py-1 hover:bg-slate-800 hover:text-white transition font-medium">Tables</button>
-          <button id="btnSampleChinese" data-i18n="sampleChinese" class="px-3 py-1 hover:bg-slate-800 hover:text-white transition font-medium">中文</button>
-          <button id="btnSampleStress" data-i18n="sampleStress" class="px-3 py-1 hover:bg-slate-800 hover:text-white transition font-medium hidden md:inline-block">Stress</button>
+        <div class="flex items-center bg-[#090e17]/90 border border-slate-800 p-1 text-xs text-slate-300 shadow-sm">
+          <span data-i18n="sampleLabel" class="px-2.5 text-slate-400 hidden lg:inline font-medium font-mono text-[11px] uppercase tracking-wider">Sample:</span>
+          <button id="btnSampleChat" data-i18n="sampleChat" class="px-3 py-1 hover:bg-orange-500/15 hover:text-orange-200 transition font-medium">Chatbot</button>
+          <button id="btnSampleCode" data-i18n="sampleCode" class="px-3 py-1 hover:bg-orange-500/15 hover:text-orange-200 transition font-medium">Code</button>
+          <button id="btnSampleTable" data-i18n="sampleTable" class="px-3 py-1 hover:bg-orange-500/15 hover:text-orange-200 transition font-medium">Tables</button>
+          <button id="btnSampleChinese" data-i18n="sampleChinese" class="px-3 py-1 hover:bg-orange-500/15 hover:text-orange-200 transition font-medium">中文</button>
+          <button id="btnSampleStress" data-i18n="sampleStress" class="px-3 py-1 hover:bg-orange-500/15 hover:text-orange-200 transition font-medium hidden md:inline-block">Stress</button>
         </div>
 
         <!-- Output Format Mode Switch -->
-        <div class="flex items-center bg-slate-900 border border-slate-750 p-1 text-xs sm:text-sm font-medium shadow-sm">
-          <button id="modePlain" data-i18n="modePlain" class="px-3.5 py-1 bg-indigo-600 text-white font-medium shadow-sm transition">Plain Text</button>
-          <button id="modeMarkdown" data-i18n="modeMarkdown" class="px-3.5 py-1 text-slate-400 hover:text-white transition">Clean Markdown</button>
+        <div class="flex items-center bg-[#090e17]/90 border border-slate-800 p-1 text-xs sm:text-sm font-medium shadow-sm">
+          <button id="modePlain" data-i18n="modePlain" class="px-3.5 py-1 bg-orange-600 text-white font-medium shadow-[0_0_12px_rgba(255,107,0,0.5)] border border-orange-400/50 transition">Plain Text</button>
+          <button id="modeMarkdown" data-i18n="modeMarkdown" class="px-3.5 py-1 text-slate-400 hover:text-orange-300 transition">Clean Markdown</button>
         </div>
 
         <!-- Custom Language Dropdown -->
@@ -51,11 +52,11 @@
           <button
             id="langDropdownBtn"
             type="button"
-            class="flex items-center gap-2 px-3 py-1.5 bg-slate-850 hover:bg-slate-800 border border-slate-750 text-xs sm:text-sm font-medium text-slate-200 transition shadow-sm cursor-pointer select-none"
+            class="flex items-center gap-2 px-3 py-1.5 bg-[#0d1424]/90 hover:bg-[#131d33] border border-orange-500/20 text-xs sm:text-sm font-medium text-slate-200 transition shadow-sm cursor-pointer select-none"
             aria-haspopup="true"
             aria-expanded="false"
           >
-            <svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg class="w-4 h-4 text-orange-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
             </svg>
             <span id="langCurrentLabel">English (US)</span>
@@ -67,23 +68,23 @@
           <!-- Custom Theme Dropdown Menu -->
           <div
             id="langMenu"
-            class="absolute right-0 mt-1.5 w-48 bg-slate-900 border border-slate-700 shadow-2xl py-1.5 z-50 hidden opacity-0 scale-95 transition-all duration-150 ring-1 ring-black/50 backdrop-blur-xl"
+            class="absolute right-0 mt-1.5 w-48 bg-[#090e17] border border-orange-500/30 shadow-2xl py-1.5 z-50 hidden opacity-0 scale-95 transition-all duration-150 ring-1 ring-orange-500/20 backdrop-blur-xl"
             role="menu"
           >
-            <button type="button" data-lang="en" class="lang-option w-full flex items-center justify-between px-3.5 py-2 text-xs sm:text-sm text-slate-200 hover:bg-indigo-600/20 hover:text-indigo-200 transition text-left cursor-pointer mx-auto">
+            <button type="button" data-lang="en" class="lang-option w-full flex items-center justify-between px-3.5 py-2 text-xs sm:text-sm text-slate-200 hover:bg-orange-600/20 hover:text-orange-200 transition text-left cursor-pointer mx-auto">
               <span>English (US)</span>
-              <span class="check-icon text-indigo-400 text-xs font-bold">✓</span>
+              <span class="check-icon text-orange-400 text-xs font-bold">✓</span>
             </button>
-            <button type="button" data-lang="zh" class="lang-option w-full flex items-center justify-between px-3.5 py-2 text-xs sm:text-sm text-slate-300 hover:bg-indigo-600/20 hover:text-indigo-200 transition text-left cursor-pointer mx-auto">
+            <button type="button" data-lang="zh" class="lang-option w-full flex items-center justify-between px-3.5 py-2 text-xs sm:text-sm text-slate-300 hover:bg-orange-600/20 hover:text-orange-200 transition text-left cursor-pointer mx-auto">
               <span>简体中文</span>
-              <span class="check-icon text-indigo-400 text-xs font-bold hidden">✓</span>
+              <span class="check-icon text-orange-400 text-xs font-bold hidden">✓</span>
             </button>
           </div>
         </div>
 
         <!-- API Docs Modal Trigger -->
-        <button id="btnOpenApiModal" class="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium bg-slate-850 hover:bg-slate-800 border border-slate-750 text-slate-200 transition shadow-sm">
-          <svg class="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <button id="btnOpenApiModal" class="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium bg-[#0d1424]/90 hover:bg-[#131d33] border border-orange-500/20 text-slate-200 transition shadow-sm">
+          <svg class="w-4 h-4 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
           </svg>
           <span data-i18n="apiDocsBtn">Pages API</span>
@@ -95,55 +96,55 @@
   </header>
 
   <!-- Options & Config Bar (Zoned Functional Sections) -->
-  <section class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md px-4 lg:px-6 py-3">
+  <section class="border-b border-orange-500/20 bg-[#090e17]/70 backdrop-blur-md px-4 lg:px-6 py-2.5">
     <div class="max-w-7xl mx-auto flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-3">
       
       <!-- Functional Groups Container -->
       <div class="flex flex-wrap items-center gap-2.5 sm:gap-3 text-slate-200 flex-1">
         
         <!-- Group 1: 格式剥离 (Formatting) -->
-        <div class="flex flex-wrap items-center gap-3 px-3.5 py-2 bg-slate-950/70 border border-slate-800 shadow-inner">
-          <span data-i18n="groupFormatting" class="text-[11px] font-bold uppercase tracking-wider text-slate-400 select-none mr-0.5">基础剥离</span>
+        <div class="flex flex-wrap items-center gap-3 px-3.5 py-1.5 bg-[#060a12]/80 border border-slate-800/90 shadow-inner">
+          <span data-i18n="groupFormatting" class="text-[11px] font-bold uppercase tracking-wider text-orange-400/80 font-mono select-none mr-0.5">基础剥离</span>
           
           <!-- Strip Headings -->
-          <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-white transition">
-            <input type="checkbox" id="optStripHeadings" checked class="w-4 h-4 rounded-none border-slate-600 bg-slate-850 text-indigo-500 focus:ring-1 focus:ring-indigo-400 cursor-pointer" />
+          <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-orange-200 transition">
+            <input type="checkbox" id="optStripHeadings" checked class="w-4 h-4 rounded-none border-slate-700 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
             <span data-i18n="optHeadings">Headings</span>
           </label>
 
           <!-- Strip Inline Emphasis -->
-          <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-white transition">
-            <input type="checkbox" id="optStripEmphasis" checked class="w-4 h-4 rounded-none border-slate-600 bg-slate-850 text-indigo-500 focus:ring-1 focus:ring-indigo-400 cursor-pointer" />
+          <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-orange-200 transition">
+            <input type="checkbox" id="optStripEmphasis" checked class="w-4 h-4 rounded-none border-slate-700 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
             <span><span data-i18n="optEmphasis">Emphasis</span> <span class="text-slate-400 text-xs">(**bold**)</span></span>
           </label>
 
           <!-- Strip Inline Code -->
-          <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-white transition">
-            <input type="checkbox" id="optStripInlineCode" checked class="w-4 h-4 rounded-none border-slate-600 bg-slate-850 text-indigo-500 focus:ring-1 focus:ring-indigo-400 cursor-pointer" />
+          <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-orange-200 transition">
+            <input type="checkbox" id="optStripInlineCode" checked class="w-4 h-4 rounded-none border-slate-700 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
             <span><span data-i18n="optInlineCode">Inline Code</span> <span class="text-slate-400 text-xs">(`code`)</span></span>
           </label>
 
           <!-- Strip Blockquotes -->
-          <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-white transition">
-            <input type="checkbox" id="optStripBlockquotes" checked class="w-4 h-4 rounded-none border-slate-600 bg-slate-850 text-indigo-500 focus:ring-1 focus:ring-indigo-400 cursor-pointer" />
+          <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-orange-200 transition">
+            <input type="checkbox" id="optStripBlockquotes" checked class="w-4 h-4 rounded-none border-slate-700 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
             <span><span data-i18n="optBlockquotes">Blockquotes</span> <span class="text-slate-400 text-xs">(&gt;)</span></span>
           </label>
 
           <!-- Strip Lists -->
-          <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-white transition">
-            <input type="checkbox" id="optStripLists" class="w-4 h-4 rounded-none border-slate-600 bg-slate-850 text-indigo-500 focus:ring-1 focus:ring-indigo-400 cursor-pointer" />
+          <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-orange-200 transition">
+            <input type="checkbox" id="optStripLists" class="w-4 h-4 rounded-none border-slate-700 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
             <span data-i18n="optStripLists">Strip Bullets</span>
           </label>
         </div>
 
         <!-- Group 2: 代码与表格转换 (Blocks & Tables) -->
-        <div class="flex flex-wrap items-center gap-3 px-3.5 py-2 bg-slate-950/70 border border-slate-800 shadow-inner">
-          <span data-i18n="groupBlocks" class="text-[11px] font-bold uppercase tracking-wider text-slate-400 select-none mr-0.5">结构转换</span>
+        <div class="flex flex-wrap items-center gap-3 px-3.5 py-1.5 bg-[#060a12]/80 border border-slate-800/90 shadow-inner">
+          <span data-i18n="groupBlocks" class="text-[11px] font-bold uppercase tracking-wider text-orange-400/80 font-mono select-none mr-0.5">结构转换</span>
           
           <!-- Code Blocks Handling -->
           <div class="inline-flex items-center gap-1.5">
             <span data-i18n="codeBlocksLabel" class="text-xs sm:text-sm text-slate-300 font-medium">Code:</span>
-            <select id="optCodeBlocks" class="bg-slate-850 hover:bg-slate-800 text-slate-100 border border-slate-700/80 px-2.5 py-1 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/40 cursor-pointer">
+            <select id="optCodeBlocks" class="bg-slate-900 hover:bg-slate-850 text-slate-100 border border-slate-700 px-2.5 py-1 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/60 cursor-pointer">
               <option value="unwrap" data-i18n="codeUnwrap" selected>Unwrap (Keep Code)</option>
               <option value="remove" data-i18n="codeRemove">Strip Completely</option>
               <option value="preserve" data-i18n="codePreserve">Preserve Fences (```)</option>
@@ -153,7 +154,7 @@
           <!-- Tables Handling -->
           <div class="inline-flex items-center gap-1.5">
             <span data-i18n="tablesLabel" class="text-xs sm:text-sm text-slate-300 font-medium">Tables:</span>
-            <select id="optTables" class="bg-slate-850 hover:bg-slate-800 text-slate-100 border border-slate-700/80 px-2.5 py-1 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/40 cursor-pointer">
+            <select id="optTables" class="bg-slate-900 hover:bg-slate-850 text-slate-100 border border-slate-700 px-2.5 py-1 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/60 cursor-pointer">
               <option value="plain" data-i18n="tablePlain" selected>Aligned Plain Text</option>
               <option value="tsv" data-i18n="tableTSV">TSV (Excel / Sheets)</option>
               <option value="csv" data-i18n="tableCSV">CSV</option>
@@ -165,7 +166,7 @@
           <!-- Links Handling -->
           <div class="inline-flex items-center gap-1.5">
             <span data-i18n="linksLabel" class="text-xs sm:text-sm text-slate-300 font-medium">Links:</span>
-            <select id="optLinks" class="bg-slate-850 hover:bg-slate-800 text-slate-100 border border-slate-700/80 px-2.5 py-1 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/40 cursor-pointer">
+            <select id="optLinks" class="bg-slate-900 hover:bg-slate-850 text-slate-100 border border-slate-700 px-2.5 py-1 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/60 cursor-pointer">
               <option value="text_only" data-i18n="linkTextOnly" selected>Anchor Text Only</option>
               <option value="url_only" data-i18n="linkUrlOnly">URL Only</option>
               <option value="text_and_url" data-i18n="linkTextUrl">Text + (URL)</option>
@@ -176,19 +177,19 @@
         </div>
 
         <!-- Group 3: 核心净化 (AI Tone Cleaner) -->
-        <label class="inline-flex items-center gap-2 cursor-pointer select-none font-semibold text-xs sm:text-sm text-indigo-200 bg-gradient-to-r from-indigo-950/90 to-purple-950/90 hover:from-indigo-900 hover:to-purple-900 border border-indigo-700/70 px-3.5 py-2 shadow-md shadow-indigo-950/50 transition">
-          <input type="checkbox" id="optCleanFluff" checked class="w-4 h-4 rounded-none border-indigo-500 bg-slate-900 text-indigo-500 focus:ring-1 focus:ring-indigo-400 cursor-pointer" />
+        <label class="inline-flex items-center gap-2 cursor-pointer select-none font-semibold text-xs sm:text-sm text-orange-200 bg-gradient-to-r from-orange-950/80 via-amber-950/60 to-slate-950 hover:from-orange-900/80 hover:to-amber-900/60 border border-orange-500/50 px-3.5 py-1.5 shadow-[0_0_12px_rgba(255,107,0,0.2)] transition">
+          <input type="checkbox" id="optCleanFluff" checked class="w-4 h-4 rounded-none border-orange-500 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
           <span data-i18n="optCleanFluff">✨ 过滤 AI 句式</span>
         </label>
 
       </div>
 
       <!-- Group 4: 快速预设 (Presets) -->
-      <div class="flex items-center gap-1.5 self-end xl:self-auto shrink-0 px-3 py-2 bg-slate-950/70 border border-slate-800 shadow-inner">
-        <span data-i18n="groupPresets" class="text-[11px] font-bold uppercase tracking-wider text-slate-400 select-none mr-1">预设</span>
-        <button id="btnPresetMax" data-i18n="presetMax" class="px-2.5 py-1 bg-slate-850 hover:bg-slate-750 text-slate-200 hover:text-white transition text-xs font-medium border border-slate-700/70 shadow-sm">Max Strip</button>
-        <button id="btnPresetDefault" data-i18n="presetDefault" class="px-2.5 py-1 bg-slate-850 hover:bg-slate-750 text-slate-200 hover:text-white transition text-xs font-medium border border-slate-700/70 shadow-sm">Default</button>
-        <button id="btnPresetPreserveCode" data-i18n="presetKeepCode" class="px-2.5 py-1 bg-slate-850 hover:bg-slate-750 text-slate-200 hover:text-white transition text-xs font-medium border border-slate-700/70 shadow-sm">Keep Code</button>
+      <div class="flex items-center gap-1.5 self-end xl:self-auto shrink-0 px-3 py-1.5 bg-[#060a12]/80 border border-slate-800/90 shadow-inner">
+        <span data-i18n="groupPresets" class="text-[11px] font-bold uppercase tracking-wider text-orange-400/80 font-mono select-none mr-1">预设</span>
+        <button id="btnPresetMax" data-i18n="presetMax" class="px-2.5 py-1 bg-slate-900 hover:bg-orange-500/20 hover:text-orange-200 text-slate-300 transition text-xs font-medium border border-slate-750 shadow-sm">Max Strip</button>
+        <button id="btnPresetDefault" data-i18n="presetDefault" class="px-2.5 py-1 bg-slate-900 hover:bg-orange-500/20 hover:text-orange-200 text-slate-300 transition text-xs font-medium border border-slate-750 shadow-sm">Default</button>
+        <button id="btnPresetPreserveCode" data-i18n="presetKeepCode" class="px-2.5 py-1 bg-slate-900 hover:bg-orange-500/20 hover:text-orange-200 text-slate-300 transition text-xs font-medium border border-slate-750 shadow-sm">Keep Code</button>
       </div>
 
     </div>
@@ -199,36 +200,36 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 flex-1 min-h-[520px]">
       
       <!-- LEFT PANEL: Raw AI Markdown Input -->
-      <div class="flex flex-col border border-slate-800 bg-slate-900/70 overflow-hidden shadow-2xl ring-1 ring-white/5">
+      <div class="hud-panel flex flex-col overflow-hidden">
         
         <!-- Input Header Toolbar -->
-        <div class="px-4 sm:px-5 py-3 bg-slate-850/90 border-b border-slate-800 flex items-center justify-between text-xs sm:text-sm">
+        <div class="px-4 sm:px-5 py-2.5 bg-[#0b121e]/90 border-b border-orange-500/20 flex items-center justify-between text-xs sm:text-sm">
           <div class="flex items-center gap-2.5">
-            <span class="w-2 h-2 bg-amber-400 shadow-sm shadow-amber-400/50"></span>
-            <span data-i18n="inputTitle" class="font-semibold text-slate-100">Raw AI Markdown Input</span>
+            <span class="w-2 h-2 bg-orange-500 shadow-[0_0_8px_#ff6b00]"></span>
+            <span data-i18n="inputTitle" class="font-semibold text-slate-100 tracking-wide uppercase text-xs sm:text-sm font-mono">Raw AI Markdown Input</span>
           </div>
           
-          <span id="inputBadgeStats" class="text-xs text-slate-400 font-mono bg-slate-800/90 px-2.5 py-0.5 border border-slate-750">0 chars • 0 words</span>
+          <span id="inputBadgeStats" class="text-xs text-orange-400/90 font-mono bg-slate-900/90 px-2.5 py-0.5 border border-orange-500/20">0 chars • 0 words</span>
         </div>
 
         <!-- Input Textarea with Floating Actions -->
-        <div class="flex-1 relative bg-slate-950/50 group">
+        <div class="flex-1 relative bg-slate-950/40 group">
           
           <!-- Top-Right Floating Actions: Paste & Clear (Icon Only) -->
-          <div class="absolute top-3 right-3 z-20 flex items-center gap-1 p-1 bg-slate-900/90 backdrop-blur-md border border-slate-750 shadow-lg ring-1 ring-white/10 opacity-85 group-hover:opacity-100 transition-opacity duration-200">
+          <div class="absolute top-3 right-3 z-20 flex items-center gap-1 p-1 bg-[#090e17]/90 backdrop-blur-md border border-orange-500/30 shadow-lg opacity-85 group-hover:opacity-100 transition-opacity duration-200">
             <button
               id="btnPaste"
               data-i18n-title="tooltipPaste"
               title="Paste from clipboard"
               aria-label="Paste"
-              class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center bg-slate-800 hover:bg-slate-750 text-slate-300 hover:text-white border border-slate-700/80 active:scale-90 transition cursor-pointer select-none"
+              class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center bg-slate-900 hover:bg-orange-500/20 text-slate-300 hover:text-orange-200 border border-slate-750 active:scale-90 transition cursor-pointer select-none"
             >
-              <svg class="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg class="w-4 h-4 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
             </button>
 
-            <span class="w-px h-4 bg-slate-750"></span>
+            <span class="w-px h-4 bg-orange-500/30"></span>
 
             <button
               id="btnClear"
@@ -252,33 +253,33 @@
         </div>
 
         <!-- Input Footer Info -->
-        <div class="px-5 py-2.5 bg-slate-900/60 border-t border-slate-800/80 text-xs text-slate-400 flex items-center justify-between">
-          <span data-i18n="inputDropHint" class="hidden sm:inline-flex items-center gap-1.5 text-slate-400">
-            <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="px-5 py-2 bg-[#090e17]/80 border-t border-orange-500/20 text-xs text-slate-400 flex items-center justify-between">
+          <span data-i18n="inputDropHint" class="hidden sm:inline-flex items-center gap-1.5 text-slate-400 font-mono text-[11px]">
+            <svg class="w-3.5 h-3.5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
             </svg>
             Drag &amp; drop .md / .txt file here (max 5MB)
           </span>
-          <span id="inputLinesCount" class="font-mono text-slate-400 ml-auto">0 lines</span>
+          <span id="inputLinesCount" class="font-mono text-slate-400 ml-auto text-[11px]">0 lines</span>
         </div>
 
       </div>
 
       <!-- RIGHT PANEL: Clean Output / Diff View -->
-      <div class="flex flex-col border border-indigo-900/50 bg-slate-900/70 overflow-hidden shadow-2xl ring-1 ring-indigo-500/20">
+      <div class="hud-panel flex flex-col overflow-hidden">
         
         <!-- Output Header Toolbar -->
-        <div class="px-4 sm:px-5 py-2.5 bg-slate-850/90 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
+        <div class="px-4 sm:px-5 py-2.5 bg-[#0b121e]/90 border-b border-orange-500/20 flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
           <div class="flex items-center flex-wrap gap-2.5">
-            <span class="w-2 h-2 bg-emerald-400 shadow-sm shadow-emerald-400/50"></span>
+            <span class="w-2 h-2 bg-emerald-400 shadow-[0_0_8px_#10b981]"></span>
 
             <!-- View Mode Switcher: Clean vs Diff -->
-            <div class="inline-flex items-center p-0.5 bg-slate-950 border border-slate-750 text-xs sm:text-sm font-medium">
-              <button id="viewModeClean" class="px-3.5 py-1 bg-indigo-600 text-white font-semibold shadow-sm transition">
+            <div class="inline-flex items-center p-0.5 bg-slate-950 border border-slate-800 text-xs sm:text-sm font-medium">
+              <button id="viewModeClean" class="px-3.5 py-1 bg-orange-600 text-white font-semibold shadow-[0_0_12px_rgba(255,107,0,0.5)] border border-orange-400/50 transition">
                 <span data-i18n="viewClean">Clean</span>
               </button>
-              <button id="viewModeDiff" class="px-3.5 py-1 text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5">
-                <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <button id="viewModeDiff" class="px-3.5 py-1 text-slate-400 hover:text-orange-300 transition flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                 </svg>
                 <span data-i18n="viewDiff">Diff View</span>
@@ -286,16 +287,16 @@
             </div>
 
             <!-- Diff Mode Switcher (Visible only when Diff View is selected): Text vs Line -->
-            <div id="diffModeSelector" class="hidden inline-flex items-center p-0.5 bg-slate-900 border border-slate-750 text-xs font-medium">
-              <button id="diffModeText" class="px-2.5 py-1 bg-indigo-600 text-white font-medium transition" data-i18n="diffModeText">Text</button>
-              <button id="diffModeLine" class="px-2.5 py-1 text-slate-400 hover:text-slate-200 transition" data-i18n="diffModeLine">Line</button>
+            <div id="diffModeSelector" class="hidden inline-flex items-center p-0.5 bg-slate-950 border border-slate-800 text-xs font-medium">
+              <button id="diffModeText" class="px-2.5 py-1 bg-orange-600 text-white font-medium transition shadow-[0_0_10px_rgba(255,107,0,0.4)]" data-i18n="diffModeText">Text</button>
+              <button id="diffModeLine" class="px-2.5 py-1 text-slate-400 hover:text-orange-300 transition" data-i18n="diffModeLine">Line</button>
             </div>
           </div>
 
           <!-- Telemetry Badges (Output Chars, Reduction %, Diff Counters) -->
           <div class="flex items-center flex-wrap gap-2">
-            <span id="outputBadgeStats" class="text-xs text-slate-400 font-mono bg-slate-800/90 px-2.5 py-0.5 border border-slate-750">0 chars • 0 words</span>
-            <span id="badgeReduction" class="text-xs font-semibold font-mono tracking-tight px-2 py-0.5 bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 hidden">-0%</span>
+            <span id="outputBadgeStats" class="text-xs text-orange-400/90 font-mono bg-slate-900/90 px-2.5 py-0.5 border border-orange-500/20">0 chars • 0 words</span>
+            <span id="badgeReduction" class="text-xs font-semibold font-mono tracking-tight px-2 py-0.5 bg-orange-500/15 text-orange-300 border border-orange-500/40 hidden">-0%</span>
 
             <!-- Diff change stats counters -->
             <div id="diffStatsBadge" class="hidden items-center gap-1.5 text-xs font-mono">
@@ -306,24 +307,24 @@
         </div>
 
         <!-- Output Display Area with Floating Actions -->
-        <div class="flex-1 relative bg-slate-950/50 overflow-hidden group">
+        <div class="flex-1 relative bg-slate-950/40 overflow-hidden group">
           
           <!-- Top-Right Floating Actions: Copy & Export (Icon Only) -->
-          <div class="absolute top-3 right-3 z-20 flex items-center gap-1 p-1 bg-slate-900/90 backdrop-blur-md border border-slate-750 shadow-lg ring-1 ring-white/10 opacity-85 group-hover:opacity-100 transition-opacity duration-200">
+          <div class="absolute top-3 right-3 z-20 flex items-center gap-1 p-1 bg-[#090e17]/90 backdrop-blur-md border border-orange-500/30 shadow-lg opacity-85 group-hover:opacity-100 transition-opacity duration-200">
             <!-- Copy Output Button -->
             <button
               id="btnCopy"
               data-i18n-title="tooltipCopy"
               title="Copy clean text (Ctrl+Enter / Cmd+Enter)"
               aria-label="Copy"
-              class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center bg-indigo-600 hover:bg-indigo-500 active:scale-90 text-white shadow-sm shadow-indigo-600/30 transition cursor-pointer select-none"
+              class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center bg-orange-600 hover:bg-orange-500 active:scale-90 text-white shadow-sm shadow-orange-600/30 transition cursor-pointer select-none"
             >
               <svg id="iconCopy" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
             </button>
 
-            <span class="w-px h-4 bg-slate-750"></span>
+            <span class="w-px h-4 bg-orange-500/30"></span>
 
             <!-- Download Button -->
             <button
@@ -331,9 +332,9 @@
               data-i18n-title="tooltipExport"
               title="Download as text file"
               aria-label="Export"
-              class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center hover:bg-slate-800 text-slate-400 hover:text-white active:scale-90 transition cursor-pointer select-none"
+              class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center bg-slate-900 hover:bg-orange-500/20 text-slate-300 hover:text-orange-200 active:scale-90 transition cursor-pointer select-none"
             >
-              <svg class="w-4 h-4 text-slate-400 hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
             </button>
@@ -354,7 +355,7 @@
         </div>
 
         <!-- Output Footer Telemetry -->
-        <div class="px-5 py-2.5 bg-slate-900/60 border-t border-slate-800/80 text-xs text-slate-400 flex flex-wrap items-center justify-between gap-2.5">
+        <div class="px-5 py-2 bg-[#090e17]/80 border-t border-orange-500/20 text-xs text-slate-400 flex flex-wrap items-center justify-between gap-2.5">
           <div id="statsBadges" class="flex items-center flex-wrap gap-2 text-xs">
             <span class="px-2 py-0.5 bg-slate-800 text-slate-300">0 headings</span>
             <span class="px-2 py-0.5 bg-slate-800 text-slate-300">0 bold/italic</span>
@@ -362,7 +363,7 @@
             <span class="px-2 py-0.5 bg-slate-800 text-slate-300">0 tables</span>
             <span class="px-2 py-0.5 bg-slate-800 text-slate-300">0 fluff</span>
           </div>
-          <span id="outputPerf" class="text-indigo-300 font-mono bg-indigo-950/40 px-2 py-0.5 border border-indigo-800/30 text-xs">0.0ms</span>
+          <span id="outputPerf" class="text-orange-300 font-mono bg-orange-950/40 px-2 py-0.5 border border-orange-800/40 text-xs">0.0ms</span>
         </div>
 
       </div>
@@ -371,13 +372,13 @@
   </main>
 
   <!-- API Documentation Modal -->
-  <div id="apiModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 max-w-2xl w-full p-6 sm:p-7 shadow-2xl overflow-y-auto max-h-[90vh] ring-1 ring-white/10">
+  <div id="apiModal" class="fixed inset-0 z-50 bg-[#06090e]/85 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="hud-panel max-w-2xl w-full p-6 sm:p-7 shadow-2xl overflow-y-auto max-h-[90vh]">
       
-      <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+      <div class="flex items-center justify-between pb-4 border-b border-orange-500/20">
         <div class="flex items-center gap-2.5">
-          <span class="px-2.5 py-1 bg-indigo-500/20 text-indigo-300 text-xs font-mono font-semibold border border-indigo-500/30">POST /api/demark</span>
-          <h2 class="text-base sm:text-lg font-bold text-white">Cloudflare Pages Functions API</h2>
+          <span class="px-2.5 py-1 bg-orange-500/20 text-orange-300 text-xs font-mono font-semibold border border-orange-500/40">POST /api/demark</span>
+          <h2 class="text-base sm:text-lg font-bold text-white font-mono">Cloudflare Pages Functions API</h2>
         </div>
         <button id="btnCloseApiModal" class="text-slate-400 hover:text-white p-1.5 hover:bg-slate-800 transition">
           <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -388,12 +389,12 @@
 
       <div class="py-5 space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed">
         <p>
-          DeMark provides a native Cloudflare Pages Function at <code class="text-indigo-300 bg-slate-800 px-2 py-0.5 font-mono text-xs">/api/demark</code> powered by Cloudflare Workers V8 runtime and standard Web <code class="text-slate-200">Request</code> / <code class="text-slate-200">Response</code> APIs.
+          DeMark provides a native Cloudflare Pages Function at <code class="text-orange-300 bg-slate-900 border border-orange-500/20 px-2 py-0.5 font-mono text-xs">/api/demark</code> powered by Cloudflare Workers V8 runtime and standard Web <code class="text-slate-200">Request</code> / <code class="text-slate-200">Response</code> APIs.
         </p>
 
         <div>
-          <h3 class="font-semibold text-slate-100 mb-2">cURL Example:</h3>
-          <pre class="bg-slate-950 p-4 border border-slate-800 text-emerald-400 font-mono text-xs sm:text-sm overflow-x-auto select-all leading-relaxed">curl -X POST https://demark-3pj.pages.dev/api/demark \
+          <h3 class="font-semibold text-slate-100 mb-2 font-mono text-xs uppercase tracking-wider text-orange-400/90">cURL Example:</h3>
+          <pre class="bg-[#05080e] p-4 border border-orange-500/20 text-emerald-400 font-mono text-xs sm:text-sm overflow-x-auto select-all leading-relaxed">curl -X POST https://demark-3pj.pages.dev/api/demark \
   -H "Content-Type: application/json" \
   -d '{
     "markdown": "# 标题\n好的，以下是为您整理的内容：**高可用**。\n希望对您有所帮助！",
@@ -407,8 +408,8 @@
         </div>
 
         <div>
-          <h3 class="font-semibold text-slate-100 mb-2">JavaScript / Fetch Example:</h3>
-          <pre class="bg-slate-950 p-4 border border-slate-800 text-indigo-300 font-mono text-xs sm:text-sm overflow-x-auto select-all leading-relaxed">const response = await fetch('/api/demark', {
+          <h3 class="font-semibold text-slate-100 mb-2 font-mono text-xs uppercase tracking-wider text-orange-400/90">JavaScript / Fetch Example:</h3>
+          <pre class="bg-[#05080e] p-4 border border-orange-500/20 text-orange-300 font-mono text-xs sm:text-sm overflow-x-auto select-all leading-relaxed">const response = await fetch('/api/demark', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
@@ -421,8 +422,8 @@ console.log(result);</pre>
         </div>
 
         <div>
-          <h3 class="font-semibold text-slate-100 mb-2">Response Schema:</h3>
-          <pre class="bg-slate-950 p-4 border border-slate-800 text-amber-300 font-mono text-xs sm:text-sm overflow-x-auto leading-relaxed">{
+          <h3 class="font-semibold text-slate-100 mb-2 font-mono text-xs uppercase tracking-wider text-orange-400/90">Response Schema:</h3>
+          <pre class="bg-[#05080e] p-4 border border-orange-500/20 text-amber-300 font-mono text-xs sm:text-sm overflow-x-auto leading-relaxed">{
   "success": true,
   "result": "标题\n高可用。",
   "stats": {
@@ -435,16 +436,16 @@ console.log(result);</pre>
         </div>
       </div>
 
-      <div class="pt-4 border-t border-slate-800 flex justify-end">
-        <button id="btnGotItApiModal" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs sm:text-sm transition shadow-md shadow-indigo-600/30">Got it</button>
+      <div class="pt-4 border-t border-orange-500/20 flex justify-end">
+        <button id="btnGotItApiModal" class="px-5 py-2 bg-orange-600 hover:bg-orange-500 text-white font-medium text-xs sm:text-sm transition shadow-md shadow-orange-600/30 font-mono">Got it</button>
       </div>
 
     </div>
   </div>
 
   <!-- Toast Notification -->
-  <div id="toast" class="fixed bottom-12 right-6 z-50 pointer-events-none hidden items-center gap-2.5 px-4.5 py-3 bg-slate-800 text-white border border-slate-700 shadow-2xl text-xs sm:text-sm font-medium ring-1 ring-white/10">
-    <svg class="w-4.5 h-4.5 text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <div id="toast" class="fixed bottom-12 right-6 z-50 pointer-events-none hidden items-center gap-2.5 px-4.5 py-3 bg-[#0a101d] text-orange-200 border border-orange-500/60 shadow-[0_0_20px_rgba(255,107,0,0.3)] text-xs sm:text-sm font-mono ring-1 ring-orange-500/30">
+    <svg class="w-4.5 h-4.5 text-orange-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
     </svg>
     <span id="toastMessage">Copied to clipboard!</span>

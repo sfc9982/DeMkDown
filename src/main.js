@@ -136,11 +136,11 @@ function setLanguage(lang) {
     const optLang = opt.getAttribute('data-lang');
     const checkIcon = opt.querySelector('.check-icon');
     if (optLang === lang) {
-      opt.classList.add('bg-indigo-600/20', 'text-indigo-200', 'font-medium');
+      opt.classList.add('bg-orange-600/20', 'text-orange-300', 'font-medium');
       opt.classList.remove('text-slate-300');
       if (checkIcon) checkIcon.classList.remove('hidden');
     } else {
-      opt.classList.remove('bg-indigo-600/20', 'text-indigo-200', 'font-medium');
+      opt.classList.remove('bg-orange-600/20', 'text-orange-300', 'font-medium');
       opt.classList.add('text-slate-300');
       if (checkIcon) checkIcon.classList.add('hidden');
     }
@@ -228,11 +228,11 @@ function syncControlsFromState() {
   optCleanFluff.checked = state.options.cleanAIFluff;
 
   if (state.options.outputMode === 'plain') {
-    modePlainBtn.className = 'px-3.5 py-1 bg-indigo-600 text-white font-medium shadow-sm transition';
-    modeMarkdownBtn.className = 'px-3.5 py-1 text-slate-400 hover:text-white transition';
+    modePlainBtn.className = 'px-3.5 py-1 bg-orange-600 text-white font-medium shadow-[0_0_12px_rgba(255,107,0,0.5)] border border-orange-400/50 transition';
+    modeMarkdownBtn.className = 'px-3.5 py-1 text-slate-400 hover:text-orange-300 transition';
   } else {
-    modeMarkdownBtn.className = 'px-3.5 py-1 bg-indigo-600 text-white font-medium shadow-sm transition';
-    modePlainBtn.className = 'px-3.5 py-1 text-slate-400 hover:text-white transition';
+    modeMarkdownBtn.className = 'px-3.5 py-1 bg-orange-600 text-white font-medium shadow-[0_0_12px_rgba(255,107,0,0.5)] border border-orange-400/50 transition';
+    modePlainBtn.className = 'px-3.5 py-1 text-slate-400 hover:text-orange-300 transition';
   }
 }
 
@@ -279,8 +279,8 @@ function renderDiffView() {
 function switchViewMode(mode) {
   state.viewMode = mode;
   if (mode === 'clean') {
-    if (viewModeClean) viewModeClean.className = 'px-3.5 py-1 bg-indigo-600 text-white font-semibold shadow-sm transition';
-    if (viewModeDiff) viewModeDiff.className = 'px-3.5 py-1 text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5';
+    if (viewModeClean) viewModeClean.className = 'px-3.5 py-1 bg-orange-600 text-white font-semibold shadow-[0_0_12px_rgba(255,107,0,0.5)] border border-orange-400/50 transition';
+    if (viewModeDiff) viewModeDiff.className = 'px-3.5 py-1 text-slate-400 hover:text-orange-300 transition flex items-center gap-1.5';
     if (outputEl) outputEl.classList.remove('hidden');
     if (diffContainer) diffContainer.classList.add('hidden');
     if (diffModeSelector) {
@@ -295,8 +295,8 @@ function switchViewMode(mode) {
       badgeReductionEl.classList.remove('hidden');
     }
   } else {
-    if (viewModeDiff) viewModeDiff.className = 'px-3.5 py-1 bg-indigo-600 text-white font-semibold shadow-sm transition flex items-center gap-1.5';
-    if (viewModeClean) viewModeClean.className = 'px-3.5 py-1 text-slate-400 hover:text-slate-200 transition';
+    if (viewModeDiff) viewModeDiff.className = 'px-3.5 py-1 bg-orange-600 text-white font-semibold shadow-[0_0_12px_rgba(255,107,0,0.5)] border border-orange-400/50 transition flex items-center gap-1.5';
+    if (viewModeClean) viewModeClean.className = 'px-3.5 py-1 text-slate-400 hover:text-orange-300 transition';
     if (outputEl) outputEl.classList.add('hidden');
     if (diffContainer) diffContainer.classList.remove('hidden');
     if (diffModeSelector) {
@@ -318,11 +318,11 @@ function switchViewMode(mode) {
 function switchDiffMode(mode) {
   state.diffMode = mode;
   if (mode === 'text') {
-    if (diffModeText) diffModeText.className = 'px-2.5 py-1 bg-indigo-600 text-white font-medium transition';
-    if (diffModeLine) diffModeLine.className = 'px-2.5 py-1 text-slate-400 hover:text-slate-200 transition';
+    if (diffModeText) diffModeText.className = 'px-2.5 py-1 bg-orange-600 text-white font-medium transition shadow-[0_0_10px_rgba(255,107,0,0.4)]';
+    if (diffModeLine) diffModeLine.className = 'px-2.5 py-1 text-slate-400 hover:text-orange-300 transition';
   } else {
-    if (diffModeLine) diffModeLine.className = 'px-2.5 py-1 bg-indigo-600 text-white font-medium transition';
-    if (diffModeText) diffModeText.className = 'px-2.5 py-1 text-slate-400 hover:text-slate-200 transition';
+    if (diffModeLine) diffModeLine.className = 'px-2.5 py-1 bg-orange-600 text-white font-medium transition shadow-[0_0_10px_rgba(255,107,0,0.4)]';
+    if (diffModeText) diffModeText.className = 'px-2.5 py-1 text-slate-400 hover:text-orange-300 transition';
   }
   renderDiffView();
 }
@@ -367,11 +367,11 @@ function processText() {
   // Update stripped elements telemetry (safe DOM construction — no innerHTML)
   const counts = stats.strippedCounts;
   const badgeData = [
-    { count: counts.headings, label: t('optHeadings', 'headings'), highlight: 'text-indigo-300' },
-    { count: counts.emphasis, label: t('optEmphasis', 'bold/italic'), highlight: 'text-indigo-300' },
-    { count: counts.codeBlocks, label: t('codeBlocksLabel', 'code').replace(':', ''), highlight: 'text-indigo-300' },
-    { count: counts.tables, label: t('tablesLabel', 'tables').replace(':', ''), highlight: 'text-indigo-300' },
-    { count: counts.blockquotes, label: t('optBlockquotes', 'quotes'), highlight: 'text-indigo-300' },
+    { count: counts.headings, label: t('optHeadings', 'headings'), highlight: 'text-orange-400' },
+    { count: counts.emphasis, label: t('optEmphasis', 'bold/italic'), highlight: 'text-orange-400' },
+    { count: counts.codeBlocks, label: t('codeBlocksLabel', 'code').replace(':', ''), highlight: 'text-orange-400' },
+    { count: counts.tables, label: t('tablesLabel', 'tables').replace(':', ''), highlight: 'text-orange-400' },
+    { count: counts.blockquotes, label: t('optBlockquotes', 'quotes'), highlight: 'text-orange-400' },
     { count: counts.fluff, label: t('fluffCount', 'fluff'), highlight: 'text-amber-300' },
   ];
   statsBadgesEl.textContent = '';
@@ -403,8 +403,8 @@ async function copyOutput() {
   try {
     await navigator.clipboard.writeText(text);
     if (textCopy) textCopy.textContent = t('btnCopied', 'Copied!');
-    btnCopy.classList.replace('bg-indigo-600', 'bg-emerald-600');
-    btnCopy.classList.replace('hover:bg-indigo-500', 'hover:bg-emerald-500');
+    btnCopy.classList.replace('bg-orange-600', 'bg-emerald-600');
+    btnCopy.classList.replace('hover:bg-orange-500', 'hover:bg-emerald-500');
     btnCopy.title = t('btnCopied', 'Copied!');
     btnCopy.setAttribute('aria-label', t('btnCopied', 'Copied!'));
 
@@ -414,8 +414,8 @@ async function copyOutput() {
 
     setTimeout(() => {
       if (textCopy) textCopy.textContent = t('btnCopy', 'Copy');
-      btnCopy.classList.replace('bg-emerald-600', 'bg-indigo-600');
-      btnCopy.classList.replace('hover:bg-emerald-500', 'hover:bg-indigo-500');
+      btnCopy.classList.replace('bg-emerald-600', 'bg-orange-600');
+      btnCopy.classList.replace('hover:bg-emerald-500', 'hover:bg-orange-500');
       btnCopy.title = t('tooltipCopy', 'Copy cleaned text (Ctrl+Enter)');
       btnCopy.setAttribute('aria-label', t('tooltipCopy', 'Copy cleaned text (Ctrl+Enter)'));
       setSvgPath(iconCopy, 'M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z', '2');
@@ -512,16 +512,16 @@ inputEl.addEventListener('input', () => {
 // Drag and drop markdown file into input area
 inputEl.addEventListener('dragover', (e) => {
   e.preventDefault();
-  inputEl.classList.add('ring-2', 'ring-indigo-500');
+  inputEl.classList.add('ring-2', 'ring-orange-500');
 });
 
 inputEl.addEventListener('dragleave', () => {
-  inputEl.classList.remove('ring-2', 'ring-indigo-500');
+  inputEl.classList.remove('ring-2', 'ring-orange-500');
 });
 
 inputEl.addEventListener('drop', (e) => {
   e.preventDefault();
-  inputEl.classList.remove('ring-2', 'ring-indigo-500');
+  inputEl.classList.remove('ring-2', 'ring-orange-500');
   if (e.dataTransfer && e.dataTransfer.files.length > 0) {
     const file = e.dataTransfer.files[0];
     // Validate file type — only accept text-based files

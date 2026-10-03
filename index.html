@@ -206,32 +206,46 @@
           <div class="flex items-center gap-2.5">
             <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm shadow-amber-400/50"></span>
             <span data-i18n="inputTitle" class="font-semibold text-slate-100">Raw AI Markdown Input</span>
-            <span id="inputBadgeStats" class="text-xs text-slate-400 font-mono bg-slate-800/90 px-2.5 py-0.5 rounded-full border border-slate-750">0 chars • 0 words</span>
           </div>
           
-          <div class="flex items-center gap-2">
-            <button id="btnPaste" title="Paste from clipboard" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-750 font-medium transition shadow-sm">
+          <span id="inputBadgeStats" class="text-xs text-slate-400 font-mono bg-slate-800/90 px-2.5 py-0.5 rounded-full border border-slate-750">0 chars • 0 words</span>
+        </div>
+
+        <!-- Input Textarea with Floating Actions -->
+        <div class="flex-1 relative bg-slate-950/50 group">
+          
+          <!-- Top-Right Floating Actions: Paste & Clear -->
+          <div class="absolute top-3.5 right-3.5 z-20 flex items-center gap-1 p-1 rounded-xl bg-slate-900/90 backdrop-blur-md border border-slate-750 shadow-xl ring-1 ring-white/10 opacity-90 group-hover:opacity-100 transition-opacity duration-200">
+            <button
+              id="btnPaste"
+              title="Paste from clipboard"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-750 text-slate-200 hover:text-white border border-slate-700/80 font-medium text-xs sm:text-sm active:scale-95 transition shadow-sm cursor-pointer select-none"
+            >
               <svg class="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
               <span data-i18n="btnPaste">Paste</span>
             </button>
-            <button id="btnClear" title="Clear input text" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-red-950/60 text-slate-300 hover:text-red-300 border border-slate-750 font-medium transition shadow-sm">
+
+            <span class="w-px h-4 bg-slate-750"></span>
+
+            <button
+              id="btnClear"
+              title="Clear input text"
+              class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg hover:bg-red-950/60 text-slate-400 hover:text-red-300 font-medium text-xs sm:text-sm active:scale-95 transition cursor-pointer select-none"
+            >
               <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
               <span data-i18n="btnClear">Clear</span>
             </button>
           </div>
-        </div>
 
-        <!-- Input Textarea -->
-        <div class="flex-1 relative bg-slate-950/50">
           <textarea
             id="inputMarkdown"
             spellcheck="false"
             placeholder="Paste your AI-generated response here (ChatGPT, Claude, Gemini, DeepSeek, Copilot, etc.)... Markdown headings, tables, code fences, blockquotes, and fluff will be stripped automatically in real-time."
-            class="w-full h-full p-5 sm:p-6 bg-transparent text-slate-100 placeholder-slate-500 focus:outline-none resize-none font-mono-code text-sm sm:text-[15px] lg:text-base leading-relaxed"
+            class="w-full h-full p-5 sm:p-6 pr-36 sm:pr-40 bg-transparent text-slate-100 placeholder-slate-500 focus:outline-none resize-none font-mono-code text-sm sm:text-[15px] lg:text-base leading-relaxed"
           ></textarea>
         </div>
 
@@ -258,10 +272,10 @@
 
             <!-- View Mode Switcher: Clean vs Diff -->
             <div class="inline-flex items-center p-0.5 rounded-xl bg-slate-950 border border-slate-750 text-xs sm:text-sm font-medium">
-              <button id="viewModeClean" class="px-3 py-1 rounded-lg bg-indigo-600 text-white font-semibold shadow-sm transition">
+              <button id="viewModeClean" class="px-3.5 py-1 rounded-lg bg-indigo-600 text-white font-semibold shadow-sm transition">
                 <span data-i18n="viewClean">Clean</span>
               </button>
-              <button id="viewModeDiff" class="px-3 py-1 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5">
+              <button id="viewModeDiff" class="px-3.5 py-1 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5">
                 <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                 </svg>
@@ -274,7 +288,11 @@
               <button id="diffModeText" class="px-2.5 py-1 rounded-md bg-indigo-600 text-white font-medium transition" data-i18n="diffModeText">Text</button>
               <button id="diffModeLine" class="px-2.5 py-1 rounded-md text-slate-400 hover:text-slate-200 transition" data-i18n="diffModeLine">Line</button>
             </div>
+          </div>
 
+          <!-- Telemetry Badges (Output Chars, Reduction %, Diff Counters) -->
+          <div class="flex items-center flex-wrap gap-2">
+            <span id="outputBadgeStats" class="text-xs text-slate-400 font-mono bg-slate-800/90 px-2.5 py-0.5 rounded-full border border-slate-750">0 chars • 0 words</span>
             <span id="badgeReduction" class="text-xs font-semibold font-mono tracking-tight px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 hidden">-0%</span>
 
             <!-- Diff change stats counters -->
@@ -283,39 +301,51 @@
               <span id="diffAdditionsCount" title="Added / Formatted content" class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-semibold">+0</span>
             </div>
           </div>
-
-          <div class="flex items-center gap-2">
-            <!-- Copy Output Button -->
-            <button id="btnCopy" class="flex items-center gap-2 px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 active:scale-[0.98] text-white font-semibold text-xs sm:text-sm shadow-md shadow-indigo-600/30 transition">
-              <svg id="iconCopy" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-              </svg>
-              <span id="textCopy" data-i18n="btnCopy">Copy Text</span>
-            </button>
-
-            <!-- Download Button -->
-            <button id="btnDownload" title="Download as text file" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-750 font-medium text-xs sm:text-sm transition shadow-sm">
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-              <span data-i18n="btnExport" class="hidden sm:inline">Export</span>
-            </button>
-          </div>
         </div>
 
-        <!-- Output Display Area -->
-        <div class="flex-1 relative bg-slate-950/50 overflow-hidden">
+        <!-- Output Display Area with Floating Actions -->
+        <div class="flex-1 relative bg-slate-950/50 overflow-hidden group">
+          
+          <!-- Top-Right Floating Actions: Copy & Export -->
+          <div class="absolute top-3.5 right-3.5 z-20 flex items-center gap-1 p-1 rounded-xl bg-slate-900/90 backdrop-blur-md border border-slate-750 shadow-xl ring-1 ring-white/10 opacity-90 group-hover:opacity-100 transition-opacity duration-200">
+            <!-- Copy Output Button -->
+            <button
+              id="btnCopy"
+              title="Copy clean text (Ctrl+Enter / Cmd+Enter)"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-medium text-xs sm:text-sm shadow-sm shadow-indigo-600/30 transition cursor-pointer select-none"
+            >
+              <svg id="iconCopy" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              <span id="textCopy" data-i18n="btnCopy">Copy</span>
+            </button>
+
+            <span class="w-px h-4 bg-slate-750"></span>
+
+            <!-- Download Button -->
+            <button
+              id="btnDownload"
+              title="Download as text file"
+              class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-white active:scale-95 text-xs sm:text-sm font-medium transition cursor-pointer select-none"
+            >
+              <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span data-i18n="btnExport">Export</span>
+            </button>
+          </div>
+
           <textarea
             id="outputClean"
             readonly
             placeholder="Cleaned plain text will appear here automatically..."
-            class="w-full h-full p-5 sm:p-6 bg-transparent text-slate-100 placeholder-slate-500 focus:outline-none resize-none font-mono-code text-sm sm:text-[15px] lg:text-base leading-relaxed"
+            class="w-full h-full p-5 sm:p-6 pr-36 sm:pr-40 bg-transparent text-slate-100 placeholder-slate-500 focus:outline-none resize-none font-mono-code text-sm sm:text-[15px] lg:text-base leading-relaxed"
           ></textarea>
 
           <!-- Diff Container (Diff Mode) -->
           <div
             id="diffContainer"
-            class="hidden w-full h-full overflow-y-auto font-mono-code select-text"
+            class="hidden w-full h-full overflow-y-auto font-mono-code select-text pr-36 sm:pr-40"
           ></div>
         </div>
 

@@ -401,7 +401,7 @@ async function copyOutput() {
     showToast(t('toastCopied', 'Cleaned text copied to clipboard!'));
 
     setTimeout(() => {
-      textCopy.textContent = t('btnCopy', 'Copy Text');
+      textCopy.textContent = t('btnCopy', 'Copy');
       btnCopy.classList.replace('bg-emerald-600', 'bg-indigo-600');
       btnCopy.classList.replace('hover:bg-emerald-500', 'hover:bg-indigo-500');
       setSvgPath(iconCopy, 'M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z', '2');

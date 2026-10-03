@@ -752,13 +752,43 @@ async function copyOutput() {
 }
 
 /**
- * Handle paste action: focuses input and guides user to native Ctrl+V / Cmd+V
- * This 100% bypasses any browser permission dialogs, preserving user retention.
+ * Handle paste action (Intelligent Probe & Graceful Fallback):
+ * - If clipboard-read permission is already 'granted', reads and pastes silently (zero prompt).
+ * - If permission is 'prompt' or 'denied' (or unsupported), avoids triggering the browser's scary popup,
+ *   focuses the input area with tactical visual feedback, and guides to native shortcut (Ctrl+V / ⌘V).
  */
-function pasteInput() {
+async function pasteInput() {
   inputEl.focus();
 
-  // Tactical orange border flash for instant visual tactile feedback
+  let isGranted = false;
+  try {
+    if (navigator.permissions && navigator.permissions.query) {
+      const status = await navigator.permissions.query({ name: 'clipboard-read' });
+      if (status && status.state === 'granted') {
+        isGranted = true;
+      }
+    }
+  } catch (e) {
+    // permissions.query({ name: 'clipboard-read' }) not supported or rejected (e.g. Firefox)
+    isGranted = false;
+  }
+
+  // If already granted, silently read clipboard without any permission popup
+  if (isGranted && navigator.clipboard && navigator.clipboard.readText) {
+    try {
+      const text = await navigator.clipboard.readText();
+      if (text) {
+        inputEl.value = text;
+        processText();
+        showToast(t('toastPasted', 'Pasted text from clipboard'));
+        return;
+      }
+    } catch (err) {
+      // If reading fails for any reason, gracefully fall through
+    }
+  }
+
+  // Not pre-granted or read text was empty: provide zero-prompt focus + shortcut guidance
   inputEl.classList.add('ring-2', 'ring-orange-500');
   setTimeout(() => {
     inputEl.classList.remove('ring-2', 'ring-orange-500');

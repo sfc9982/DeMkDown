@@ -155,6 +155,16 @@ function setLanguage(lang) {
     }
   });
 
+  // Update tooltips and aria-labels with data-i18n-title
+  document.querySelectorAll('[data-i18n-title]').forEach((el) => {
+    const key = el.getAttribute('data-i18n-title');
+    const translation = t(key);
+    if (translation) {
+      el.title = translation;
+      el.setAttribute('aria-label', translation);
+    }
+  });
+
   // Update placeholders
   inputEl.placeholder = t('inputPlaceholder');
   outputEl.placeholder = t('outputPlaceholder');
@@ -392,18 +402,22 @@ async function copyOutput() {
 
   try {
     await navigator.clipboard.writeText(text);
-    textCopy.textContent = t('btnCopied', 'Copied!');
+    if (textCopy) textCopy.textContent = t('btnCopied', 'Copied!');
     btnCopy.classList.replace('bg-indigo-600', 'bg-emerald-600');
     btnCopy.classList.replace('hover:bg-indigo-500', 'hover:bg-emerald-500');
+    btnCopy.title = t('btnCopied', 'Copied!');
+    btnCopy.setAttribute('aria-label', t('btnCopied', 'Copied!'));
 
     setSvgPath(iconCopy, 'M5 13l4 4L19 7', '2.5');
 
     showToast(t('toastCopied', 'Cleaned text copied to clipboard!'));
 
     setTimeout(() => {
-      textCopy.textContent = t('btnCopy', 'Copy');
+      if (textCopy) textCopy.textContent = t('btnCopy', 'Copy');
       btnCopy.classList.replace('bg-emerald-600', 'bg-indigo-600');
       btnCopy.classList.replace('hover:bg-emerald-500', 'hover:bg-indigo-500');
+      btnCopy.title = t('tooltipCopy', 'Copy cleaned text (Ctrl+Enter)');
+      btnCopy.setAttribute('aria-label', t('tooltipCopy', 'Copy cleaned text (Ctrl+Enter)'));
       setSvgPath(iconCopy, 'M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z', '2');
     }, 1800);
   } catch (err) {

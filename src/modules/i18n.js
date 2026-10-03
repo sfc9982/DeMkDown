@@ -44,6 +44,14 @@ export const TRANSLATIONS = {
     optStripLists: 'Strip Bullets/Numbers',
     optCleanFluff: '✨ Strip AI Tone & Fluff',
     
+    // Section Groups
+    groupFormatting: 'Formatting',
+    groupBlocks: 'Blocks & Tables',
+    groupAI: 'AI Tone Clean',
+    groupPresets: 'Presets',
+    inputDropHint: 'Drag & drop .md / .txt file here (max 5MB)',
+    fluffCount: 'fluff',
+    
     // Presets
     presetMax: 'Max Strip',
     presetDefault: 'Default',
@@ -128,6 +136,14 @@ export const TRANSLATIONS = {
     linkPreserve: '保留 Markdown 链接',
     optStripLists: '去除列表序号与圆点',
     optCleanFluff: '✨ 过滤 AI 句式',
+    
+    // Section Groups
+    groupFormatting: '基础格式剥离',
+    groupBlocks: '代码与表格转换',
+    groupAI: '智能过滤',
+    groupPresets: '常用预设',
+    inputDropHint: '支持直接拖拽 .md / .txt 文件至此 (5MB以内)',
+    fluffCount: 'AI 句式',
     
     // Presets
     presetMax: '极致纯净',

@@ -260,12 +260,12 @@ export function computeTextDiff(oldStr = '', newStr = '') {
 export function renderLineDiffHTML(diffResult, labels = { noChanges: 'No differences detected' }) {
   const { lines, stats } = diffResult;
   if (!lines || lines.length === 0) {
-    return `<div class="p-8 text-center text-slate-500 font-sans text-xs">${escapeHTML(labels.noChanges)}</div>`;
+    return `<div class="p-12 text-center text-slate-400 font-sans text-sm">${escapeHTML(labels.noChanges)}</div>`;
   }
 
   const noChangesBanner = stats && stats.totalChanges === 0
-    ? `<div class="mx-3 my-2 px-3 py-1.5 rounded bg-slate-800/60 border border-slate-700/60 text-slate-400 text-xs flex items-center gap-2 select-none">
-        <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    ? `<div class="mx-4 my-2.5 px-3.5 py-2 rounded-lg bg-slate-800/80 border border-slate-700/80 text-slate-300 text-xs sm:text-sm flex items-center gap-2 select-none">
+        <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
         </svg>
         <span>${escapeHTML(labels.noChanges)}</span>
@@ -273,21 +273,21 @@ export function renderLineDiffHTML(diffResult, labels = { noChanges: 'No differe
     : '';
 
   const rows = lines.map((line) => {
-    let rowClass = 'flex items-start py-0.5 px-3 border-l-2 text-xs font-mono select-text transition-colors ';
+    let rowClass = 'flex items-start py-1 px-3.5 border-l-2 text-xs sm:text-sm font-mono select-text transition-colors ';
     let symbol = ' ';
-    let symbolClass = 'w-4 select-none shrink-0 font-bold ';
+    let symbolClass = 'w-5 select-none shrink-0 font-bold text-xs sm:text-sm ';
 
     if (line.type === 'removed') {
-      rowClass += 'bg-red-500/10 text-red-300 border-red-500/80 hover:bg-red-500/15';
+      rowClass += 'bg-red-500/15 text-red-200 border-red-500/80 hover:bg-red-500/20';
       symbol = '-';
       symbolClass += 'text-red-400';
     } else if (line.type === 'added') {
-      rowClass += 'bg-emerald-500/10 text-emerald-300 border-emerald-500/80 hover:bg-emerald-500/15';
+      rowClass += 'bg-emerald-500/15 text-emerald-200 border-emerald-500/80 hover:bg-emerald-500/20';
       symbol = '+';
       symbolClass += 'text-emerald-400';
     } else {
-      rowClass += 'border-transparent text-slate-400 hover:bg-slate-800/30';
-      symbolClass += 'text-slate-700';
+      rowClass += 'border-transparent text-slate-300 hover:bg-slate-800/40';
+      symbolClass += 'text-slate-600';
     }
 
     const oldNum = line.oldLine !== null ? line.oldLine : '';
@@ -295,15 +295,15 @@ export function renderLineDiffHTML(diffResult, labels = { noChanges: 'No differe
 
     return `
       <div class="${rowClass}">
-        <span class="w-8 select-none text-slate-600 text-right pr-2 shrink-0 font-mono text-[11px]">${oldNum}</span>
-        <span class="w-8 select-none text-slate-600 text-right pr-2 shrink-0 font-mono text-[11px] border-r border-slate-800 mr-2">${newNum}</span>
+        <span class="w-10 select-none text-slate-500 text-right pr-2 shrink-0 font-mono text-xs">${oldNum}</span>
+        <span class="w-10 select-none text-slate-500 text-right pr-2 shrink-0 font-mono text-xs border-r border-slate-800 mr-2.5">${newNum}</span>
         <span class="${symbolClass}">${symbol}</span>
-        <span class="flex-1 whitespace-pre-wrap break-all">${escapeHTML(line.value) || '&nbsp;'}</span>
+        <span class="flex-1 whitespace-pre-wrap break-all leading-relaxed">${escapeHTML(line.value) || '&nbsp;'}</span>
       </div>
     `;
   }).join('');
 
-  return `<div class="flex flex-col min-w-full py-2">${noChangesBanner}<div class="divide-y divide-slate-800/20">${rows}</div></div>`;
+  return `<div class="flex flex-col min-w-full py-2">${noChangesBanner}<div class="divide-y divide-slate-800/30">${rows}</div></div>`;
 }
 
 /**
@@ -312,12 +312,12 @@ export function renderLineDiffHTML(diffResult, labels = { noChanges: 'No differe
 export function renderTextDiffHTML(diffResult, labels = { noChanges: 'No differences detected' }) {
   const { tokens, stats } = diffResult;
   if (!tokens || tokens.length === 0) {
-    return `<div class="p-8 text-center text-slate-500 font-sans text-xs">${escapeHTML(labels.noChanges)}</div>`;
+    return `<div class="p-12 text-center text-slate-400 font-sans text-sm">${escapeHTML(labels.noChanges)}</div>`;
   }
 
   const noChangesBanner = stats && stats.totalChanges === 0
-    ? `<div class="mb-3 px-3 py-1.5 rounded bg-slate-800/60 border border-slate-700/60 text-slate-400 text-xs flex items-center gap-2 select-none">
-        <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    ? `<div class="mb-4 px-3.5 py-2 rounded-lg bg-slate-800/80 border border-slate-700/80 text-slate-300 text-xs sm:text-sm flex items-center gap-2 select-none">
+        <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
         </svg>
         <span>${escapeHTML(labels.noChanges)}</span>
@@ -327,13 +327,13 @@ export function renderTextDiffHTML(diffResult, labels = { noChanges: 'No differe
   const spans = tokens.map((token) => {
     const escaped = escapeHTML(token.value);
     if (token.type === 'removed') {
-      return `<span class="bg-red-500/25 text-red-200 line-through decoration-red-500/80 rounded px-1 py-0.5 mx-0.5 border border-red-500/30 select-text" title="Removed / Stripped">${escaped}</span>`;
+      return `<span class="bg-red-500/25 text-red-200 line-through decoration-red-500/80 rounded px-1.5 py-0.5 mx-0.5 border border-red-500/30 select-text font-normal" title="Removed / Stripped">${escaped}</span>`;
     }
     if (token.type === 'added') {
-      return `<span class="bg-emerald-500/25 text-emerald-200 font-medium rounded px-1 py-0.5 mx-0.5 border border-emerald-500/30 select-text" title="Added / Formatted">${escaped}</span>`;
+      return `<span class="bg-emerald-500/25 text-emerald-200 font-medium rounded px-1.5 py-0.5 mx-0.5 border border-emerald-500/30 select-text" title="Added / Formatted">${escaped}</span>`;
     }
-    return `<span class="text-slate-300 select-text">${escaped}</span>`;
+    return `<span class="text-slate-200 select-text">${escaped}</span>`;
   }).join('');
 
-  return `<div class="p-4 whitespace-pre-wrap font-mono-code text-xs sm:text-sm leading-relaxed">${noChangesBanner}${spans}</div>`;
+  return `<div class="p-5 whitespace-pre-wrap font-mono-code text-sm sm:text-[15px] lg:text-base leading-relaxed tracking-normal">${noChangesBanner}${spans}</div>`;
 }

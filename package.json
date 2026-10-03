@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "test": "node tests/demark.test.js",
     "pages:dev": "wrangler pages dev dist",
-    "pages:deploy": "wrangler pages deploy dist"
+    "pages:deploy": "wrangler pages deploy dist --project-name demark"
   },
   "dependencies": {
     "mdast-util-to-string": "^4.0.0",

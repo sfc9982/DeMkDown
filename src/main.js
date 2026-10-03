@@ -752,20 +752,22 @@ async function copyOutput() {
 }
 
 /**
- * Handle paste from clipboard
+ * Handle paste action: focuses input and guides user to native Ctrl+V / Cmd+V
+ * This 100% bypasses any browser permission dialogs, preserving user retention.
  */
-async function pasteInput() {
-  try {
-    const text = await navigator.clipboard.readText();
-    if (text) {
-      inputEl.value = text;
-      processText();
-      showToast(t('toastPasted', 'Pasted text from clipboard'));
-    }
-  } catch (err) {
-    inputEl.focus();
-    showToast('Ctrl+V / Cmd+V');
-  }
+function pasteInput() {
+  inputEl.focus();
+
+  // Tactical orange border flash for instant visual tactile feedback
+  inputEl.classList.add('ring-2', 'ring-orange-500');
+  setTimeout(() => {
+    inputEl.classList.remove('ring-2', 'ring-orange-500');
+  }, 400);
+
+  const isMac = typeof navigator !== 'undefined' && /(Mac|iPhone|iPod|iPad)/i.test(navigator.userAgent || navigator.platform);
+  const key = isMac ? '⌘V' : 'Ctrl+V';
+  const promptTemplate = t('toastPastePrompt', 'Input focused — press {key} to paste');
+  showToast(promptTemplate.replace('{key}', key));
 }
 
 /**
@@ -881,6 +883,11 @@ inputEl.addEventListener('input', () => {
   inputDebounceTimer = setTimeout(() => {
     processText();
   }, 120);
+});
+
+// Native paste feedback
+inputEl.addEventListener('paste', () => {
+  showToast(t('toastPasted', 'Pasted text from clipboard'));
 });
 
 // Drag and drop markdown file into input area

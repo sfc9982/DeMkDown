@@ -87,7 +87,7 @@ export const TRANSLATIONS = {
     btnCopy: 'Copy',
     btnCopied: 'Copied!',
     btnExport: 'Export',
-    tooltipPaste: 'Paste from clipboard',
+    tooltipPaste: 'Focus input to paste (Ctrl+V / ⌘V)',
     tooltipClear: 'Clear input',
     tooltipCopy: 'Copy cleaned text (Ctrl+Enter)',
     tooltipExport: 'Export text file',
@@ -106,6 +106,7 @@ export const TRANSLATIONS = {
     // Toasts
     toastCopied: 'Cleaned text copied to clipboard!',
     toastPasted: 'Pasted text from clipboard',
+    toastPastePrompt: 'Input focused — press {key} to paste',
     toastCleared: 'Cleared input',
     toastSampleLoaded: 'Loaded sample:',
     toastDownloaded: 'Downloaded file',
@@ -198,7 +199,7 @@ export const TRANSLATIONS = {
     btnCopy: '复制',
     btnCopied: '已复制！',
     btnExport: '导出',
-    tooltipPaste: '从剪贴板粘贴',
+    tooltipPaste: '聚焦输入框以快捷粘贴 (Ctrl+V / ⌘V)',
     tooltipClear: '清空输入',
     tooltipCopy: '复制文本 (Ctrl+Enter)',
     tooltipExport: '导出为文本文件',
@@ -217,6 +218,7 @@ export const TRANSLATIONS = {
     // Toasts
     toastCopied: '已成功复制到剪贴板！',
     toastPasted: '已从剪贴板粘贴文本',
+    toastPastePrompt: '已就绪，请按 {key} 直接粘贴',
     toastCleared: '已清空输入内容',
     toastSampleLoaded: '已加载样例：',
     toastDownloaded: '文件已开始下载',

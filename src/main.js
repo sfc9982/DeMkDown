@@ -228,11 +228,11 @@ function syncControlsFromState() {
   optCleanFluff.checked = state.options.cleanAIFluff;
 
   if (state.options.outputMode === 'plain') {
-    modePlainBtn.className = 'px-3.5 py-1 rounded-lg bg-indigo-600 text-white font-medium shadow-sm transition';
-    modeMarkdownBtn.className = 'px-3.5 py-1 rounded-lg text-slate-400 hover:text-white transition';
+    modePlainBtn.className = 'px-3.5 py-1 bg-indigo-600 text-white font-medium shadow-sm transition';
+    modeMarkdownBtn.className = 'px-3.5 py-1 text-slate-400 hover:text-white transition';
   } else {
-    modeMarkdownBtn.className = 'px-3.5 py-1 rounded-lg bg-indigo-600 text-white font-medium shadow-sm transition';
-    modePlainBtn.className = 'px-3.5 py-1 rounded-lg text-slate-400 hover:text-white transition';
+    modeMarkdownBtn.className = 'px-3.5 py-1 bg-indigo-600 text-white font-medium shadow-sm transition';
+    modePlainBtn.className = 'px-3.5 py-1 text-slate-400 hover:text-white transition';
   }
 }
 
@@ -279,8 +279,8 @@ function renderDiffView() {
 function switchViewMode(mode) {
   state.viewMode = mode;
   if (mode === 'clean') {
-    if (viewModeClean) viewModeClean.className = 'px-3 py-1 rounded-lg bg-indigo-600 text-white font-semibold shadow-sm transition';
-    if (viewModeDiff) viewModeDiff.className = 'px-3 py-1 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5';
+    if (viewModeClean) viewModeClean.className = 'px-3.5 py-1 bg-indigo-600 text-white font-semibold shadow-sm transition';
+    if (viewModeDiff) viewModeDiff.className = 'px-3.5 py-1 text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5';
     if (outputEl) outputEl.classList.remove('hidden');
     if (diffContainer) diffContainer.classList.add('hidden');
     if (diffModeSelector) {
@@ -295,8 +295,8 @@ function switchViewMode(mode) {
       badgeReductionEl.classList.remove('hidden');
     }
   } else {
-    if (viewModeDiff) viewModeDiff.className = 'px-3 py-1 rounded-lg bg-indigo-600 text-white font-semibold shadow-sm transition flex items-center gap-1.5';
-    if (viewModeClean) viewModeClean.className = 'px-3 py-1 rounded-lg text-slate-400 hover:text-slate-200 transition';
+    if (viewModeDiff) viewModeDiff.className = 'px-3.5 py-1 bg-indigo-600 text-white font-semibold shadow-sm transition flex items-center gap-1.5';
+    if (viewModeClean) viewModeClean.className = 'px-3.5 py-1 text-slate-400 hover:text-slate-200 transition';
     if (outputEl) outputEl.classList.add('hidden');
     if (diffContainer) diffContainer.classList.remove('hidden');
     if (diffModeSelector) {
@@ -318,11 +318,11 @@ function switchViewMode(mode) {
 function switchDiffMode(mode) {
   state.diffMode = mode;
   if (mode === 'text') {
-    if (diffModeText) diffModeText.className = 'px-2.5 py-1 rounded-md bg-indigo-600 text-white font-medium transition';
-    if (diffModeLine) diffModeLine.className = 'px-2.5 py-1 rounded-md text-slate-400 hover:text-slate-200 transition';
+    if (diffModeText) diffModeText.className = 'px-2.5 py-1 bg-indigo-600 text-white font-medium transition';
+    if (diffModeLine) diffModeLine.className = 'px-2.5 py-1 text-slate-400 hover:text-slate-200 transition';
   } else {
-    if (diffModeLine) diffModeLine.className = 'px-2.5 py-1 rounded-md bg-indigo-600 text-white font-medium transition';
-    if (diffModeText) diffModeText.className = 'px-2.5 py-1 rounded-md text-slate-400 hover:text-slate-200 transition';
+    if (diffModeLine) diffModeLine.className = 'px-2.5 py-1 bg-indigo-600 text-white font-medium transition';
+    if (diffModeText) diffModeText.className = 'px-2.5 py-1 text-slate-400 hover:text-slate-200 transition';
   }
   renderDiffView();
 }
@@ -377,7 +377,7 @@ function processText() {
   statsBadgesEl.textContent = '';
   for (const { count, label, highlight } of badgeData) {
     const span = document.createElement('span');
-    span.className = `px-2 py-0.5 rounded bg-slate-800 text-xs ${count ? `${highlight} font-semibold` : 'text-slate-400'}`;
+    span.className = `px-2 py-0.5 bg-slate-800 text-xs ${count ? `${highlight} font-semibold` : 'text-slate-400'}`;
     span.textContent = `${count || 0} ${label}`;
     statsBadgesEl.appendChild(span);
   }

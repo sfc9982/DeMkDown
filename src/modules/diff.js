@@ -264,7 +264,7 @@ export function renderLineDiffHTML(diffResult, labels = { noChanges: 'No differe
   }
 
   const noChangesBanner = stats && stats.totalChanges === 0
-    ? `<div class="mx-4 my-2.5 px-3.5 py-2 rounded-lg bg-slate-800/80 border border-slate-700/80 text-slate-300 text-xs sm:text-sm flex items-center gap-2 select-none">
+    ? `<div class="mx-4 my-2.5 px-3.5 py-2 bg-slate-800/80 border border-slate-700/80 text-slate-300 text-xs sm:text-sm flex items-center gap-2 select-none">
         <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
         </svg>
@@ -316,7 +316,7 @@ export function renderTextDiffHTML(diffResult, labels = { noChanges: 'No differe
   }
 
   const noChangesBanner = stats && stats.totalChanges === 0
-    ? `<div class="mb-4 px-3.5 py-2 rounded-lg bg-slate-800/80 border border-slate-700/80 text-slate-300 text-xs sm:text-sm flex items-center gap-2 select-none">
+    ? `<div class="mb-4 px-3.5 py-2 bg-slate-800/80 border border-slate-700/80 text-slate-300 text-xs sm:text-sm flex items-center gap-2 select-none">
         <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
         </svg>
@@ -327,10 +327,10 @@ export function renderTextDiffHTML(diffResult, labels = { noChanges: 'No differe
   const spans = tokens.map((token) => {
     const escaped = escapeHTML(token.value);
     if (token.type === 'removed') {
-      return `<span class="bg-red-500/25 text-red-200 line-through decoration-red-500/80 rounded px-1.5 py-0.5 mx-0.5 border border-red-500/30 select-text font-normal" title="Removed / Stripped">${escaped}</span>`;
+      return `<span class="bg-red-500/25 text-red-200 line-through decoration-red-500/80 px-1.5 py-0.5 mx-0.5 border border-red-500/30 select-text font-normal" title="Removed / Stripped">${escaped}</span>`;
     }
     if (token.type === 'added') {
-      return `<span class="bg-emerald-500/25 text-emerald-200 font-medium rounded px-1.5 py-0.5 mx-0.5 border border-emerald-500/30 select-text" title="Added / Formatted">${escaped}</span>`;
+      return `<span class="bg-emerald-500/25 text-emerald-200 font-medium px-1.5 py-0.5 mx-0.5 border border-emerald-500/30 select-text" title="Added / Formatted">${escaped}</span>`;
     }
     return `<span class="text-slate-200 select-text">${escaped}</span>`;
   }).join('');

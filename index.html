@@ -53,12 +53,26 @@
 
   <link rel="stylesheet" href="./src/style.css" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff6b00' stroke-width='2' stroke-linecap='square' stroke-linejoin='miter'><circle cx='12' cy='12' r='8'/><path d='M12 2v4m0 12v4M2 12h4m12 0h4'/></svg>" />
+  <script>
+    try {
+      const savedTheme = localStorage.getItem('demkdown_theme') || 'system';
+      const isDark = savedTheme === 'dark' || (savedTheme === 'system' && (!window.matchMedia || window.matchMedia('(prefers-color-scheme: dark)').matches));
+      if (!isDark) {
+        document.documentElement.classList.add('light');
+      } else {
+        document.documentElement.classList.add('dark');
+      }
+      if (localStorage.getItem('demkdown_width_mode') === 'widescreen') {
+        document.documentElement.classList.add('layout-widescreen');
+      }
+    } catch (e) {}
+  </script>
 </head>
 <body class="h-full flex flex-col bg-[#06090e] text-slate-100 antialiased selection:bg-orange-500/30 selection:text-orange-200">
 
   <!-- Top Navigation Header -->
   <header class="border-b border-orange-500/20 bg-[#090e17]/85 backdrop-blur-md sticky top-0 z-30 px-4 lg:px-6 py-2">
-    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+    <div class="content-container mx-auto flex items-center justify-between gap-4">
       
       <!-- Brand (Clean, no noisy badges) -->
       <div class="flex items-center gap-3 shrink-0">
@@ -144,7 +158,87 @@
           </svg>
         </button>
 
-        <!-- 4. Language Dropdown -->
+        <!-- Vertical Divider -->
+        <div class="h-5 w-px bg-slate-800 hidden sm:block"></div>
+
+        <!-- 4. Width Mode Toggle (Standard vs Widescreen) -->
+        <button
+          id="btnToggleWidth"
+          type="button"
+          data-i18n-title="tooltipWidth"
+          title="切换内容宽度 (正常宽度 / 适应宽屏)"
+          class="h-8.5 flex items-center gap-1.5 px-2.5 sm:px-3 bg-[#0d1424]/90 hover:bg-[#131d33] border border-orange-500/20 text-xs sm:text-sm font-medium text-slate-200 hover:text-orange-200 transition shadow-sm cursor-pointer select-none"
+          aria-label="Toggle content width"
+        >
+          <svg id="iconWidthExpand" class="w-4 h-4 text-orange-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 4l-5-5" />
+          </svg>
+          <svg id="iconWidthCollapse" class="w-4 h-4 text-orange-400 shrink-0 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M9 4v4H5m0 0l5-5m10 5h-4V4m0 4l5-5M9 20v-4H5m0 0l5 5m10-5h-4v4m0-4l5 5" />
+          </svg>
+          <span id="txtWidthMode" class="hidden md:inline font-mono text-xs" data-i18n="widthStandard">正常宽度</span>
+        </button>
+
+        <!-- 5. Theme Dropdown (Dark / Light / Follow System) -->
+        <div class="relative" id="themeDropdownContainer">
+          <button
+            id="themeDropdownBtn"
+            type="button"
+            class="h-8.5 flex items-center gap-1.5 px-2.5 sm:px-3 bg-[#0d1424]/90 hover:bg-[#131d33] border border-orange-500/20 text-xs sm:text-sm font-medium text-slate-200 hover:text-orange-200 transition shadow-sm cursor-pointer select-none"
+            aria-haspopup="true"
+            aria-expanded="false"
+            data-i18n-title="tooltipTheme"
+            title="外观主题（夜间 / 白天 / 跟随系统）"
+          >
+            <span id="themeCurrentIcon" class="shrink-0 text-orange-400 flex items-center justify-center">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+              </svg>
+            </span>
+            <span id="themeCurrentLabel" class="hidden md:inline font-mono text-xs" data-i18n="themeDark">夜间模式</span>
+            <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-200" id="themeChevron" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          <div
+            id="themeMenu"
+            class="absolute right-0 mt-1.5 w-40 bg-[#090e17] border border-orange-500/30 shadow-2xl py-1.5 z-50 hidden opacity-0 scale-95 transition-all duration-150 ring-1 ring-orange-500/20 backdrop-blur-xl"
+            role="menu"
+          >
+            <button type="button" data-theme="dark" class="theme-option w-full flex items-center justify-between px-3.5 py-2 text-xs sm:text-sm text-slate-200 hover:bg-orange-600/20 hover:text-orange-200 transition text-left cursor-pointer">
+              <span class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-orange-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+                <span data-i18n="themeDark">夜间模式</span>
+              </span>
+              <span class="theme-check text-orange-400 text-xs font-bold">✓</span>
+            </button>
+            <button type="button" data-theme="light" class="theme-option w-full flex items-center justify-between px-3.5 py-2 text-xs sm:text-sm text-slate-200 hover:bg-orange-600/20 hover:text-orange-200 transition text-left cursor-pointer">
+              <span class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <circle cx="12" cy="12" r="4" stroke-width="2" stroke="currentColor"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.07-7.07l-1.41 1.41M8.34 15.66l-1.41 1.41m12.14 0l-1.41-1.41M8.34 8.34L6.93 6.93" />
+                </svg>
+                <span data-i18n="themeLight">白天模式</span>
+              </span>
+              <span class="theme-check text-orange-400 text-xs font-bold hidden">✓</span>
+            </button>
+            <button type="button" data-theme="system" class="theme-option w-full flex items-center justify-between px-3.5 py-2 text-xs sm:text-sm text-slate-200 hover:bg-orange-600/20 hover:text-orange-200 transition text-left cursor-pointer">
+              <span class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <rect x="2" y="3" width="20" height="14" rx="0" stroke-width="2" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8m-4-4v4" />
+                </svg>
+                <span data-i18n="themeSystem">跟随系统</span>
+              </span>
+              <span class="theme-check text-orange-400 text-xs font-bold hidden">✓</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 6. Language Dropdown -->
         <div class="relative" id="langDropdownContainer">
           <button
             id="langDropdownBtn"
@@ -178,7 +272,7 @@
           </div>
         </div>
 
-        <!-- 5. API Modal Trigger -->
+        <!-- 7. API Modal Trigger -->
         <button id="btnOpenApiModal" class="h-8.5 flex items-center gap-1.5 px-3 bg-[#0d1424]/90 hover:bg-[#131d33] border border-orange-500/20 text-xs sm:text-sm font-medium text-slate-200 hover:text-orange-200 transition shadow-sm cursor-pointer select-none">
           <svg class="w-4 h-4 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
@@ -193,7 +287,7 @@
 
   <!-- Options & Config Bar (Collapsible Functional Sections) -->
   <section id="optionsSection" class="border-b border-orange-500/20 bg-[#090e17]/70 backdrop-blur-md px-4 lg:px-6 transition-all duration-300">
-    <div class="max-w-7xl mx-auto">
+    <div class="content-container mx-auto">
       
       <!-- Collapsible Header Strip -->
       <div id="optionsHeaderBar" class="flex items-center justify-between py-2 cursor-pointer select-none group" title="Click to collapse / expand options">
@@ -326,7 +420,7 @@
   </section>
 
   <!-- Main Split-View Workspace -->
-  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 flex flex-col min-h-0">
+  <main class="flex-1 content-container w-full mx-auto p-4 sm:p-6 flex flex-col min-h-0">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 flex-1 min-h-[520px]">
       
       <!-- LEFT PANEL: Raw AI Markdown Input -->

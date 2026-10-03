@@ -147,3 +147,205 @@
 .animate-toast {
   animation: fadeInOut 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* ==========================================================================
+   CONTENT CONTAINER WIDTH CONTROL (Standard vs Widescreen)
+   ========================================================================== */
+.content-container {
+  width: 100%;
+  max-width: 80rem; /* 1280px standard (max-w-7xl) */
+  transition: max-width 0.25s cubic-bezier(0.16, 1, 0.3, 1), padding 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Widescreen mode: expands fluidly to fill wide displays */
+html.layout-widescreen .content-container {
+  max-width: 98vw;
+  padding-left: clamp(0.75rem, 1.5vw, 2rem);
+  padding-right: clamp(0.75rem, 1.5vw, 2rem);
+}
+
+/* ==========================================================================
+   DAYLIGHT / LIGHT THEME (The Division Tactical Clean Daylight UI)
+   ========================================================================== */
+html.light body {
+  background-color: #eef2f7;
+  color: #0f172a;
+  background-image: 
+    radial-gradient(ellipse 90% 40% at 50% -10%, rgba(255, 107, 0, 0.12), transparent),
+    linear-gradient(to right, rgba(234, 88, 12, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(234, 88, 12, 0.05) 1px, transparent 1px);
+}
+
+html.light .hud-panel {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(234, 88, 12, 0.35);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 107, 0, 0.1);
+}
+
+html.light header {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-color: rgba(234, 88, 12, 0.25);
+}
+
+html.light #optionsSection {
+  background-color: rgba(248, 250, 252, 0.92);
+  border-color: rgba(234, 88, 12, 0.2);
+}
+
+html.light [class*="bg-[#0b121e]"] {
+  background-color: rgba(241, 245, 249, 0.96) !important;
+  border-color: rgba(234, 88, 12, 0.22) !important;
+}
+
+html.light [class*="bg-[#090e17]"] {
+  background-color: rgba(248, 250, 252, 0.96) !important;
+  border-color: rgba(234, 88, 12, 0.22) !important;
+}
+
+html.light [class*="bg-[#0d1424]"] {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(234, 88, 12, 0.25) !important;
+}
+
+html.light [class*="bg-[#0d1424]"]:hover {
+  background-color: #f1f5f9 !important;
+}
+
+html.light [class*="bg-[#060a12]"] {
+  background-color: rgba(241, 245, 249, 0.95) !important;
+  border-color: rgba(203, 213, 225, 0.85) !important;
+}
+
+html.light [class*="bg-slate-950"] {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+html.light [class*="border-slate-800"] {
+  border-color: rgba(203, 213, 225, 0.8) !important;
+}
+
+html.light [class*="border-slate-750"] {
+  border-color: rgba(203, 213, 225, 0.8) !important;
+}
+
+html.light [class*="border-slate-700"] {
+  border-color: rgba(203, 213, 225, 0.8) !important;
+}
+
+html.light select,
+html.light [class*="bg-slate-900"] {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html.light textarea,
+html.light input[type="text"] {
+  color: #0f172a !important;
+}
+
+html.light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+html.light .text-slate-100,
+html.light .text-slate-200 {
+  color: #0f172a !important;
+}
+
+html.light .text-slate-300 {
+  color: #334155 !important;
+}
+
+html.light .text-slate-400 {
+  color: #64748b !important;
+}
+
+html.light .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+html.light #txtAppTitle {
+  background: linear-gradient(to right, #0f172a, #1e293b, #ea580c) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+html.light #langMenu,
+html.light #sampleMenu,
+html.light #themeMenu {
+  background-color: #ffffff !important;
+  border-color: rgba(234, 88, 12, 0.35) !important;
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(255, 107, 0, 0.1) !important;
+}
+
+html.light #langMenu button,
+html.light #sampleMenu button,
+html.light #themeMenu button {
+  color: #1e293b !important;
+}
+
+html.light #langMenu button:hover,
+html.light #sampleMenu button:hover,
+html.light #themeMenu button:hover {
+  background-color: rgba(255, 107, 0, 0.12) !important;
+  color: #ea580c !important;
+}
+
+html.light #apiModal {
+  background-color: rgba(15, 23, 42, 0.45) !important;
+}
+
+html.light #apiModal .hud-panel {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+html.light #apiModal pre {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html.light .diff-del {
+  background-color: rgba(239, 68, 68, 0.12) !important;
+  color: #b91c1c !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+html.light .diff-add {
+  background-color: rgba(16, 185, 129, 0.12) !important;
+  color: #047857 !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+html.light .diff-char-del {
+  background-color: rgba(239, 68, 68, 0.22) !important;
+  color: #991b1b !important;
+  text-decoration: line-through;
+}
+
+html.light .diff-char-add {
+  background-color: rgba(16, 185, 129, 0.22) !important;
+  color: #065f46 !important;
+}
+
+html.light .hud-scanline {
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.035),
+    rgba(0, 0, 0, 0.035) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+}
+
+html.light #toast {
+  background-color: #ffffff !important;
+  border-color: rgba(234, 88, 12, 0.4) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+html.light #toast #toastMessage {
+  color: #0f172a !important;
+}

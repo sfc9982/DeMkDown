@@ -32,6 +32,8 @@ const state = {
   options: { ...DEFAULT_OPTIONS },
   currentLang: localStorage.getItem('demark_lang') || (navigator.language.startsWith('zh') ? 'zh' : 'en'),
   optionsCollapsed: localStorage.getItem('demark_options_collapsed') === 'true',
+  widthMode: localStorage.getItem('demkdown_width_mode') || 'standard',
+  theme: localStorage.getItem('demkdown_theme') || 'system',
   viewMode: 'clean', // 'clean' | 'diff'
   diffMode: 'text',  // 'text' | 'line'
   lastResult: '',
@@ -39,6 +41,19 @@ const state = {
 };
 
 // DOM Element References
+// Width & Theme Controls
+const btnToggleWidth = document.getElementById('btnToggleWidth');
+const iconWidthExpand = document.getElementById('iconWidthExpand');
+const iconWidthCollapse = document.getElementById('iconWidthCollapse');
+const txtWidthMode = document.getElementById('txtWidthMode');
+
+const themeDropdownContainer = document.getElementById('themeDropdownContainer');
+const themeDropdownBtn = document.getElementById('themeDropdownBtn');
+const themeMenu = document.getElementById('themeMenu');
+const themeChevron = document.getElementById('themeChevron');
+const themeCurrentIcon = document.getElementById('themeCurrentIcon');
+const themeCurrentLabel = document.getElementById('themeCurrentLabel');
+
 const langDropdownContainer = document.getElementById('langDropdownContainer');
 const langDropdownBtn = document.getElementById('langDropdownBtn');
 const langMenu = document.getElementById('langMenu');
@@ -195,10 +210,144 @@ function setLanguage(lang) {
   if (navToggleOptionsText) {
     navToggleOptionsText.textContent = t('navConfigBtn', '规则配置');
   }
+  if (txtWidthMode) {
+    txtWidthMode.textContent = state.widthMode === 'widescreen' ? t('widthWidescreen', '适应宽屏') : t('widthStandard', '正常宽度');
+  }
+  updateThemeUI();
   updateConfigSummary();
 
   // Re-run process to refresh localized badges
   processText();
+}
+
+/**
+ * Apply width mode (Standard: 1280px / Widescreen: fluid 98vw)
+ */
+function applyWidthMode(mode, showFeedback = false) {
+  state.widthMode = mode;
+  localStorage.setItem('demkdown_width_mode', mode);
+
+  if (mode === 'widescreen') {
+    document.documentElement.classList.add('layout-widescreen');
+    if (iconWidthExpand) iconWidthExpand.classList.add('hidden');
+    if (iconWidthCollapse) iconWidthCollapse.classList.remove('hidden');
+    if (txtWidthMode) txtWidthMode.textContent = t('widthWidescreen', '适应宽屏');
+    if (showFeedback) showToast(t('toastWidthWidescreen', '已切换为适应宽屏模式 (全宽流式)'));
+  } else {
+    document.documentElement.classList.remove('layout-widescreen');
+    if (iconWidthExpand) iconWidthExpand.classList.remove('hidden');
+    if (iconWidthCollapse) iconWidthCollapse.classList.add('hidden');
+    if (txtWidthMode) txtWidthMode.textContent = t('widthStandard', '正常宽度');
+    if (showFeedback) showToast(t('toastWidthStandard', '已切换为正常宽度 (1280px)'));
+  }
+}
+
+function toggleWidthMode() {
+  const nextMode = state.widthMode === 'widescreen' ? 'standard' : 'widescreen';
+  applyWidthMode(nextMode, true);
+}
+
+/**
+ * Determine theme based on preference or system media query
+ */
+function getResolvedTheme(theme = state.theme) {
+  if (theme === 'system') {
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  return theme;
+}
+
+/**
+ * Apply theme: dark | light | system
+ */
+function applyTheme(theme, showFeedback = false) {
+  state.theme = theme;
+  localStorage.setItem('demkdown_theme', theme);
+
+  const resolved = getResolvedTheme(theme);
+  if (resolved === 'light') {
+    document.documentElement.classList.add('light');
+    document.documentElement.classList.remove('dark');
+  } else {
+    document.documentElement.classList.remove('light');
+    document.documentElement.classList.add('dark');
+  }
+
+  updateThemeUI();
+
+  if (showFeedback) {
+    const themeNames = {
+      dark: t('themeDark', '夜间模式'),
+      light: t('themeLight', '白天模式'),
+      system: t('themeSystem', '跟随系统'),
+    };
+    showToast(`${t('themeLabel', '外观')}: ${themeNames[theme] || theme}`);
+  }
+}
+
+/**
+ * Update Theme Dropdown UI (Label, Icons, Active Checkmarks)
+ */
+function updateThemeUI() {
+  if (!themeCurrentLabel || !themeCurrentIcon) return;
+
+  const themeKeyMap = {
+    dark: 'themeDark',
+    light: 'themeLight',
+    system: 'themeSystem',
+  };
+  themeCurrentLabel.textContent = t(themeKeyMap[state.theme] || 'themeDark', '外观');
+
+  // Set current icon SVG
+  if (state.theme === 'light') {
+    themeCurrentIcon.innerHTML = `<svg class="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="4" stroke-width="2" stroke="currentColor"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.07-7.07l-1.41 1.41M8.34 15.66l-1.41 1.41m12.14 0l-1.41-1.41M8.34 8.34L6.93 6.93" /></svg>`;
+  } else if (state.theme === 'system') {
+    themeCurrentIcon.innerHTML = `<svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="2" y="3" width="20" height="14" rx="0" stroke-width="2" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8m-4-4v4" /></svg>`;
+  } else {
+    themeCurrentIcon.innerHTML = `<svg class="w-4 h-4 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>`;
+  }
+
+  // Update checkmarks in themeMenu
+  document.querySelectorAll('.theme-option').forEach((opt) => {
+    const optTheme = opt.getAttribute('data-theme');
+    const checkIcon = opt.querySelector('.theme-check');
+    if (optTheme === state.theme) {
+      opt.classList.add('bg-orange-600/20', 'text-orange-300', 'font-medium');
+      opt.classList.remove('text-slate-200');
+      if (checkIcon) checkIcon.classList.remove('hidden');
+    } else {
+      opt.classList.remove('bg-orange-600/20', 'text-orange-300', 'font-medium');
+      opt.classList.add('text-slate-200');
+      if (checkIcon) checkIcon.classList.add('hidden');
+    }
+  });
+}
+
+/**
+ * Toggle custom theme dropdown menu
+ */
+function toggleThemeDropdown(open) {
+  if (!themeMenu) return;
+  const shouldOpen = typeof open === 'boolean' ? open : themeMenu.classList.contains('hidden');
+  if (shouldOpen) {
+    if (langMenu) toggleLangDropdown(false);
+    if (sampleMenu) toggleSampleDropdown(false);
+    themeMenu.classList.remove('hidden');
+    requestAnimationFrame(() => {
+      themeMenu.classList.remove('opacity-0', 'scale-95');
+      themeMenu.classList.add('opacity-100', 'scale-100');
+      if (themeChevron) themeChevron.classList.add('rotate-180');
+      if (themeDropdownBtn) themeDropdownBtn.setAttribute('aria-expanded', 'true');
+    });
+  } else {
+    themeMenu.classList.remove('opacity-100', 'scale-100');
+    themeMenu.classList.add('opacity-0', 'scale-95');
+    if (themeChevron) themeChevron.classList.remove('rotate-180');
+    if (themeDropdownBtn) themeDropdownBtn.setAttribute('aria-expanded', 'false');
+    setTimeout(() => {
+      themeMenu.classList.add('hidden');
+    }, 150);
+  }
 }
 
 /**
@@ -209,6 +358,7 @@ function toggleLangDropdown(open) {
   const shouldOpen = typeof open === 'boolean' ? open : langMenu.classList.contains('hidden');
   if (shouldOpen) {
     if (sampleMenu) toggleSampleDropdown(false);
+    if (themeMenu) toggleThemeDropdown(false);
     langMenu.classList.remove('hidden');
     requestAnimationFrame(() => {
       langMenu.classList.remove('opacity-0', 'scale-95');
@@ -234,7 +384,8 @@ function toggleSampleDropdown(open) {
   if (!sampleMenu) return;
   const shouldOpen = typeof open === 'boolean' ? open : sampleMenu.classList.contains('hidden');
   if (shouldOpen) {
-    toggleLangDropdown(false);
+    if (langMenu) toggleLangDropdown(false);
+    if (themeMenu) toggleThemeDropdown(false);
     sampleMenu.classList.remove('hidden');
     requestAnimationFrame(() => {
       sampleMenu.classList.remove('opacity-0', 'scale-95');
@@ -621,6 +772,28 @@ function loadSample(sampleKey) {
 
 // Event Listeners
 
+// Width Mode Toggle listener
+if (btnToggleWidth) {
+  btnToggleWidth.addEventListener('click', toggleWidthMode);
+}
+
+// Custom Theme Dropdown listeners
+if (themeDropdownBtn) {
+  themeDropdownBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleThemeDropdown();
+  });
+}
+
+document.querySelectorAll('.theme-option').forEach((opt) => {
+  opt.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const theme = opt.getAttribute('data-theme');
+    applyTheme(theme, true);
+    toggleThemeDropdown(false);
+  });
+});
+
 // Custom Language Dropdown listeners
 if (langDropdownBtn) {
   langDropdownBtn.addEventListener('click', (e) => {
@@ -652,6 +825,9 @@ document.addEventListener('click', (e) => {
   }
   if (sampleDropdownContainer && !sampleDropdownContainer.contains(e.target)) {
     toggleSampleDropdown(false);
+  }
+  if (themeDropdownContainer && !themeDropdownContainer.contains(e.target)) {
+    toggleThemeDropdown(false);
   }
 });
 
@@ -845,8 +1021,18 @@ window.addEventListener('keydown', (e) => {
     closeModal();
     toggleLangDropdown(false);
     toggleSampleDropdown(false);
+    toggleThemeDropdown(false);
   }
 });
+
+// System prefers-color-scheme dynamic listener
+if (window.matchMedia) {
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if (state.theme === 'system') {
+      applyTheme('system', false);
+    }
+  });
+}
 
 // Collapsible Options Panel Listeners
 if (optionsHeaderBar) {
@@ -863,6 +1049,8 @@ if (btnNavToggleOptions) {
 }
 
 // Initialize on page load
+applyWidthMode(state.widthMode, false);
+applyTheme(state.theme, false);
 setLanguage(state.currentLang);
 syncControlsFromState();
 setOptionsCollapsed(state.optionsCollapsed);

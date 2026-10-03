@@ -469,6 +469,7 @@ function switchDiffMode(mode) {
  * Core processing function: runs AST-based DeMark on input text
  */
 function processText() {
+  cancelInputDebounce();
   const text = inputEl.value;
   const start = performance.now();
 
@@ -654,9 +655,22 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// Input typing
+// Debounce timer for real-time input typing (120ms)
+let inputDebounceTimer = null;
+
+function cancelInputDebounce() {
+  if (inputDebounceTimer) {
+    clearTimeout(inputDebounceTimer);
+    inputDebounceTimer = null;
+  }
+}
+
+// Input typing (debounced at 120ms for peak performance with large texts)
 inputEl.addEventListener('input', () => {
-  processText();
+  cancelInputDebounce();
+  inputDebounceTimer = setTimeout(() => {
+    processText();
+  }, 120);
 });
 
 // Drag and drop markdown file into input area

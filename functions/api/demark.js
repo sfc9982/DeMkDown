@@ -18,22 +18,25 @@ const ALLOWED_ORIGINS = [
  * Resolve the Access-Control-Allow-Origin value for a given request.
  * Only reflects the origin if it's in the allow-list or is a *.pages.dev preview.
  */
-function resolveOrigin(request) {
+function resolveOrigin(request, env = null) {
   const origin = request.headers.get('Origin') || '';
   if (ALLOWED_ORIGINS.includes(origin)) return origin;
   // Allow Cloudflare Pages preview deployments (*.demark-3pj.pages.dev)
   if (/^https:\/\/[a-z0-9-]+\.demark-3pj\.pages\.dev$/.test(origin)) return origin;
-  // Local development
-  if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return origin;
+  // Local development — only allowed when ENVIRONMENT is explicitly 'development' or 'local'
+  const isDev = env?.ENVIRONMENT === 'development' || env?.ENVIRONMENT === 'local';
+  if (isDev && /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+    return origin;
+  }
   return ALLOWED_ORIGINS[0]; // default; browser will block if mismatch
 }
 
 /**
  * Build CORS headers scoped to the requesting origin
  */
-function corsHeaders(request) {
+function corsHeaders(request, env = null) {
   return {
-    'Access-Control-Allow-Origin': resolveOrigin(request),
+    'Access-Control-Allow-Origin': resolveOrigin(request, env),
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Max-Age': '86400',
@@ -54,13 +57,13 @@ const SECURITY_HEADERS = {
 /**
  * Helper to build JSON responses using native Web Standard Response API
  */
-function jsonResponse(data, status = 200, request = null) {
+function jsonResponse(data, status = 200, request = null, env = null) {
   return new Response(JSON.stringify(data, null, 2), {
     status,
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       ...SECURITY_HEADERS,
-      ...(request ? corsHeaders(request) : {}),
+      ...(request ? corsHeaders(request, env) : {}),
     },
   });
 }
@@ -72,7 +75,7 @@ export async function onRequestOptions(context) {
   return new Response(null, {
     status: 204,
     headers: {
-      ...corsHeaders(context.request),
+      ...corsHeaders(context.request, context.env),
       ...SECURITY_HEADERS,
     },
   });
@@ -98,14 +101,14 @@ export async function onRequestGet(context) {
       },
     },
     defaultOptions: DEFAULT_OPTIONS,
-  }, 200, context.request);
+  }, 200, context.request, context.env);
 }
 
 /**
  * POST handler: Strips markdown from the provided text according to options
  */
 export async function onRequestPost(context) {
-  const { request } = context;
+  const { request, env } = context;
 
   // Enforce request body size limit to prevent denial-of-service
   const contentLength = parseInt(request.headers.get('content-length') || '0', 10);
@@ -113,7 +116,8 @@ export async function onRequestPost(context) {
     return jsonResponse(
       { success: false, error: `Request body too large. Maximum allowed size is ${MAX_BODY_SIZE / 1024}KB.` },
       413,
-      request
+      request,
+      env
     );
   }
 
@@ -137,7 +141,8 @@ export async function onRequestPost(context) {
             return jsonResponse(
               { success: false, error: `Request body too large. Maximum allowed size is ${MAX_BODY_SIZE / 1024}KB.` },
               413,
-              request
+              request,
+              env
             );
           }
           text += decoder.decode(value, { stream: true });
@@ -158,7 +163,8 @@ export async function onRequestPost(context) {
         error: 'Invalid request body. Expected JSON with "markdown" field or raw text.',
       },
       400,
-      request
+      request,
+      env
     );
   }
 
@@ -169,7 +175,8 @@ export async function onRequestPost(context) {
     return jsonResponse(
       { success: false, error: `Markdown field too large. Maximum allowed size is ${MAX_BODY_SIZE / 1024}KB.` },
       413,
-      request
+      request,
+      env
     );
   }
 
@@ -182,7 +189,7 @@ export async function onRequestPost(context) {
       success: true,
       result,
       stats,
-    }, 200, request);
+    }, 200, request, env);
   } catch (err) {
     // Never expose internal error details to the client
     return jsonResponse(
@@ -191,7 +198,8 @@ export async function onRequestPost(context) {
         error: 'Failed to process markdown AST.',
       },
       500,
-      request
+      request,
+      env
     );
   }
 }

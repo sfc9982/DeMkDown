@@ -43,7 +43,7 @@ export const TRANSLATIONS = {
     linkRemove: 'Strip Completely',
     linkPreserve: 'Preserve Markdown',
     optStripLists: 'Strip Bullets/Numbers',
-    optCleanFluff: '✨ Strip AI Fluff',
+    optCleanFluff: '✨ Strip AI Tone & Fluff',
     
     // Presets
     presetMax: 'Max Strip',
@@ -122,7 +122,7 @@ export const TRANSLATIONS = {
     linkRemove: '整块删除超链接',
     linkPreserve: '保留 Markdown 链接',
     optStripLists: '去除列表序号与圆点',
-    optCleanFluff: '✨ 过滤 AI 开场白与客套话',
+    optCleanFluff: '✨ 过滤 AI 语气与废话套话',
     
     // Presets
     presetMax: '极致纯净',
@@ -201,7 +201,7 @@ export const TRANSLATIONS = {
     linkRemove: 'リンクを削除',
     linkPreserve: 'Markdown維持',
     optStripLists: '箇条書き記号を削除',
-    optCleanFluff: '✨ AIの挨拶・定型句を除去',
+    optCleanFluff: '✨ AIの口調・定型文を除去',
     
     // Presets
     presetMax: '最大除去',
@@ -280,7 +280,7 @@ export const TRANSLATIONS = {
     linkRemove: 'Eliminar enlaces',
     linkPreserve: 'Mantener enlace Markdown',
     optStripLists: 'Quitar viñetas / números',
-    optCleanFluff: '✨ Limpiar relleno de IA',
+    optCleanFluff: '✨ Limpiar tono y relleno de IA',
     
     // Presets
     presetMax: 'Máxima limpieza',
@@ -359,7 +359,7 @@ export const TRANSLATIONS = {
     linkRemove: 'Links entfernen',
     linkPreserve: 'Markdown behalten',
     optStripLists: 'Listenpunkte entfernen',
-    optCleanFluff: '✨ KI-Floskeln bereinigen',
+    optCleanFluff: '✨ KI-Ton & Floskeln bereinigen',
     
     // Presets
     presetMax: 'Maximal strippen',
@@ -438,7 +438,7 @@ export const TRANSLATIONS = {
     linkRemove: 'Supprimer les liens',
     linkPreserve: 'Conserver lien Markdown',
     optStripLists: 'Supprimer puces et numéros',
-    optCleanFluff: '✨ Supprimer le bavardage IA',
+    optCleanFluff: '✨ Supprimer ton et bavardage IA',
     
     // Presets
     presetMax: 'Nettoyage maximal',

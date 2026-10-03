@@ -92,4 +92,86 @@ if (r5.result.includes('承知いたしました') || r5.result.includes('お役
 }
 console.log('Japanese fluff stripped successfully!');
 
-console.log('\n--- ALL MULTILINGUAL TESTS PASSED! ---');
+console.log('\n--- TEST 6: DEEP AI FLUFF & BOILERPLATE REMOVAL (CHINESE) ---');
+const deepZhSample = `好的，很高兴为您解答！根据您的需求，下面我将为您详细介绍现代前端微服务架构。
+
+针对您提出的关于微服务拆分的问题，核心在于解耦业务领域。
+
+作为AI语言模型，我建议在实施前做好架构评估。
+
+以下是具体的架构对比表格：
+
+| 方案 | 优势 | 劣势 |
+| :--- | :--- | :--- |
+| 模块联邦 | 动态加载，独立部署 | 构建配置复杂度高 |
+| iframe 隔离 | 沙箱安全，技术栈无关 | 体验差，路由通信困难 |
+
+以下是用于路由分发的核心代码实现：
+
+\`\`\`typescript
+export function route(path: string) {
+  return microApps.find(app => app.match(path));
+}
+\`\`\`
+
+温馨提示：以上代码仅供参考，在部署至生产环境前请务必进行压力测试，并确保替换您的实际密钥。
+
+总而言之，只要遵循合理的业务边界划分与领域驱动设计，就能够构建出高内聚、低耦合的企业级前端架构。
+
+希望以上方案对您有所启发！如果您在实现过程中遇到任何其他问题，欢迎随时向我提问，祝您工作顺利！`;
+
+const r6 = demark(deepZhSample);
+console.log('Result:\n' + r6.result);
+
+// Assert all 6 categories are stripped or sanitized
+if (r6.result.includes('好的，很高兴为您解答')) throw new Error('Preamble failed to strip');
+if (r6.result.includes('希望以上方案对您有所启发')) throw new Error('Postamble failed to strip');
+if (r6.result.includes('以下是具体的架构对比表格')) throw new Error('Table transition lead-in failed to strip');
+if (r6.result.includes('以下是用于路由分发的核心代码实现')) throw new Error('Code transition lead-in failed to strip');
+if (r6.result.includes('温馨提示：以上代码仅供参考')) throw new Error('Disclaimer failed to strip');
+if (r6.result.includes('总而言之，只要遵循合理的业务边界划分')) throw new Error('Empty conclusion failed to strip');
+if (r6.result.includes('作为AI语言模型')) throw new Error('AI self reference failed to sanitize');
+if (!r6.result.includes('建议在实施前做好架构评估')) throw new Error('Self reference replacement text missing');
+console.log('Deep Chinese AI fluff test passed! Fluff count:', r6.stats.strippedCounts.fluff);
+
+console.log('\n--- TEST 7: DEEP AI FLUFF & BOILERPLATE REMOVAL (ENGLISH) ---');
+const deepEnSample = `Certainly! I'd be happy to help you with setting up a Node.js microservice.
+
+To answer your question, microservices allow teams to deploy independently.
+
+As an AI language model, I recommend planning your boundaries carefully.
+
+Here is the comparison table of different communication protocols:
+
+| Protocol | Latency | Complexity |
+| :--- | :--- | :--- |
+| gRPC | Low | Medium |
+| REST | Medium | Low |
+
+Below is the code snippet for the HTTP server:
+
+\`\`\`typescript
+import http from 'http';
+const server = http.createServer((req, res) => res.end('OK'));
+server.listen(3000);
+\`\`\`
+
+Note: Please make sure to replace API_KEY with your actual production token before deploying to production.
+
+In conclusion, by following these industry best practices, you can ensure your system remains resilient and scalable.
+
+Hope this helps! Let me know if you have any questions or need further clarification.`;
+
+const r7 = demark(deepEnSample);
+console.log('Result:\n' + r7.result);
+
+if (r7.result.includes('Certainly!')) throw new Error('English preamble failed to strip');
+if (r7.result.includes('Hope this helps!')) throw new Error('English postamble failed to strip');
+if (r7.result.includes('Here is the comparison table')) throw new Error('English table transition failed to strip');
+if (r7.result.includes('Below is the code snippet')) throw new Error('English code transition failed to strip');
+if (r7.result.includes('Note: Please make sure to replace API_KEY')) throw new Error('English disclaimer failed to strip');
+if (r7.result.includes('In conclusion, by following')) throw new Error('English empty conclusion failed to strip');
+if (r7.result.includes('As an AI language model')) throw new Error('English self reference failed to sanitize');
+console.log('Deep English AI fluff test passed! Fluff count:', r7.stats.strippedCounts.fluff);
+
+console.log('\n--- ALL MULTILINGUAL & DEEP AI FLUFF TESTS PASSED! ---');

@@ -4,29 +4,43 @@
 export const SAMPLES = {
   conversational: {
     title: 'Chatbot with Fluff & Lists',
-    description: 'Typical LLM answer with conversational opening, bold text, blockquote, and closing remarks.',
+    description: 'Typical LLM answer with conversational opening, bold text, transitions, disclaimers, and closing remarks.',
     content: `# Key Strategies for Sustainable Web Applications
 
-Certainly! Here is the breakdown of the most effective strategies you can adopt:
+Certainly! I'd be happy to help you with establishing sustainable web development practices.
 
-Modern web development demands both speed and sustainability. As engineering teams scale, adhering to **clean architecture** and *lean dependency graphs* becomes critical.
+As an AI language model, I recommend planning your architectural boundaries carefully.
 
-> "Premature optimization is the root of all evil, yet ignoring efficiency leads to technical bankruptcy."
-> — Engineering Maxim
+Here is the comparison table of different communication protocols:
 
-### Core Pillars to Consider
+| Protocol | Latency | Complexity | Transport |
+| :--- | :--- | :--- | :--- |
+| gRPC | Low (<10ms) | Medium | HTTP/2 |
+| REST / JSON | Medium (50ms) | Low | HTTP/1.1 |
+| GraphQL | Variable | High | HTTP POST |
 
-Here is what you should prioritize:
-- **Zero-Latency Static Assets**: Utilize CDN edge networks like Cloudflare Pages.
-- **Tree-Shakable Bundles**: Avoid monolithic client-side libraries.
-- **Accessible HTML**: Use semantic tags and proper ARIA states.
-- **AST Transformation**: Parse structured text with AST instead of brittle regex patterns.
+Below is the code snippet for the HTTP handler:
 
-For further reading, check out the [Cloudflare Pages Documentation](https://developers.cloudflare.com/pages/) and [Remark Ecosystem Guide](https://github.com/remarkjs/remark).
+\`\`\`typescript
+import { WorkerEntrypoint } from 'cloudflare:workers';
 
----
+export default class EdgeHandler extends WorkerEntrypoint {
+  async fetch(request: Request): Promise<Response> {
+    return Response.json({ status: 'ok', timestamp: Date.now() });
+  }
+}
+\`\`\`
 
-Hope this helps! Let me know if you have any questions or need further clarification on any of these points.`,
+The following steps are required for production deployment:
+- Configure Cloudflare Pages project
+- Link GitHub repository or upload dist folder
+- Verify custom domains and SSL certificates
+
+Note: Please make sure to replace API_KEY with your actual production token before deploying to production.
+
+In conclusion, by following these industry best practices, you can ensure your system remains resilient and scalable.
+
+Hope this helps! Let me know if you have any questions or need further clarification.`,
   },
 
   technicalCode: {
@@ -89,23 +103,24 @@ Let me know if you would like me to export these numbers to CSV!`,
 
   chinese: {
     title: '中文对话与架构表格',
-    description: '包含中文客套话、加粗/斜体、双宽字符对齐表格与结尾问候。',
+    description: '包含中文客套话、加粗/斜体、双宽字符对齐表格、冗余过渡句、警示免责声明与结尾问候。',
     content: `# 云原生高并发架构设计要点
 
-好的，根据您的需求，以下是为您整理的微服务与边缘计算架构核心方案：
+好的，很高兴为您解答！根据您的需求，下面我将为您详细介绍现代前端微服务与边缘计算架构。
 
-在现代高可用分布式系统中，降低**端到端网络延迟**和消除*单点故障*至关重要。
+针对您提出的关于微服务拆分的问题，核心在于解耦业务领域。
 
-> "复杂性是可靠性的死敌，保持架构简单是工程设计的最高追求。"
-> —— 软件工程格言
+作为AI语言模型，我建议在实施前做好架构评估。
 
-### 核心指标对比
+以下是具体的架构对比表格：
 
-| 架构方案 | 全球平均延迟 | 资源消耗 | 可用性评级 | 部署模式 |
-| :--- | :--- | :--- | :--- | :--- |
-| Cloudflare 边缘计算 | 15ms | 极低 (无冷启动) | 99.999% | 全球 Anycast |
-| 传统中心化集群 | 145ms | 高 (常驻实例) | 99.95% | 单可用区 |
-| 混合多活部署 | 40ms | 中等 | 99.99% | 多区域同步 |
+| 方案 | 优势 | 劣势 | 推荐场景 |
+| :--- | :--- | :--- | :--- |
+| 模块联邦 | 动态加载，独立部署 | 构建配置复杂度高 | 大型复杂单页应用 |
+| iframe 隔离 | 沙箱安全，技术栈无关 | 体验差，路由通信困难 | 遗留旧系统接入 |
+| 边缘计算渲染 | 零冷启动，就近响应 | 仅支持标准运行时 | 全球化高并发静态/SSR |
+
+核心实现代码如下：
 
 \`\`\`javascript
 export default {
@@ -117,13 +132,11 @@ export default {
 };
 \`\`\`
 
-- **即时响应**：客户端 AST 零延迟就地剥离
-- **安全保障**：所有文本均在浏览器本地处理，绝不上传私密数据
-- **开箱即用**：支持直接粘贴或拖拽 Markdown 文件
+温馨提示：以上代码仅供参考，在部署至生产环境前请务必进行压力测试，并确保替换您的实际密钥。
 
----
+总而言之，只要遵循合理的业务边界划分与领域驱动设计，就能够构建出高内聚、低耦合的企业级前端架构。
 
-希望以上架构方案对您有所帮助！如果您有任何其他疑问或需要更深入的代码实现，欢迎随时向我提问！`,
+希望以上方案对您有所启发！如果您在实现过程中遇到任何其他问题，欢迎随时向我提问，祝您工作顺利！`,
   },
 
   japanese: {

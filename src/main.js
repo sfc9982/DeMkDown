@@ -45,6 +45,13 @@ const langMenu = document.getElementById('langMenu');
 const langChevron = document.getElementById('langChevron');
 const langCurrentLabel = document.getElementById('langCurrentLabel');
 
+// Sample Presets Dropdown Elements
+const sampleDropdownContainer = document.getElementById('sampleDropdownContainer');
+const sampleDropdownBtn = document.getElementById('sampleDropdownBtn');
+const sampleMenu = document.getElementById('sampleMenu');
+const sampleChevron = document.getElementById('sampleChevron');
+const sampleCurrentLabel = document.getElementById('sampleCurrentLabel');
+
 // Collapsible Options Panel Elements
 const optionsHeaderBar = document.getElementById('optionsHeaderBar');
 const optionsBody = document.getElementById('optionsBody');
@@ -201,6 +208,7 @@ function toggleLangDropdown(open) {
   if (!langMenu) return;
   const shouldOpen = typeof open === 'boolean' ? open : langMenu.classList.contains('hidden');
   if (shouldOpen) {
+    if (sampleMenu) toggleSampleDropdown(false);
     langMenu.classList.remove('hidden');
     requestAnimationFrame(() => {
       langMenu.classList.remove('opacity-0', 'scale-95');
@@ -215,6 +223,32 @@ function toggleLangDropdown(open) {
     if (langDropdownBtn) langDropdownBtn.setAttribute('aria-expanded', 'false');
     setTimeout(() => {
       langMenu.classList.add('hidden');
+    }, 150);
+  }
+}
+
+/**
+ * Toggle custom sample presets dropdown menu
+ */
+function toggleSampleDropdown(open) {
+  if (!sampleMenu) return;
+  const shouldOpen = typeof open === 'boolean' ? open : sampleMenu.classList.contains('hidden');
+  if (shouldOpen) {
+    toggleLangDropdown(false);
+    sampleMenu.classList.remove('hidden');
+    requestAnimationFrame(() => {
+      sampleMenu.classList.remove('opacity-0', 'scale-95');
+      sampleMenu.classList.add('opacity-100', 'scale-100');
+      if (sampleChevron) sampleChevron.classList.add('rotate-180');
+      if (sampleDropdownBtn) sampleDropdownBtn.setAttribute('aria-expanded', 'true');
+    });
+  } else {
+    sampleMenu.classList.remove('opacity-100', 'scale-100');
+    sampleMenu.classList.add('opacity-0', 'scale-95');
+    if (sampleChevron) sampleChevron.classList.remove('rotate-180');
+    if (sampleDropdownBtn) sampleDropdownBtn.setAttribute('aria-expanded', 'false');
+    setTimeout(() => {
+      sampleMenu.classList.add('hidden');
     }, 150);
   }
 }
@@ -575,6 +609,7 @@ function downloadOutput() {
  * Load a sample preset into input
  */
 function loadSample(sampleKey) {
+  toggleSampleDropdown(false);
   const sample = SAMPLES[sampleKey];
   if (sample) {
     inputEl.value = sample.content;
@@ -593,6 +628,14 @@ if (langDropdownBtn) {
   });
 }
 
+// Custom Sample Dropdown listeners
+if (sampleDropdownBtn) {
+  sampleDropdownBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleSampleDropdown();
+  });
+}
+
 document.querySelectorAll('.lang-option').forEach((opt) => {
   opt.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -605,6 +648,9 @@ document.querySelectorAll('.lang-option').forEach((opt) => {
 document.addEventListener('click', (e) => {
   if (langDropdownContainer && !langDropdownContainer.contains(e.target)) {
     toggleLangDropdown(false);
+  }
+  if (sampleDropdownContainer && !sampleDropdownContainer.contains(e.target)) {
+    toggleSampleDropdown(false);
   }
 });
 
@@ -784,6 +830,7 @@ window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     closeModal();
     toggleLangDropdown(false);
+    toggleSampleDropdown(false);
   }
 });
 

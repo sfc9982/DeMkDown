@@ -1,14 +1,17 @@
 import { demark, DEFAULT_OPTIONS } from './modules/demark.js';
 import { SAMPLES } from './modules/samples.js';
+import { TRANSLATIONS } from './modules/i18n.js';
 
 // Application State
 const state = {
   options: { ...DEFAULT_OPTIONS },
+  currentLang: localStorage.getItem('demark_lang') || (navigator.language.startsWith('zh') ? 'zh' : navigator.language.startsWith('ja') ? 'ja' : navigator.language.startsWith('es') ? 'es' : navigator.language.startsWith('de') ? 'de' : navigator.language.startsWith('fr') ? 'fr' : 'en'),
   lastResult: '',
   lastStats: null,
 };
 
 // DOM Element References
+const langSelect = document.getElementById('langSelect');
 const inputEl = document.getElementById('inputMarkdown');
 const outputEl = document.getElementById('outputClean');
 
@@ -46,6 +49,9 @@ const btnDownload = document.getElementById('btnDownload');
 const btnSampleChat = document.getElementById('btnSampleChat');
 const btnSampleCode = document.getElementById('btnSampleCode');
 const btnSampleTable = document.getElementById('btnSampleTable');
+const btnSampleChinese = document.getElementById('btnSampleChinese');
+const btnSampleJapanese = document.getElementById('btnSampleJapanese');
+const btnSampleSpanish = document.getElementById('btnSampleSpanish');
 const btnSampleStress = document.getElementById('btnSampleStress');
 
 // Preset Buttons
@@ -63,6 +69,40 @@ const btnGotItApiModal = document.getElementById('btnGotItApiModal');
 const toastEl = document.getElementById('toast');
 const toastMessageEl = document.getElementById('toastMessage');
 let toastTimer = null;
+
+/**
+ * Get current dictionary translations
+ */
+function t(key, fallback = '') {
+  const dict = TRANSLATIONS[state.currentLang] || TRANSLATIONS.en;
+  return dict[key] || TRANSLATIONS.en[key] || fallback || key;
+}
+
+/**
+ * Switch UI language dynamically
+ */
+function setLanguage(lang) {
+  if (!TRANSLATIONS[lang]) lang = 'en';
+  state.currentLang = lang;
+  localStorage.setItem('demark_lang', lang);
+  langSelect.value = lang;
+
+  // Update text of all elements with data-i18n
+  document.querySelectorAll('[data-i18n]').forEach((el) => {
+    const key = el.getAttribute('data-i18n');
+    const translation = t(key);
+    if (translation) {
+      el.textContent = translation;
+    }
+  });
+
+  // Update placeholders
+  inputEl.placeholder = t('inputPlaceholder');
+  outputEl.placeholder = t('outputPlaceholder');
+
+  // Re-run process to refresh localized badges
+  processText();
+}
 
 /**
  * Show temporary toast message
@@ -133,15 +173,20 @@ function processText() {
   // Update output
   outputEl.value = result;
 
+  const charsUnit = t('chars', 'chars');
+  const wordsUnit = t('words', 'words');
+  const linesUnit = t('lines', 'lines');
+  const cleanerUnit = t('cleanerBadge', 'cleaner');
+
   // Update Input Badges
-  inputBadgeEl.textContent = `${stats.inputLength.toLocaleString()} chars • ${stats.inputWords.toLocaleString()} words`;
-  inputLinesEl.textContent = `${stats.inputLines.toLocaleString()} lines`;
+  inputBadgeEl.textContent = `${stats.inputLength.toLocaleString()} ${charsUnit} • ${stats.inputWords.toLocaleString()} ${wordsUnit}`;
+  inputLinesEl.textContent = `${stats.inputLines.toLocaleString()} ${linesUnit}`;
 
   // Update Output Badges
-  outputBadgeEl.textContent = `${stats.outputLength.toLocaleString()} chars • ${stats.outputWords.toLocaleString()} words`;
+  outputBadgeEl.textContent = `${stats.outputLength.toLocaleString()} ${charsUnit} • ${stats.outputWords.toLocaleString()} ${wordsUnit}`;
 
   if (stats.inputLength > 0 && stats.charReductionPercent > 0) {
-    badgeReductionEl.textContent = `-${stats.charReductionPercent}% cleaner`;
+    badgeReductionEl.textContent = `-${stats.charReductionPercent}% ${cleanerUnit}`;
     badgeReductionEl.classList.remove('hidden');
   } else {
     badgeReductionEl.classList.add('hidden');
@@ -150,11 +195,11 @@ function processText() {
   // Update stripped elements telemetry
   const counts = stats.strippedCounts;
   statsBadgesEl.innerHTML = `
-    <span class="px-1.5 py-0.5 rounded bg-slate-800 ${counts.headings ? 'text-indigo-300 font-semibold' : 'text-slate-400'}">${counts.headings || 0} headings</span>
-    <span class="px-1.5 py-0.5 rounded bg-slate-800 ${counts.emphasis ? 'text-indigo-300 font-semibold' : 'text-slate-400'}">${counts.emphasis || 0} bold/italic</span>
-    <span class="px-1.5 py-0.5 rounded bg-slate-800 ${counts.codeBlocks ? 'text-indigo-300 font-semibold' : 'text-slate-400'}">${counts.codeBlocks || 0} code</span>
-    <span class="px-1.5 py-0.5 rounded bg-slate-800 ${counts.tables ? 'text-indigo-300 font-semibold' : 'text-slate-400'}">${counts.tables || 0} tables</span>
-    <span class="px-1.5 py-0.5 rounded bg-slate-800 ${counts.blockquotes ? 'text-indigo-300 font-semibold' : 'text-slate-400'}">${counts.blockquotes || 0} quotes</span>
+    <span class="px-1.5 py-0.5 rounded bg-slate-800 ${counts.headings ? 'text-indigo-300 font-semibold' : 'text-slate-400'}">${counts.headings || 0} ${t('optHeadings', 'headings')}</span>
+    <span class="px-1.5 py-0.5 rounded bg-slate-800 ${counts.emphasis ? 'text-indigo-300 font-semibold' : 'text-slate-400'}">${counts.emphasis || 0} ${t('optEmphasis', 'bold/italic')}</span>
+    <span class="px-1.5 py-0.5 rounded bg-slate-800 ${counts.codeBlocks ? 'text-indigo-300 font-semibold' : 'text-slate-400'}">${counts.codeBlocks || 0} ${t('codeBlocksLabel', 'code').replace(':', '')}</span>
+    <span class="px-1.5 py-0.5 rounded bg-slate-800 ${counts.tables ? 'text-indigo-300 font-semibold' : 'text-slate-400'}">${counts.tables || 0} ${t('tablesLabel', 'tables').replace(':', '')}</span>
+    <span class="px-1.5 py-0.5 rounded bg-slate-800 ${counts.blockquotes ? 'text-indigo-300 font-semibold' : 'text-slate-400'}">${counts.blockquotes || 0} ${t('optBlockquotes', 'quotes')}</span>
     <span class="px-1.5 py-0.5 rounded bg-slate-800 ${counts.fluff ? 'text-amber-300 font-semibold' : 'text-slate-400'}">${counts.fluff || 0} fluff</span>
   `;
 
@@ -167,13 +212,13 @@ function processText() {
 async function copyOutput() {
   const text = outputEl.value;
   if (!text) {
-    showToast('Nothing to copy!');
+    showToast(t('toastNothingToCopy', 'Nothing to copy!'));
     return;
   }
 
   try {
     await navigator.clipboard.writeText(text);
-    textCopy.textContent = 'Copied!';
+    textCopy.textContent = t('btnCopied', 'Copied!');
     btnCopy.classList.replace('bg-indigo-600', 'bg-emerald-600');
     btnCopy.classList.replace('hover:bg-indigo-500', 'hover:bg-emerald-500');
 
@@ -181,10 +226,10 @@ async function copyOutput() {
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
     `;
 
-    showToast('Cleaned text copied to clipboard!');
+    showToast(t('toastCopied', 'Cleaned text copied to clipboard!'));
 
     setTimeout(() => {
-      textCopy.textContent = 'Copy Text';
+      textCopy.textContent = t('btnCopy', 'Copy Text');
       btnCopy.classList.replace('bg-emerald-600', 'bg-indigo-600');
       btnCopy.classList.replace('hover:bg-emerald-500', 'hover:bg-indigo-500');
       iconCopy.innerHTML = `
@@ -192,10 +237,9 @@ async function copyOutput() {
       `;
     }, 1800);
   } catch (err) {
-    // Fallback if clipboard API is blocked
     outputEl.select();
     document.execCommand('copy');
-    showToast('Copied to clipboard (fallback)');
+    showToast(t('toastCopied', 'Copied to clipboard'));
   }
 }
 
@@ -208,11 +252,11 @@ async function pasteInput() {
     if (text) {
       inputEl.value = text;
       processText();
-      showToast('Pasted text from clipboard');
+      showToast(t('toastPasted', 'Pasted text from clipboard'));
     }
   } catch (err) {
     inputEl.focus();
-    showToast('Press Ctrl+V / Cmd+V to paste');
+    showToast('Ctrl+V / Cmd+V');
   }
 }
 
@@ -222,7 +266,7 @@ async function pasteInput() {
 function downloadOutput() {
   const text = outputEl.value;
   if (!text) {
-    showToast('Nothing to download!');
+    showToast(t('toastNothingToDownload', 'Nothing to download!'));
     return;
   }
 
@@ -236,7 +280,7 @@ function downloadOutput() {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  showToast(`Downloaded as .${ext}`);
+  showToast(`${t('toastDownloaded', 'Downloaded')} (demark-clean-output.${ext})`);
 }
 
 /**
@@ -247,11 +291,16 @@ function loadSample(sampleKey) {
   if (sample) {
     inputEl.value = sample.content;
     processText();
-    showToast(`Loaded sample: ${sample.title}`);
+    showToast(`${t('toastSampleLoaded', 'Loaded sample:')} ${sample.title}`);
   }
 }
 
 // Event Listeners
+
+// Language selection
+langSelect.addEventListener('change', (e) => {
+  setLanguage(e.target.value);
+});
 
 // Input typing
 inputEl.addEventListener('input', () => {
@@ -277,7 +326,7 @@ inputEl.addEventListener('drop', (e) => {
     reader.onload = (event) => {
       inputEl.value = event.target.result;
       processText();
-      showToast(`Loaded file: ${file.name}`);
+      showToast(`${t('toastSampleLoaded', 'Loaded file:')} ${file.name}`);
     };
     reader.readAsText(file);
   }
@@ -324,7 +373,7 @@ btnDownload.addEventListener('click', downloadOutput);
 btnClear.addEventListener('click', () => {
   inputEl.value = '';
   processText();
-  showToast('Cleared input');
+  showToast(t('toastCleared', 'Cleared input'));
 });
 
 // Presets
@@ -347,14 +396,14 @@ btnPresetMax.addEventListener('click', () => {
   };
   syncControlsFromState();
   processText();
-  showToast('Applied Max Strip preset');
+  showToast(t('presetMax', 'Applied Max Strip preset'));
 });
 
 btnPresetDefault.addEventListener('click', () => {
   state.options = { ...DEFAULT_OPTIONS };
   syncControlsFromState();
   processText();
-  showToast('Reset to Default rules');
+  showToast(t('presetDefault', 'Reset to Default rules'));
 });
 
 btnPresetPreserveCode.addEventListener('click', () => {
@@ -370,14 +419,17 @@ btnPresetPreserveCode.addEventListener('click', () => {
   };
   syncControlsFromState();
   processText();
-  showToast('Applied Preserve Code & Tables preset');
+  showToast(t('presetKeepCode', 'Applied Preserve Code & Tables preset'));
 });
 
 // Sample Buttons
 btnSampleChat.addEventListener('click', () => loadSample('conversational'));
 btnSampleCode.addEventListener('click', () => loadSample('technicalCode'));
 btnSampleTable.addEventListener('click', () => loadSample('tablesAndData'));
-btnSampleStress.addEventListener('click', () => loadSample('messyMarkdown'));
+if (btnSampleChinese) btnSampleChinese.addEventListener('click', () => loadSample('chinese'));
+if (btnSampleJapanese) btnSampleJapanese.addEventListener('click', () => loadSample('japanese'));
+if (btnSampleSpanish) btnSampleSpanish.addEventListener('click', () => loadSample('spanish'));
+if (btnSampleStress) btnSampleStress.addEventListener('click', () => loadSample('messyMarkdown'));
 
 // Modal Controls
 btnOpenApiModal.addEventListener('click', () => {
@@ -398,17 +450,16 @@ apiModal.addEventListener('click', (e) => {
 
 // Keyboard shortcuts
 window.addEventListener('keydown', (e) => {
-  // Ctrl+Enter or Cmd+Enter: Copy Clean Output
   if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
     e.preventDefault();
     copyOutput();
   }
-  // Escape: Close Modal
   if (e.key === 'Escape') {
     closeModal();
   }
 });
 
-// Initialize on page load: sync controls and load initial sample
+// Initialize on page load
+setLanguage(state.currentLang);
 syncControlsFromState();
-loadSample('conversational');
+loadSample(state.currentLang === 'zh' ? 'chinese' : state.currentLang === 'ja' ? 'japanese' : state.currentLang === 'es' ? 'spanish' : 'conversational');

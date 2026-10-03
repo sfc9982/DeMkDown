@@ -19,7 +19,7 @@ export const TRANSLATIONS = {
     collapseOptions: 'Collapse',
     expandOptions: 'Expand Config',
     navConfigBtn: 'Options',
-    configProtocolTitle: 'ISAC Protocol & Transformation Rules',
+    configProtocolTitle: 'Rules & Transformation Options',
     tooltipToggleOptions: 'Toggle Options Panel',
     
     // Toggles
@@ -104,7 +104,7 @@ export const TRANSLATIONS = {
   },
 
   zh: {
-    appTitle: 'DeMark 净化',
+    appTitle: 'DeMark',
     versionBadge: 'v1.0 语法树',
     edgeBadge: 'Cloudflare Pages',
     appSubtitle: '精准剔除 AI 生成文本中多余的 Markdown 格式与客套废话',
@@ -120,7 +120,7 @@ export const TRANSLATIONS = {
     collapseOptions: '收起配置',
     expandOptions: '展开配置',
     navConfigBtn: '规则配置',
-    configProtocolTitle: 'ISAC 净化协议与规则配置',
+    configProtocolTitle: '格式转换与处理规则',
     tooltipToggleOptions: '折叠/展开功能配置面板',
     
     // Toggles
@@ -165,8 +165,8 @@ export const TRANSLATIONS = {
     
     // Panels & Views
     inputTitle: '原始 AI Markdown 输入',
-    outputTitle: '净化输出结果',
-    viewClean: '净文',
+    outputTitle: '输出结果',
+    viewClean: '纯文本',
     viewDiff: '差异对比',
     diffModeText: '文本模式',
     diffModeLine: '按行对比',
@@ -180,10 +180,10 @@ export const TRANSLATIONS = {
     btnExport: '导出',
     tooltipPaste: '从剪贴板粘贴',
     tooltipClear: '清空输入',
-    tooltipCopy: '复制净化文本 (Ctrl+Enter)',
+    tooltipCopy: '复制文本 (Ctrl+Enter)',
     tooltipExport: '导出为文本文件',
-    inputPlaceholder: '在此粘贴由 ChatGPT、Claude、Gemini、DeepSeek 等 AI 生成的 Markdown 文本... 标题、表格、代码框、引用与寒暄套话将被实时自动净化。',
-    outputPlaceholder: '净化后的干净文本将自动呈现在这里...',
+    inputPlaceholder: '在此粘贴由 ChatGPT、Claude、Gemini、DeepSeek 等 AI 生成的 Markdown 文本... 标题、表格、代码框、引用与客套句式将被实时自动处理。',
+    outputPlaceholder: '处理后的纯净文本将自动呈现在这里...',
     inputFooter: '已启用 Remark 语法树解析',
     chars: '字符',
     words: '字数',
@@ -195,7 +195,7 @@ export const TRANSLATIONS = {
     poweredBy: '基于 Unified + Remark + GFM 深度解析',
     
     // Toasts
-    toastCopied: '已成功复制净化文本到剪贴板！',
+    toastCopied: '已成功复制到剪贴板！',
     toastPasted: '已从剪贴板粘贴文本',
     toastCleared: '已清空输入内容',
     toastSampleLoaded: '已加载样例：',

@@ -172,7 +172,7 @@ Content-Type: application/json
 
 #### cURL Example:
 ```bash
-curl -X POST https://demark.pages.dev/api/demark \
+curl -X POST https://demkdown.pages.dev/api/demark \
   -H "Content-Type: application/json" \
   -d '{
     "markdown": "Certainly! Here is your code:\n```js\nconsole.log(1);\n```\nHope this helps!",
@@ -201,7 +201,7 @@ You can deploy directly from your local terminal using Wrangler:
 npm run build
 
 # 2. Deploy to Cloudflare Pages
-npx wrangler pages deploy dist --project-name demark
+npx wrangler pages deploy dist --project-name demkdown
 ```
 
 ---
@@ -211,7 +211,7 @@ npx wrangler pages deploy dist --project-name demark
 The included `wrangler.toml` file is pre-configured for Cloudflare Pages:
 
 ```toml
-name = "demark"
+name = "demkdown"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = "dist"

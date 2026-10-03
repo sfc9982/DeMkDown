@@ -10,6 +10,7 @@ const MAX_BODY_SIZE = 1 * 1024 * 1024;
  * Falls back to the request's own origin for Pages preview deployments.
  */
 const ALLOWED_ORIGINS = [
+  'https://demkdown.pages.dev',
   'https://demark-3pj.pages.dev',
   'https://demark.pages.dev',
 ];
@@ -21,8 +22,8 @@ const ALLOWED_ORIGINS = [
 function resolveOrigin(request, env = null) {
   const origin = request.headers.get('Origin') || '';
   if (ALLOWED_ORIGINS.includes(origin)) return origin;
-  // Allow Cloudflare Pages preview deployments (*.demark-3pj.pages.dev)
-  if (/^https:\/\/[a-z0-9-]+\.demark-3pj\.pages\.dev$/.test(origin)) return origin;
+  // Allow Cloudflare Pages preview deployments (*.pages.dev)
+  if (/^https:\/\/[a-z0-9-]+\.(demkdown|demark-3pj)\.pages\.dev$/.test(origin) || /^https:\/\/[a-z0-9-]+\.pages\.dev$/.test(origin)) return origin;
   // Local development — only allowed when ENVIRONMENT is explicitly 'development' or 'local'
   const isDev = env?.ENVIRONMENT === 'development' || env?.ENVIRONMENT === 'local';
   if (isDev && /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {

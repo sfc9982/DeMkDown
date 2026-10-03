@@ -19,7 +19,7 @@ export const DEFAULT_OPTIONS = {
   stripBlockquotes: true,     // > blockquote
   codeBlocks: 'unwrap',       // 'unwrap' | 'remove' | 'preserve'
   tables: 'plain',            // 'plain' (aligned text) | 'tsv' | 'csv' | 'remove' | 'preserve'
-  links: 'text_only',         // 'text_only' | 'text_and_url' | 'remove' | 'preserve'
+  links: 'text_only',         // 'text_only' | 'url_only' | 'text_and_url' | 'remove' | 'preserve'
   images: 'remove',           // 'remove' | 'alt_only' | 'preserve'
   stripLists: false,          // true: remove bullet/number markers | false: preserve
   stripThematicBreaks: true,  // strip --- lines
@@ -371,9 +371,13 @@ function serializeASTToPlainText(rootNode, options, stats) {
           stats.strippedCounts.links = (stats.strippedCounts.links || 0) + 1;
           return linkText;
         }
+        if (options.links === 'url_only') {
+          stats.strippedCounts.links = (stats.strippedCounts.links || 0) + 1;
+          return n.url || '';
+        }
         if (options.links === 'text_and_url') {
           stats.strippedCounts.links = (stats.strippedCounts.links || 0) + 1;
-          return linkText ? `${linkText} (${n.url})` : n.url;
+          return linkText ? `${linkText} (${n.url})` : (n.url || '');
         }
         return `[${linkText}](${n.url})`;
       }
@@ -522,8 +526,12 @@ function transformASTForCleanMarkdown(tree, options, stats) {
           return index;
         }
         const linkText = toString(node);
-        const replacement =
-          options.links === 'text_and_url' ? `${linkText} (${node.url})` : linkText;
+        let replacement = linkText;
+        if (options.links === 'text_and_url') {
+          replacement = linkText ? `${linkText} (${node.url})` : (node.url || '');
+        } else if (options.links === 'url_only') {
+          replacement = node.url || '';
+        }
         parent.children.splice(index, 1, {
           type: 'text',
           value: replacement,
@@ -851,6 +859,9 @@ export function demark(inputMarkdown = '', userOptions = {}) {
         listItemIndent: 'one',
       })
       .stringify(tree);
+
+    // Unescape URLs where remarkStringify over-escapes colons (e.g. https\:// -> https://)
+    outputText = outputText.replace(/([a-zA-Z][a-zA-Z0-9+.-]*)\\:\/\//g, '$1://');
   }
 
   // Secondary text-level fluff cleanup check

@@ -53,6 +53,7 @@ Unlike regex-based search-and-replace tools that break on nested elements, multi
     - `preserve`: Keeps raw Markdown table syntax.
   - `links`:
     - `text_only`: `[Google](https://google.com)` → `Google`.
+    - `url_only`: `[Google](https://google.com)` → `https://google.com`.
     - `text_and_url`: `Google (https://google.com)`.
     - `remove`: Drops link entirely.
     - `preserve`: Keeps `[text](url)`.

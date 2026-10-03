@@ -160,4 +160,38 @@ if (r7.result.includes('In conclusion, by following')) throw new Error('English 
 if (r7.result.includes('As an AI language model')) throw new Error('English self reference failed to sanitize');
 console.log('Deep English AI fluff test passed! Fluff count:', r7.stats.strippedCounts.fluff);
 
+console.log('\n--- TEST 8: LINKS OPTIONS (URL ONLY, TEXT ONLY, TEXT AND URL, REMOVE) ---');
+const linkSample = `Check out [Cloudflare Pages](https://pages.cloudflare.com) and [GitHub](https://github.com) for details.`;
+
+// 1. url_only in plain mode
+const rLinkUrlPlain = demark(linkSample, { links: 'url_only', outputMode: 'plain' });
+if (!rLinkUrlPlain.result.includes('https://pages.cloudflare.com') || rLinkUrlPlain.result.includes('Cloudflare Pages')) {
+  throw new Error(`url_only failed in plain mode: ${rLinkUrlPlain.result}`);
+}
+
+// 2. url_only in markdown mode
+const rLinkUrlMd = demark(linkSample, { links: 'url_only', outputMode: 'markdown' });
+if (!rLinkUrlMd.result.includes('https://pages.cloudflare.com') || rLinkUrlMd.result.includes('[Cloudflare Pages]')) {
+  throw new Error(`url_only failed in markdown mode: ${rLinkUrlMd.result}`);
+}
+
+// 3. text_only
+const rLinkText = demark(linkSample, { links: 'text_only' });
+if (!rLinkText.result.includes('Cloudflare Pages') || rLinkText.result.includes('https://pages.cloudflare.com')) {
+  throw new Error(`text_only failed: ${rLinkText.result}`);
+}
+
+// 4. text_and_url
+const rLinkBoth = demark(linkSample, { links: 'text_and_url' });
+if (!rLinkBoth.result.includes('Cloudflare Pages (https://pages.cloudflare.com)')) {
+  throw new Error(`text_and_url failed: ${rLinkBoth.result}`);
+}
+
+// 5. remove
+const rLinkRemove = demark(linkSample, { links: 'remove' });
+if (rLinkRemove.result.includes('Cloudflare Pages') || rLinkRemove.result.includes('https://pages.cloudflare.com')) {
+  throw new Error(`remove links failed: ${rLinkRemove.result}`);
+}
+console.log('Links options test passed! Sample url_only output:', rLinkUrlPlain.result);
+
 console.log('\n--- ALL MULTILINGUAL & DEEP AI FLUFF TESTS PASSED! ---');

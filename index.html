@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeMark — AST-Based AI Markdown Stripper</title>
+  <meta name="description" content="Strip unwanted Markdown formatting, code fences, tables, emphasis, and AI conversational fluff using AST parsing. Built for Cloudflare Pages." />
+  <link rel="stylesheet" href="./src/style.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m7 15 5 5 5-5'/><path d='m7 9 5-5 5 5'/></svg>" />
+</head>
+<body class="h-full flex flex-col bg-slate-950 text-slate-100 antialiased selection:bg-indigo-500/30 selection:text-indigo-200">
+
+  <!-- Top Navigation Header -->
+  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur-md sticky top-0 z-30 px-4 lg:px-6 py-3">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Brand & Info -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 ring-1 ring-white/20">
+          <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-100 to-indigo-200 bg-clip-text text-transparent">DeMark</span>
+            <span class="text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">v1.0 AST</span>
+            <span class="hidden sm:inline-flex text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">Cloudflare Pages</span>
+          </div>
+          <p class="text-xs text-slate-400 hidden sm:block">Strip unwanted Markdown formatting from AI-generated text</p>
+        </div>
+      </div>
+
+      <!-- Quick Preset Samples & Mode Switcher -->
+      <div class="flex items-center flex-wrap gap-2">
+        <!-- Sample Presets Dropdown -->
+        <div class="relative inline-block text-left">
+          <div class="flex items-center rounded-lg bg-slate-800 border border-slate-700/80 p-0.5 text-xs text-slate-300">
+            <span class="px-2 text-slate-400 hidden md:inline">Sample:</span>
+            <button id="btnSampleChat" class="px-2.5 py-1 rounded hover:bg-slate-700 hover:text-white transition font-medium">Chatbot</button>
+            <button id="btnSampleCode" class="px-2.5 py-1 rounded hover:bg-slate-700 hover:text-white transition font-medium">Code</button>
+            <button id="btnSampleTable" class="px-2.5 py-1 rounded hover:bg-slate-700 hover:text-white transition font-medium">Tables</button>
+            <button id="btnSampleStress" class="px-2.5 py-1 rounded hover:bg-slate-700 hover:text-white transition font-medium hidden sm:inline-block">Stress</button>
+          </div>
+        </div>
+
+        <!-- Output Format Mode -->
+        <div class="flex items-center rounded-lg bg-slate-800/90 border border-slate-700/80 p-0.5 text-xs font-medium">
+          <button id="modePlain" class="px-3 py-1.5 rounded-md bg-indigo-600 text-white shadow-sm transition">Plain Text</button>
+          <button id="modeMarkdown" class="px-3 py-1.5 rounded-md text-slate-400 hover:text-white transition">Clean Markdown</button>
+        </div>
+
+        <!-- API Docs Modal Trigger -->
+        <button id="btnOpenApiModal" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700/80 text-slate-200 transition">
+          <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+          </svg>
+          <span>Pages API</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Options & Config Bar -->
+  <section class="border-b border-slate-800/80 bg-slate-900/50 px-4 lg:px-6 py-2.5 text-xs">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+      
+      <!-- Toggles & Selects -->
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-slate-300">
+        
+        <!-- Strip Headings -->
+        <label class="inline-flex items-center gap-1.5 cursor-pointer select-none">
+          <input type="checkbox" id="optStripHeadings" checked class="w-3.5 h-3.5 rounded border-slate-700 bg-slate-800 text-indigo-500 focus:ring-0 focus:ring-offset-0 transition cursor-pointer" />
+          <span class="hover:text-white">Headings</span>
+        </label>
+
+        <!-- Strip Inline Emphasis -->
+        <label class="inline-flex items-center gap-1.5 cursor-pointer select-none">
+          <input type="checkbox" id="optStripEmphasis" checked class="w-3.5 h-3.5 rounded border-slate-700 bg-slate-800 text-indigo-500 focus:ring-0 focus:ring-offset-0 transition cursor-pointer" />
+          <span class="hover:text-white">Emphasis <span class="text-slate-500">(**bold**, *italic*)</span></span>
+        </label>
+
+        <!-- Strip Inline Code -->
+        <label class="inline-flex items-center gap-1.5 cursor-pointer select-none">
+          <input type="checkbox" id="optStripInlineCode" checked class="w-3.5 h-3.5 rounded border-slate-700 bg-slate-800 text-indigo-500 focus:ring-0 focus:ring-offset-0 transition cursor-pointer" />
+          <span class="hover:text-white">Inline Code <span class="text-slate-500">(`x`)</span></span>
+        </label>
+
+        <!-- Strip Blockquotes -->
+        <label class="inline-flex items-center gap-1.5 cursor-pointer select-none">
+          <input type="checkbox" id="optStripBlockquotes" checked class="w-3.5 h-3.5 rounded border-slate-700 bg-slate-800 text-indigo-500 focus:ring-0 focus:ring-offset-0 transition cursor-pointer" />
+          <span class="hover:text-white">Blockquotes <span class="text-slate-500">(&gt;)</span></span>
+        </label>
+
+        <!-- Code Blocks Handling -->
+        <div class="inline-flex items-center gap-1.5">
+          <span class="text-slate-400">Code Blocks:</span>
+          <select id="optCodeBlocks" class="bg-slate-800 text-slate-200 border border-slate-700 rounded px-2 py-0.5 text-xs focus:outline-none focus:border-indigo-500">
+            <option value="unwrap" selected>Unwrap (Keep Code)</option>
+            <option value="remove">Strip Completely</option>
+            <option value="preserve">Preserve Fences (```)</option>
+          </select>
+        </div>
+
+        <!-- Tables Handling -->
+        <div class="inline-flex items-center gap-1.5">
+          <span class="text-slate-400">Tables:</span>
+          <select id="optTables" class="bg-slate-800 text-slate-200 border border-slate-700 rounded px-2 py-0.5 text-xs focus:outline-none focus:border-indigo-500">
+            <option value="plain" selected>Aligned Plain Text</option>
+            <option value="tsv">TSV (Excel / Sheets)</option>
+            <option value="csv">CSV</option>
+            <option value="remove">Strip Completely</option>
+            <option value="preserve">Preserve Markdown</option>
+          </select>
+        </div>
+
+        <!-- Links Handling -->
+        <div class="inline-flex items-center gap-1.5">
+          <span class="text-slate-400">Links:</span>
+          <select id="optLinks" class="bg-slate-800 text-slate-200 border border-slate-700 rounded px-2 py-0.5 text-xs focus:outline-none focus:border-indigo-500">
+            <option value="text_only" selected>Anchor Text Only</option>
+            <option value="text_and_url">Text + (URL)</option>
+            <option value="remove">Strip Completely</option>
+            <option value="preserve">Preserve Markdown</option>
+          </select>
+        </div>
+
+        <!-- Strip Lists -->
+        <label class="inline-flex items-center gap-1.5 cursor-pointer select-none">
+          <input type="checkbox" id="optStripLists" class="w-3.5 h-3.5 rounded border-slate-700 bg-slate-800 text-indigo-500 focus:ring-0 focus:ring-offset-0 transition cursor-pointer" />
+          <span class="hover:text-white">Strip Bullets/Numbers</span>
+        </label>
+
+        <!-- AI Conversational Fluff Cleaner -->
+        <label class="inline-flex items-center gap-1.5 cursor-pointer select-none font-medium text-indigo-300 bg-indigo-950/40 border border-indigo-800/40 px-2 py-0.5 rounded">
+          <input type="checkbox" id="optCleanFluff" checked class="w-3.5 h-3.5 rounded border-indigo-700 bg-slate-900 text-indigo-500 focus:ring-0 focus:ring-offset-0 transition cursor-pointer" />
+          <span>✨ Strip AI Fluff</span>
+        </label>
+
+      </div>
+
+      <!-- Quick Rule Presets -->
+      <div class="flex items-center gap-2 self-end md:self-auto shrink-0 text-slate-400">
+        <button id="btnPresetMax" class="hover:text-indigo-300 transition text-[11px] underline">Max Strip</button>
+        <span>•</span>
+        <button id="btnPresetDefault" class="hover:text-indigo-300 transition text-[11px] underline">Default</button>
+        <span>•</span>
+        <button id="btnPresetPreserveCode" class="hover:text-indigo-300 transition text-[11px] underline">Keep Code</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Main Split-View Workspace -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-6 flex flex-col min-h-0">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 min-h-[500px]">
+      
+      <!-- LEFT PANEL: Raw AI Markdown Input -->
+      <div class="flex flex-col rounded-xl border border-slate-800 bg-slate-900/60 overflow-hidden shadow-xl ring-1 ring-white/5">
+        
+        <!-- Input Header Toolbar -->
+        <div class="px-4 py-2.5 bg-slate-850 border-b border-slate-800 flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-amber-400/80"></span>
+            <span class="font-semibold text-slate-200">Raw AI Markdown Input</span>
+            <span id="inputBadgeStats" class="text-[11px] text-slate-400 font-mono">0 chars • 0 words</span>
+          </div>
+          
+          <div class="flex items-center gap-2">
+            <button id="btnPaste" title="Paste from clipboard" class="flex items-center gap-1 px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              <span>Paste</span>
+            </button>
+            <button id="btnClear" title="Clear input text" class="flex items-center gap-1 px-2.5 py-1 rounded bg-slate-800 hover:bg-red-950/60 text-slate-400 hover:text-red-300 transition">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              <span>Clear</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Input Textarea -->
+        <div class="flex-1 relative bg-slate-950/40">
+          <textarea
+            id="inputMarkdown"
+            spellcheck="false"
+            placeholder="Paste your AI-generated response here (ChatGPT, Claude, Gemini, DeepSeek, Copilot, etc.)... Markdown headings, tables, code fences, blockquotes, and fluff will be stripped automatically in real-time."
+            class="w-full h-full p-4 bg-transparent text-slate-200 placeholder-slate-600 focus:outline-none resize-none font-mono-code text-sm leading-relaxed"
+          ></textarea>
+        </div>
+
+        <!-- Input Footer Info -->
+        <div class="px-4 py-2 bg-slate-900/40 border-t border-slate-800/80 text-[11px] text-slate-500 flex items-center justify-between">
+          <span>Remark AST Parsing Enabled</span>
+          <span id="inputLinesCount">0 lines</span>
+        </div>
+
+      </div>
+
+      <!-- RIGHT PANEL: Clean Output -->
+      <div class="flex flex-col rounded-xl border border-indigo-900/40 bg-slate-900/60 overflow-hidden shadow-xl ring-1 ring-indigo-500/10">
+        
+        <!-- Output Header Toolbar -->
+        <div class="px-4 py-2.5 bg-slate-850 border-b border-slate-800 flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span class="font-semibold text-slate-200">Clean Output</span>
+            <span id="outputBadgeStats" class="text-[11px] text-slate-400 font-mono">0 chars • 0 words</span>
+            <span id="badgeReduction" class="text-[10px] font-semibold tracking-wide px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hidden">0% cleaner</span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <!-- Copy Output Button -->
+            <button id="btnCopy" class="flex items-center gap-1.5 px-3 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white font-medium shadow-sm transition">
+              <svg id="iconCopy" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              <span id="textCopy">Copy Text</span>
+            </button>
+
+            <!-- Download Button -->
+            <button id="btnDownload" title="Download as text file" class="flex items-center gap-1 px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span class="hidden sm:inline">Export</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Output Display Area -->
+        <div class="flex-1 relative bg-slate-950/40">
+          <textarea
+            id="outputClean"
+            readonly
+            placeholder="Cleaned plain text will appear here automatically..."
+            class="w-full h-full p-4 bg-transparent text-slate-200 placeholder-slate-600 focus:outline-none resize-none font-mono-code text-sm leading-relaxed"
+          ></textarea>
+        </div>
+
+        <!-- Output Footer Telemetry -->
+        <div class="px-4 py-2 bg-slate-900/40 border-t border-slate-800/80 text-[11px] text-slate-400 flex flex-wrap items-center justify-between gap-2">
+          <div id="statsBadges" class="flex items-center flex-wrap gap-1.5 text-[10px]">
+            <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">0 headings</span>
+            <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">0 bold/italic</span>
+            <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">0 code</span>
+            <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">0 tables</span>
+            <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">0 fluff</span>
+          </div>
+          <span id="outputPerf" class="text-slate-500 font-mono">0.0ms</span>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Live Stats Strip -->
+  <footer class="border-t border-slate-800 bg-slate-900/80 px-4 lg:px-6 py-2.5 text-xs text-slate-400">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          <span>Zero-Latency Client Engine</span>
+        </span>
+        <span>•</span>
+        <span class="text-slate-500">Cloudflare V8 Compatible AST Processor</span>
+      </div>
+      <div class="flex items-center gap-3 text-slate-500">
+        <span>Powered by Unified + Remark + GFM</span>
+        <span>•</span>
+        <a href="https://developers.cloudflare.com/pages/functions/" target="_blank" rel="noopener noreferrer" class="hover:text-slate-300 transition underline">Cloudflare Pages Docs</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- API Documentation Modal -->
+  <div id="apiModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
+      
+      <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+        <div class="flex items-center gap-2">
+          <span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 text-xs font-mono font-semibold">POST /api/demark</span>
+          <h2 class="text-base font-bold text-white">Cloudflare Pages Functions API</h2>
+        </div>
+        <button id="btnCloseApiModal" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="py-4 space-y-4 text-xs text-slate-300 leading-relaxed">
+        <p>
+          DeMark provides a native Cloudflare Pages Function at <code class="text-indigo-300 bg-slate-800 px-1.5 py-0.5 rounded font-mono">/api/demark</code> powered by Cloudflare Workers V8 runtime and standard Web <code class="text-slate-200">Request</code> / <code class="text-slate-200">Response</code> APIs.
+        </p>
+
+        <div>
+          <h3 class="font-semibold text-slate-100 mb-1.5">cURL Example:</h3>
+          <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-emerald-400 font-mono overflow-x-auto select-all">curl -X POST https://demark.pages.dev/api/demark \
+  -H "Content-Type: application/json" \
+  -d '{
+    "markdown": "# Hello World\nCertainly! This is **bold** text.",
+    "options": {
+      "outputMode": "plain",
+      "stripHeadings": true,
+      "stripEmphasis": true,
+      "cleanAIFluff": true
+    }
+  }'</pre>
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-slate-100 mb-1.5">JavaScript / Fetch Example:</h3>
+          <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-indigo-300 font-mono overflow-x-auto select-all">const response = await fetch('/api/demark', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    markdown: rawAIText,
+    options: { outputMode: 'plain', cleanAIFluff: true }
+  })
+});
+const { success, result, stats } = await response.json();
+console.log(result);</pre>
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-slate-100 mb-1.5">Response Schema:</h3>
+          <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-amber-300 font-mono overflow-x-auto">{
+  "success": true,
+  "result": "Hello World\nThis is bold text.",
+  "stats": {
+    "inputLength": 45,
+    "outputLength": 28,
+    "charReductionPercent": 37.8,
+    "strippedCounts": { "headings": 1, "emphasis": 1, "fluff": 1 }
+  }
+}</pre>
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-slate-800 flex justify-end">
+        <button id="btnGotItApiModal" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs transition">Got it</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-12 right-6 z-50 pointer-events-none hidden items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 text-white border border-slate-700 shadow-2xl text-xs font-medium">
+    <svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+    </svg>
+    <span id="toastMessage">Copied to clipboard!</span>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

@@ -16,6 +16,11 @@ export const TRANSLATIONS = {
     modePlain: 'Plain Text',
     modeMarkdown: 'Clean Markdown',
     apiDocsBtn: 'Pages API',
+    collapseOptions: 'Collapse',
+    expandOptions: 'Expand Config',
+    navConfigBtn: 'Options',
+    configProtocolTitle: 'ISAC Protocol & Transformation Rules',
+    tooltipToggleOptions: 'Toggle Options Panel',
     
     // Toggles
     optHeadings: 'Headings',
@@ -112,6 +117,11 @@ export const TRANSLATIONS = {
     modePlain: '纯文本模式',
     modeMarkdown: '精炼 Markdown',
     apiDocsBtn: 'API 接口',
+    collapseOptions: '收起配置',
+    expandOptions: '展开配置',
+    navConfigBtn: '规则配置',
+    configProtocolTitle: 'ISAC 净化协议与规则配置',
+    tooltipToggleOptions: '折叠/展开功能配置面板',
     
     // Toggles
     optHeadings: '剥离标题',

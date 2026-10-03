@@ -31,6 +31,7 @@ const LANG_LABELS = {
 const state = {
   options: { ...DEFAULT_OPTIONS },
   currentLang: localStorage.getItem('demark_lang') || (navigator.language.startsWith('zh') ? 'zh' : 'en'),
+  optionsCollapsed: localStorage.getItem('demark_options_collapsed') === 'true',
   viewMode: 'clean', // 'clean' | 'diff'
   diffMode: 'text',  // 'text' | 'line'
   lastResult: '',
@@ -43,6 +44,17 @@ const langDropdownBtn = document.getElementById('langDropdownBtn');
 const langMenu = document.getElementById('langMenu');
 const langChevron = document.getElementById('langChevron');
 const langCurrentLabel = document.getElementById('langCurrentLabel');
+
+// Collapsible Options Panel Elements
+const optionsHeaderBar = document.getElementById('optionsHeaderBar');
+const optionsBody = document.getElementById('optionsBody');
+const btnToggleOptions = document.getElementById('btnToggleOptions');
+const txtToggleOptions = document.getElementById('txtToggleOptions');
+const iconToggleOptions = document.getElementById('iconToggleOptions');
+const btnNavToggleOptions = document.getElementById('btnNavToggleOptions');
+const navToggleOptionsText = document.getElementById('navToggleOptionsText');
+const navToggleOptionsChevron = document.getElementById('navToggleOptionsChevron');
+const configSummaryBadge = document.getElementById('configSummaryBadge');
 
 const inputEl = document.getElementById('inputMarkdown');
 const outputEl = document.getElementById('outputClean');
@@ -169,6 +181,15 @@ function setLanguage(lang) {
   inputEl.placeholder = t('inputPlaceholder');
   outputEl.placeholder = t('outputPlaceholder');
 
+  // Update collapsible toggle labels and summary
+  if (txtToggleOptions) {
+    txtToggleOptions.textContent = state.optionsCollapsed ? t('expandOptions', '展开配置') : t('collapseOptions', '收起配置');
+  }
+  if (navToggleOptionsText) {
+    navToggleOptionsText.textContent = t('navConfigBtn', '规则配置');
+  }
+  updateConfigSummary();
+
   // Re-run process to refresh localized badges
   processText();
 }
@@ -234,6 +255,8 @@ function syncControlsFromState() {
     modeMarkdownBtn.className = 'px-3.5 py-1 bg-orange-600 text-white font-medium shadow-[0_0_12px_rgba(255,107,0,0.5)] border border-orange-400/50 transition';
     modePlainBtn.className = 'px-3.5 py-1 text-slate-400 hover:text-orange-300 transition';
   }
+
+  updateConfigSummary();
 }
 
 /**
@@ -249,6 +272,87 @@ function readOptionsFromControls() {
   state.options.links = optLinks.value;
   state.options.stripLists = optStripLists.checked;
   state.options.cleanAIFluff = optCleanFluff.checked;
+
+  updateConfigSummary();
+}
+
+/**
+ * Update the dynamic telemetry summary badge in the options header bar
+ */
+function updateConfigSummary() {
+  if (!configSummaryBadge) return;
+  const isZh = state.currentLang === 'zh';
+
+  // Count basic active strip options
+  let basicCount = 0;
+  if (state.options.stripHeadings) basicCount++;
+  if (state.options.stripEmphasis) basicCount++;
+  if (state.options.stripInlineCode) basicCount++;
+  if (state.options.stripBlockquotes) basicCount++;
+  if (state.options.stripLists) basicCount++;
+
+  const basicStr = isZh ? `${basicCount}项基础剥离` : `${basicCount} Strip Rules`;
+
+  // Code Block Mode
+  let codeStr = '';
+  if (state.options.codeBlocks === 'unwrap') codeStr = isZh ? '保留代码' : 'Unwrap Code';
+  else if (state.options.codeBlocks === 'remove') codeStr = isZh ? '剔除代码' : 'Remove Code';
+  else codeStr = isZh ? '保留代码框' : 'Keep Fences';
+
+  // Table Mode
+  let tableStr = '';
+  if (state.options.tables === 'plain') tableStr = isZh ? '纯文本表格' : 'Aligned Tables';
+  else if (state.options.tables === 'tsv') tableStr = 'TSV';
+  else if (state.options.tables === 'csv') tableStr = 'CSV';
+  else if (state.options.tables === 'remove') tableStr = isZh ? '剔除表格' : 'Remove Tables';
+  else tableStr = isZh ? '保留表格' : 'Keep Tables';
+
+  // Links Mode
+  let linkStr = '';
+  if (state.options.links === 'text_only') linkStr = isZh ? '仅文字' : 'Text Only';
+  else if (state.options.links === 'url_only') linkStr = 'URL Only';
+  else if (state.options.links === 'text_and_url') linkStr = isZh ? '文字+URL' : 'Text+URL';
+  else if (state.options.links === 'remove') linkStr = isZh ? '剔除链接' : 'No Links';
+  else linkStr = isZh ? '保留链接' : 'Keep Links';
+
+  // AI Fluff
+  const aiStr = state.options.cleanAIFluff 
+    ? (isZh ? '✨AI过滤开启' : '✨AI Filter On')
+    : (isZh ? 'AI过滤关闭' : 'AI Filter Off');
+
+  configSummaryBadge.textContent = `${basicStr} · ${codeStr} · ${tableStr} · ${linkStr} · ${aiStr}`;
+}
+
+/**
+ * Set and animate the collapsed/expanded state of the Options & Config Bar
+ */
+function setOptionsCollapsed(collapsed) {
+  state.optionsCollapsed = Boolean(collapsed);
+  localStorage.setItem('demark_options_collapsed', state.optionsCollapsed ? 'true' : 'false');
+
+  if (!optionsBody) return;
+
+  if (state.optionsCollapsed) {
+    // Collapse
+    optionsBody.classList.remove('max-h-[600px]', 'opacity-100', 'pb-2.5');
+    optionsBody.classList.add('max-h-0', 'opacity-0', 'pointer-events-none', 'pb-0');
+
+    if (txtToggleOptions) txtToggleOptions.textContent = t('expandOptions', '展开配置');
+    if (iconToggleOptions) iconToggleOptions.classList.remove('rotate-180');
+    if (navToggleOptionsChevron) navToggleOptionsChevron.classList.remove('rotate-180');
+  } else {
+    // Expand
+    optionsBody.classList.remove('max-h-0', 'opacity-0', 'pointer-events-none', 'pb-0');
+    optionsBody.classList.add('max-h-[600px]', 'opacity-100', 'pb-2.5');
+
+    if (txtToggleOptions) txtToggleOptions.textContent = t('collapseOptions', '收起配置');
+    if (iconToggleOptions) iconToggleOptions.classList.add('rotate-180');
+    if (navToggleOptionsChevron) navToggleOptionsChevron.classList.add('rotate-180');
+  }
+}
+
+function toggleOptionsCollapsed() {
+  setOptionsCollapsed(!state.optionsCollapsed);
 }
 
 /**
@@ -683,7 +787,22 @@ window.addEventListener('keydown', (e) => {
   }
 });
 
+// Collapsible Options Panel Listeners
+if (optionsHeaderBar) {
+  optionsHeaderBar.addEventListener('click', toggleOptionsCollapsed);
+}
+if (btnToggleOptions) {
+  btnToggleOptions.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleOptionsCollapsed();
+  });
+}
+if (btnNavToggleOptions) {
+  btnNavToggleOptions.addEventListener('click', toggleOptionsCollapsed);
+}
+
 // Initialize on page load
 setLanguage(state.currentLang);
 syncControlsFromState();
+setOptionsCollapsed(state.optionsCollapsed);
 loadSample(state.currentLang === 'zh' ? 'chinese' : 'conversational');

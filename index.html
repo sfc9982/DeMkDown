@@ -82,6 +82,22 @@
           </div>
         </div>
 
+        <!-- Options Bar Toggle Button -->
+        <button
+          id="btnNavToggleOptions"
+          data-i18n-title="tooltipToggleOptions"
+          title="Toggle Options Panel"
+          class="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium bg-[#0d1424]/90 hover:bg-[#131d33] border border-orange-500/20 text-slate-200 hover:text-orange-200 transition shadow-sm cursor-pointer select-none"
+        >
+          <svg class="w-4 h-4 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+          </svg>
+          <span id="navToggleOptionsText" data-i18n="navConfigBtn">规则配置</span>
+          <svg id="navToggleOptionsChevron" class="w-3.5 h-3.5 text-orange-400 transition-transform duration-200 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
         <!-- API Docs Modal Trigger -->
         <button id="btnOpenApiModal" class="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium bg-[#0d1424]/90 hover:bg-[#131d33] border border-orange-500/20 text-slate-200 transition shadow-sm">
           <svg class="w-4 h-4 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -95,101 +111,135 @@
     </div>
   </header>
 
-  <!-- Options & Config Bar (Zoned Functional Sections) -->
-  <section class="border-b border-orange-500/20 bg-[#090e17]/70 backdrop-blur-md px-4 lg:px-6 py-2.5">
-    <div class="max-w-7xl mx-auto flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-3">
+  <!-- Options & Config Bar (Collapsible Functional Sections) -->
+  <section id="optionsSection" class="border-b border-orange-500/20 bg-[#090e17]/70 backdrop-blur-md px-4 lg:px-6 transition-all duration-300">
+    <div class="max-w-7xl mx-auto">
       
-      <!-- Functional Groups Container -->
-      <div class="flex flex-wrap items-center gap-2.5 sm:gap-3 text-slate-200 flex-1">
-        
-        <!-- Group 1: 格式剥离 (Formatting) -->
-        <div class="flex flex-wrap items-center gap-3 px-3.5 py-1.5 bg-[#060a12]/80 border border-slate-800/90 shadow-inner">
-          <span data-i18n="groupFormatting" class="text-[11px] font-bold uppercase tracking-wider text-orange-400/80 font-mono select-none mr-0.5">基础剥离</span>
-          
-          <!-- Strip Headings -->
-          <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-orange-200 transition">
-            <input type="checkbox" id="optStripHeadings" checked class="w-4 h-4 rounded-none border-slate-700 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
-            <span data-i18n="optHeadings">Headings</span>
-          </label>
+      <!-- Collapsible Header Strip -->
+      <div id="optionsHeaderBar" class="flex items-center justify-between py-2 cursor-pointer select-none group" title="Click to collapse / expand options">
+        <div class="flex items-center gap-2.5 flex-wrap">
+          <div class="flex items-center gap-2">
+            <span class="w-1.5 h-1.5 bg-orange-500 shadow-[0_0_6px_#ff6b00]"></span>
+            <span data-i18n="configProtocolTitle" class="text-xs font-mono font-bold tracking-wider uppercase text-orange-400/90 group-hover:text-orange-300 transition">ISAC 净化协议与规则配置 // CONFIG PROTOCOL</span>
+          </div>
 
-          <!-- Strip Inline Emphasis -->
-          <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-orange-200 transition">
-            <input type="checkbox" id="optStripEmphasis" checked class="w-4 h-4 rounded-none border-slate-700 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
-            <span><span data-i18n="optEmphasis">Emphasis</span> <span class="text-slate-400 text-xs">(**bold**)</span></span>
-          </label>
-
-          <!-- Strip Inline Code -->
-          <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-orange-200 transition">
-            <input type="checkbox" id="optStripInlineCode" checked class="w-4 h-4 rounded-none border-slate-700 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
-            <span><span data-i18n="optInlineCode">Inline Code</span> <span class="text-slate-400 text-xs">(`code`)</span></span>
-          </label>
-
-          <!-- Strip Blockquotes -->
-          <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-orange-200 transition">
-            <input type="checkbox" id="optStripBlockquotes" checked class="w-4 h-4 rounded-none border-slate-700 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
-            <span><span data-i18n="optBlockquotes">Blockquotes</span> <span class="text-slate-400 text-xs">(&gt;)</span></span>
-          </label>
-
-          <!-- Strip Lists -->
-          <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-orange-200 transition">
-            <input type="checkbox" id="optStripLists" class="w-4 h-4 rounded-none border-slate-700 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
-            <span data-i18n="optStripLists">Strip Bullets</span>
-          </label>
+          <!-- Live telemetry badge summarizing active rules -->
+          <span id="configSummaryBadge" class="text-[11px] font-mono text-orange-300/80 bg-slate-900/90 px-2.5 py-0.5 border border-orange-500/20">4 基础剥离 · Unwrap Code · Aligned Tables · ✨AI过滤</span>
         </div>
 
-        <!-- Group 2: 代码与表格转换 (Blocks & Tables) -->
-        <div class="flex flex-wrap items-center gap-3 px-3.5 py-1.5 bg-[#060a12]/80 border border-slate-800/90 shadow-inner">
-          <span data-i18n="groupBlocks" class="text-[11px] font-bold uppercase tracking-wider text-orange-400/80 font-mono select-none mr-0.5">结构转换</span>
-          
-          <!-- Code Blocks Handling -->
-          <div class="inline-flex items-center gap-1.5">
-            <span data-i18n="codeBlocksLabel" class="text-xs sm:text-sm text-slate-300 font-medium">Code:</span>
-            <select id="optCodeBlocks" class="bg-slate-900 hover:bg-slate-850 text-slate-100 border border-slate-700 px-2.5 py-1 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/60 cursor-pointer">
-              <option value="unwrap" data-i18n="codeUnwrap" selected>Unwrap (Keep Code)</option>
-              <option value="remove" data-i18n="codeRemove">Strip Completely</option>
-              <option value="preserve" data-i18n="codePreserve">Preserve Fences (```)</option>
-            </select>
-          </div>
-
-          <!-- Tables Handling -->
-          <div class="inline-flex items-center gap-1.5">
-            <span data-i18n="tablesLabel" class="text-xs sm:text-sm text-slate-300 font-medium">Tables:</span>
-            <select id="optTables" class="bg-slate-900 hover:bg-slate-850 text-slate-100 border border-slate-700 px-2.5 py-1 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/60 cursor-pointer">
-              <option value="plain" data-i18n="tablePlain" selected>Aligned Plain Text</option>
-              <option value="tsv" data-i18n="tableTSV">TSV (Excel / Sheets)</option>
-              <option value="csv" data-i18n="tableCSV">CSV</option>
-              <option value="remove" data-i18n="tableRemove">Strip Completely</option>
-              <option value="preserve" data-i18n="tablePreserve">Preserve Markdown</option>
-            </select>
-          </div>
-
-          <!-- Links Handling -->
-          <div class="inline-flex items-center gap-1.5">
-            <span data-i18n="linksLabel" class="text-xs sm:text-sm text-slate-300 font-medium">Links:</span>
-            <select id="optLinks" class="bg-slate-900 hover:bg-slate-850 text-slate-100 border border-slate-700 px-2.5 py-1 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/60 cursor-pointer">
-              <option value="text_only" data-i18n="linkTextOnly" selected>Anchor Text Only</option>
-              <option value="url_only" data-i18n="linkUrlOnly">URL Only</option>
-              <option value="text_and_url" data-i18n="linkTextUrl">Text + (URL)</option>
-              <option value="remove" data-i18n="linkRemove">Strip Completely</option>
-              <option value="preserve" data-i18n="linkPreserve">Preserve Markdown</option>
-            </select>
-          </div>
+        <!-- Collapse / Expand Trigger Button -->
+        <div class="flex items-center gap-2">
+          <button
+            id="btnToggleOptions"
+            type="button"
+            class="flex items-center gap-1.5 px-2.5 py-1 text-xs font-mono text-slate-300 hover:text-orange-200 bg-slate-900 hover:bg-orange-500/20 border border-slate-750 transition cursor-pointer select-none"
+          >
+            <span id="txtToggleOptions" data-i18n="collapseOptions">收起配置</span>
+            <svg id="iconToggleOptions" class="w-3.5 h-3.5 text-orange-400 transition-transform duration-200 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
         </div>
-
-        <!-- Group 3: 核心净化 (AI Tone Cleaner) -->
-        <label class="inline-flex items-center gap-2 cursor-pointer select-none font-semibold text-xs sm:text-sm text-orange-200 bg-gradient-to-r from-orange-950/80 via-amber-950/60 to-slate-950 hover:from-orange-900/80 hover:to-amber-900/60 border border-orange-500/50 px-3.5 py-1.5 shadow-[0_0_12px_rgba(255,107,0,0.2)] transition">
-          <input type="checkbox" id="optCleanFluff" checked class="w-4 h-4 rounded-none border-orange-500 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
-          <span data-i18n="optCleanFluff">✨ 过滤 AI 句式</span>
-        </label>
-
       </div>
 
-      <!-- Group 4: 快速预设 (Presets) -->
-      <div class="flex items-center gap-1.5 self-end xl:self-auto shrink-0 px-3 py-1.5 bg-[#060a12]/80 border border-slate-800/90 shadow-inner">
-        <span data-i18n="groupPresets" class="text-[11px] font-bold uppercase tracking-wider text-orange-400/80 font-mono select-none mr-1">预设</span>
-        <button id="btnPresetMax" data-i18n="presetMax" class="px-2.5 py-1 bg-slate-900 hover:bg-orange-500/20 hover:text-orange-200 text-slate-300 transition text-xs font-medium border border-slate-750 shadow-sm">Max Strip</button>
-        <button id="btnPresetDefault" data-i18n="presetDefault" class="px-2.5 py-1 bg-slate-900 hover:bg-orange-500/20 hover:text-orange-200 text-slate-300 transition text-xs font-medium border border-slate-750 shadow-sm">Default</button>
-        <button id="btnPresetPreserveCode" data-i18n="presetKeepCode" class="px-2.5 py-1 bg-slate-900 hover:bg-orange-500/20 hover:text-orange-200 text-slate-300 transition text-xs font-medium border border-slate-750 shadow-sm">Keep Code</button>
+      <!-- Collapsible Body Content -->
+      <div id="optionsBody" class="transition-all duration-300 ease-in-out overflow-hidden max-h-[600px] opacity-100 pb-2.5">
+        <div class="flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-3 pt-1.5 border-t border-slate-800/60">
+          
+          <!-- Functional Groups Container -->
+          <div class="flex flex-wrap items-center gap-2.5 sm:gap-3 text-slate-200 flex-1">
+            
+            <!-- Group 1: 格式剥离 (Formatting) -->
+            <div class="flex flex-wrap items-center gap-3 px-3.5 py-1.5 bg-[#060a12]/80 border border-slate-800/90 shadow-inner">
+              <span data-i18n="groupFormatting" class="text-[11px] font-bold uppercase tracking-wider text-orange-400/80 font-mono select-none mr-0.5">基础剥离</span>
+              
+              <!-- Strip Headings -->
+              <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-orange-200 transition">
+                <input type="checkbox" id="optStripHeadings" checked class="w-4 h-4 rounded-none border-slate-700 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
+                <span data-i18n="optHeadings">Headings</span>
+              </label>
+
+              <!-- Strip Inline Emphasis -->
+              <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-orange-200 transition">
+                <input type="checkbox" id="optStripEmphasis" checked class="w-4 h-4 rounded-none border-slate-700 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
+                <span><span data-i18n="optEmphasis">Emphasis</span> <span class="text-slate-400 text-xs">(**bold**)</span></span>
+              </label>
+
+              <!-- Strip Inline Code -->
+              <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-orange-200 transition">
+                <input type="checkbox" id="optStripInlineCode" checked class="w-4 h-4 rounded-none border-slate-700 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
+                <span><span data-i18n="optInlineCode">Inline Code</span> <span class="text-slate-400 text-xs">(`code`)</span></span>
+              </label>
+
+              <!-- Strip Blockquotes -->
+              <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-orange-200 transition">
+                <input type="checkbox" id="optStripBlockquotes" checked class="w-4 h-4 rounded-none border-slate-700 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
+                <span><span data-i18n="optBlockquotes">Blockquotes</span> <span class="text-slate-400 text-xs">(&gt;)</span></span>
+              </label>
+
+              <!-- Strip Lists -->
+              <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-orange-200 transition">
+                <input type="checkbox" id="optStripLists" class="w-4 h-4 rounded-none border-slate-700 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
+                <span data-i18n="optStripLists">Strip Bullets</span>
+              </label>
+            </div>
+
+            <!-- Group 2: 代码与表格转换 (Blocks & Tables) -->
+            <div class="flex flex-wrap items-center gap-3 px-3.5 py-1.5 bg-[#060a12]/80 border border-slate-800/90 shadow-inner">
+              <span data-i18n="groupBlocks" class="text-[11px] font-bold uppercase tracking-wider text-orange-400/80 font-mono select-none mr-0.5">结构转换</span>
+              
+              <!-- Code Blocks Handling -->
+              <div class="inline-flex items-center gap-1.5">
+                <span data-i18n="codeBlocksLabel" class="text-xs sm:text-sm text-slate-300 font-medium">Code:</span>
+                <select id="optCodeBlocks" class="bg-slate-900 hover:bg-slate-850 text-slate-100 border border-slate-700 px-2.5 py-1 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/60 cursor-pointer">
+                  <option value="unwrap" data-i18n="codeUnwrap" selected>Unwrap (Keep Code)</option>
+                  <option value="remove" data-i18n="codeRemove">Strip Completely</option>
+                  <option value="preserve" data-i18n="codePreserve">Preserve Fences (```)</option>
+                </select>
+              </div>
+
+              <!-- Tables Handling -->
+              <div class="inline-flex items-center gap-1.5">
+                <span data-i18n="tablesLabel" class="text-xs sm:text-sm text-slate-300 font-medium">Tables:</span>
+                <select id="optTables" class="bg-slate-900 hover:bg-slate-850 text-slate-100 border border-slate-700 px-2.5 py-1 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/60 cursor-pointer">
+                  <option value="plain" data-i18n="tablePlain" selected>Aligned Plain Text</option>
+                  <option value="tsv" data-i18n="tableTSV">TSV (Excel / Sheets)</option>
+                  <option value="csv" data-i18n="tableCSV">CSV</option>
+                  <option value="remove" data-i18n="tableRemove">Strip Completely</option>
+                  <option value="preserve" data-i18n="tablePreserve">Preserve Markdown</option>
+                </select>
+              </div>
+
+              <!-- Links Handling -->
+              <div class="inline-flex items-center gap-1.5">
+                <span data-i18n="linksLabel" class="text-xs sm:text-sm text-slate-300 font-medium">Links:</span>
+                <select id="optLinks" class="bg-slate-900 hover:bg-slate-850 text-slate-100 border border-slate-700 px-2.5 py-1 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/60 cursor-pointer">
+                  <option value="text_only" data-i18n="linkTextOnly" selected>Anchor Text Only</option>
+                  <option value="url_only" data-i18n="linkUrlOnly">URL Only</option>
+                  <option value="text_and_url" data-i18n="linkTextUrl">Text + (URL)</option>
+                  <option value="remove" data-i18n="linkRemove">Strip Completely</option>
+                  <option value="preserve" data-i18n="linkPreserve">Preserve Markdown</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Group 3: 核心净化 (AI Tone Cleaner) -->
+            <label class="inline-flex items-center gap-2 cursor-pointer select-none font-semibold text-xs sm:text-sm text-orange-200 bg-gradient-to-r from-orange-950/80 via-amber-950/60 to-slate-950 hover:from-orange-900/80 hover:to-amber-900/60 border border-orange-500/50 px-3.5 py-1.5 shadow-[0_0_12px_rgba(255,107,0,0.2)] transition">
+              <input type="checkbox" id="optCleanFluff" checked class="w-4 h-4 rounded-none border-orange-500 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
+              <span data-i18n="optCleanFluff">✨ 过滤 AI 句式</span>
+            </label>
+
+          </div>
+
+          <!-- Group 4: 快速预设 (Presets) -->
+          <div class="flex items-center gap-1.5 self-end xl:self-auto shrink-0 px-3 py-1.5 bg-[#060a12]/80 border border-slate-800/90 shadow-inner">
+            <span data-i18n="groupPresets" class="text-[11px] font-bold uppercase tracking-wider text-orange-400/80 font-mono select-none mr-1">预设</span>
+            <button id="btnPresetMax" data-i18n="presetMax" class="px-2.5 py-1 bg-slate-900 hover:bg-orange-500/20 hover:text-orange-200 text-slate-300 transition text-xs font-medium border border-slate-750 shadow-sm">Max Strip</button>
+            <button id="btnPresetDefault" data-i18n="presetDefault" class="px-2.5 py-1 bg-slate-900 hover:bg-orange-500/20 hover:text-orange-200 text-slate-300 transition text-xs font-medium border border-slate-750 shadow-sm">Default</button>
+            <button id="btnPresetPreserveCode" data-i18n="presetKeepCode" class="px-2.5 py-1 bg-slate-900 hover:bg-orange-500/20 hover:text-orange-200 text-slate-300 transition text-xs font-medium border border-slate-750 shadow-sm">Keep Code</button>
+          </div>
+
+        </div>
       </div>
 
     </div>

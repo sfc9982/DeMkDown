@@ -1,0 +1,36 @@
+{
+  "$schema": "https://agenticresourcediscovery.org/spec/v1/schema.json",
+  "name": "DeMkDown",
+  "description": "High-performance AST-based Markdown stripper and AI conversational fluff filter.",
+  "version": "1.0.0",
+  "url": "https://demkdown.alocal.host/",
+  "contact": {
+    "url": "https://github.com/sfc9982/DeMkDown"
+  },
+  "capabilities": [
+    {
+      "name": "demark",
+      "type": "api",
+      "description": "Strip markdown formatting and AI filler text from LLM outputs",
+      "endpoint": "https://demkdown.alocal.host/api/demark",
+      "method": "POST",
+      "input": {
+        "contentType": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "markdown": {
+              "type": "string"
+            },
+            "options": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "markdown"
+          ]
+        }
+      }
+    }
+  ]
+}

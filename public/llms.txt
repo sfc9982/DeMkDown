@@ -1,0 +1,17 @@
+# DeMkDown
+
+> High-performance AST-based Markdown stripper and AI conversational tone cleaner.
+
+DeMkDown cleans AI-generated responses (ChatGPT, Claude, Gemini, DeepSeek) into clean, unformatted plain text or pristine Markdown without corrupting internal text or regex pitfalls.
+
+## Core Features
+
+- [Clean Markdown Stripper](https://demkdown.alocal.host/): Interactive Web UI with real-time parsing and visual character-level Diff View.
+- [Cloudflare Pages Functions API](https://demkdown.alocal.host/api/demark): Serverless endpoint `POST /api/demark` for stripping markdown and fluff programmatically.
+- [GitHub Repository](https://github.com/sfc9982/DeMkDown): Open-source codebase, test suites, and AI tone purification benchmarks.
+
+## Supported Formats
+
+- Tables: Plain text aligned with CJK width, TSV (Excel/Sheets), CSV, or Markdown preservation.
+- Code blocks: Unwrap (strip fences, keep code), remove, or preserve fences.
+- Conversational fluff: Prunes AI preambles ("Sure, here is..."), postambles ("Hope this helps!"), and boilerplate disclaimers.

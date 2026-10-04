@@ -158,7 +158,7 @@
 
         <!-- 2. Output Format Mode Segmented Switch -->
         <div class="h-8.5 flex items-center bg-[#0d1424]/90 border border-orange-500/20 p-0.5 text-xs sm:text-sm font-medium shadow-sm">
-          <button id="modePlain" data-i18n="modePlain" class="h-full px-3 bg-orange-600 text-white font-medium shadow-[0_0_12px_rgba(255,107,0,0.5)] border border-orange-400/50 transition">Plain Text</button>
+          <button id="modePlain" data-i18n="modePlain" class="h-full px-3 bg-orange-700 text-white font-medium shadow-[0_0_12px_rgba(194,65,12,0.5)] border border-orange-500/50 transition">Plain Text</button>
           <button id="modeMarkdown" data-i18n="modeMarkdown" class="h-full px-3 text-slate-400 hover:text-orange-300 transition">Clean Markdown</button>
         </div>
 
@@ -387,8 +387,8 @@
               
               <!-- Code Blocks Handling -->
               <div class="inline-flex items-center gap-1.5">
-                <span data-i18n="codeBlocksLabel" class="text-xs sm:text-sm text-slate-300 font-medium">Code:</span>
-                <select id="optCodeBlocks" class="bg-slate-900 hover:bg-slate-850 text-slate-100 border border-slate-700 px-2.5 py-1 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/60 cursor-pointer">
+                <label for="optCodeBlocks" data-i18n="codeBlocksLabel" class="text-xs sm:text-sm text-slate-300 font-medium cursor-pointer">Code:</label>
+                <select id="optCodeBlocks" aria-label="Code Blocks Handling" class="bg-slate-900 hover:bg-slate-850 text-slate-100 border border-slate-700 px-2.5 py-1 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/60 cursor-pointer">
                   <option value="unwrap" data-i18n="codeUnwrap" selected>Unwrap (Keep Code)</option>
                   <option value="remove" data-i18n="codeRemove">Strip Completely</option>
                   <option value="preserve" data-i18n="codePreserve">Preserve Fences (```)</option>
@@ -397,8 +397,8 @@
 
               <!-- Tables Handling -->
               <div class="inline-flex items-center gap-1.5">
-                <span data-i18n="tablesLabel" class="text-xs sm:text-sm text-slate-300 font-medium">Tables:</span>
-                <select id="optTables" class="bg-slate-900 hover:bg-slate-850 text-slate-100 border border-slate-700 px-2.5 py-1 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/60 cursor-pointer">
+                <label for="optTables" data-i18n="tablesLabel" class="text-xs sm:text-sm text-slate-300 font-medium cursor-pointer">Tables:</label>
+                <select id="optTables" aria-label="Tables Handling" class="bg-slate-900 hover:bg-slate-850 text-slate-100 border border-slate-700 px-2.5 py-1 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/60 cursor-pointer">
                   <option value="plain" data-i18n="tablePlain" selected>Aligned Plain Text</option>
                   <option value="tsv" data-i18n="tableTSV">TSV (Excel / Sheets)</option>
                   <option value="csv" data-i18n="tableCSV">CSV</option>
@@ -409,8 +409,8 @@
 
               <!-- Links Handling -->
               <div class="inline-flex items-center gap-1.5">
-                <span data-i18n="linksLabel" class="text-xs sm:text-sm text-slate-300 font-medium">Links:</span>
-                <select id="optLinks" class="bg-slate-900 hover:bg-slate-850 text-slate-100 border border-slate-700 px-2.5 py-1 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/60 cursor-pointer">
+                <label for="optLinks" data-i18n="linksLabel" class="text-xs sm:text-sm text-slate-300 font-medium cursor-pointer">Links:</label>
+                <select id="optLinks" aria-label="Links Handling" class="bg-slate-900 hover:bg-slate-850 text-slate-100 border border-slate-700 px-2.5 py-1 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-orange-500/60 cursor-pointer">
                   <option value="text_only" data-i18n="linkTextOnly" selected>Anchor Text Only</option>
                   <option value="url_only" data-i18n="linkUrlOnly">URL Only</option>
                   <option value="text_and_url" data-i18n="linkTextUrl">Text + (URL)</option>
@@ -522,7 +522,7 @@
 
             <!-- View Mode Switcher: Clean vs Diff -->
             <div class="inline-flex items-center p-0.5 bg-slate-950 border border-slate-800 text-xs sm:text-sm font-medium">
-              <button id="viewModeClean" class="px-3.5 py-1 bg-orange-600 text-white font-semibold shadow-[0_0_12px_rgba(255,107,0,0.5)] border border-orange-400/50 transition">
+              <button id="viewModeClean" class="px-3.5 py-1 bg-orange-700 text-white font-semibold shadow-[0_0_12px_rgba(194,65,12,0.5)] border border-orange-500/50 transition">
                 <span data-i18n="viewClean">Clean</span>
               </button>
               <button id="viewModeDiff" class="px-3.5 py-1 text-slate-400 hover:text-orange-300 transition flex items-center gap-1.5">
@@ -535,7 +535,7 @@
 
             <!-- Diff Mode Switcher (Visible only when Diff View is selected): Text vs Line -->
             <div id="diffModeSelector" class="hidden inline-flex items-center p-0.5 bg-slate-950 border border-slate-800 text-xs font-medium">
-              <button id="diffModeText" class="px-2.5 py-1 bg-orange-600 text-white font-medium transition shadow-[0_0_10px_rgba(255,107,0,0.4)]" data-i18n="diffModeText">Text</button>
+              <button id="diffModeText" class="px-2.5 py-1 bg-orange-700 text-white font-medium transition shadow-[0_0_10px_rgba(194,65,12,0.4)]" data-i18n="diffModeText">Text</button>
               <button id="diffModeLine" class="px-2.5 py-1 text-slate-400 hover:text-orange-300 transition" data-i18n="diffModeLine">Line</button>
             </div>
           </div>
@@ -543,7 +543,7 @@
           <!-- Telemetry Badges (Output Chars, Reduction %, Diff Counters) -->
           <div class="flex items-center flex-wrap gap-2">
             <span id="outputBadgeStats" class="text-xs text-orange-400/90 font-mono bg-slate-900/90 px-2.5 py-0.5 border border-orange-500/20">0 chars • 0 words</span>
-            <span id="badgeReduction" class="text-xs font-semibold font-mono tracking-tight px-2 py-0.5 bg-orange-500/15 text-orange-300 border border-orange-500/40 hidden">-0%</span>
+            <span id="badgeReduction" class="text-xs font-bold font-mono tracking-tight px-2 py-0.5 bg-[#431407] text-orange-100 border border-orange-500/60 hidden">-0%</span>
 
             <!-- Diff change stats counters -->
             <div id="diffStatsBadge" class="hidden items-center gap-1.5 text-xs font-mono">
@@ -564,7 +564,7 @@
               data-i18n-title="tooltipCopy"
               title="Copy clean text (Ctrl+Enter / Cmd+Enter)"
               aria-label="Copy"
-              class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center bg-orange-600 hover:bg-orange-500 active:scale-90 text-white shadow-sm shadow-orange-600/30 transition cursor-pointer select-none"
+              class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center bg-orange-700 hover:bg-orange-600 active:scale-90 text-white shadow-sm shadow-orange-700/30 transition cursor-pointer select-none"
             >
               <svg id="iconCopy" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -610,7 +610,7 @@
             <span class="px-2 py-0.5 bg-slate-800 text-slate-300">0 tables</span>
             <span class="px-2 py-0.5 bg-slate-800 text-slate-300">0 fluff</span>
           </div>
-          <span id="outputPerf" class="text-orange-300 font-mono bg-orange-950/40 px-2 py-0.5 border border-orange-800/40 text-xs">0.0ms</span>
+          <span id="outputPerf" class="text-orange-100 font-mono bg-[#431407] px-2 py-0.5 border border-orange-600/60 text-xs font-semibold">0.0ms</span>
         </div>
 
       </div>

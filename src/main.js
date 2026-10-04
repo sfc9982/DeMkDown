@@ -465,10 +465,10 @@ function syncControlsFromState() {
   optCleanFluff.checked = state.options.cleanAIFluff;
 
   if (state.options.outputMode === 'plain') {
-    modePlainBtn.className = 'px-3.5 py-1 bg-orange-600 text-white font-medium shadow-[0_0_12px_rgba(255,107,0,0.5)] border border-orange-400/50 transition';
+    modePlainBtn.className = 'px-3.5 py-1 bg-orange-700 text-white font-medium shadow-[0_0_12px_rgba(194,65,12,0.5)] border border-orange-500/50 transition';
     modeMarkdownBtn.className = 'px-3.5 py-1 text-slate-400 hover:text-orange-300 transition';
   } else {
-    modeMarkdownBtn.className = 'px-3.5 py-1 bg-orange-600 text-white font-medium shadow-[0_0_12px_rgba(255,107,0,0.5)] border border-orange-400/50 transition';
+    modeMarkdownBtn.className = 'px-3.5 py-1 bg-orange-700 text-white font-medium shadow-[0_0_12px_rgba(194,65,12,0.5)] border border-orange-500/50 transition';
     modePlainBtn.className = 'px-3.5 py-1 text-slate-400 hover:text-orange-300 transition';
   }
 
@@ -602,7 +602,7 @@ function switchViewMode(mode) {
   state.viewMode = mode;
   localStorage.setItem('demkdown_view_mode', mode);
   if (mode === 'clean') {
-    if (viewModeClean) viewModeClean.className = 'px-3.5 py-1 bg-orange-600 text-white font-semibold shadow-[0_0_12px_rgba(255,107,0,0.5)] border border-orange-400/50 transition';
+    if (viewModeClean) viewModeClean.className = 'px-3.5 py-1 bg-orange-700 text-white font-semibold shadow-[0_0_12px_rgba(194,65,12,0.5)] border border-orange-500/50 transition';
     if (viewModeDiff) viewModeDiff.className = 'px-3.5 py-1 text-slate-400 hover:text-orange-300 transition flex items-center gap-1.5';
     if (outputEl) outputEl.classList.remove('hidden');
     if (diffContainer) diffContainer.classList.add('hidden');
@@ -618,7 +618,7 @@ function switchViewMode(mode) {
       badgeReductionEl.classList.remove('hidden');
     }
   } else {
-    if (viewModeDiff) viewModeDiff.className = 'px-3.5 py-1 bg-orange-600 text-white font-semibold shadow-[0_0_12px_rgba(255,107,0,0.5)] border border-orange-400/50 transition flex items-center gap-1.5';
+    if (viewModeDiff) viewModeDiff.className = 'px-3.5 py-1 bg-orange-700 text-white font-semibold shadow-[0_0_12px_rgba(194,65,12,0.5)] border border-orange-500/50 transition flex items-center gap-1.5';
     if (viewModeClean) viewModeClean.className = 'px-3.5 py-1 text-slate-400 hover:text-orange-300 transition';
     if (outputEl) outputEl.classList.add('hidden');
     if (diffContainer) diffContainer.classList.remove('hidden');
@@ -642,10 +642,10 @@ function switchDiffMode(mode) {
   state.diffMode = mode;
   localStorage.setItem('demkdown_diff_mode', mode);
   if (mode === 'text') {
-    if (diffModeText) diffModeText.className = 'px-2.5 py-1 bg-orange-600 text-white font-medium transition shadow-[0_0_10px_rgba(255,107,0,0.4)]';
+    if (diffModeText) diffModeText.className = 'px-2.5 py-1 bg-orange-700 text-white font-medium transition shadow-[0_0_10px_rgba(194,65,12,0.4)]';
     if (diffModeLine) diffModeLine.className = 'px-2.5 py-1 text-slate-400 hover:text-orange-300 transition';
   } else {
-    if (diffModeLine) diffModeLine.className = 'px-2.5 py-1 bg-orange-600 text-white font-medium transition shadow-[0_0_10px_rgba(255,107,0,0.4)]';
+    if (diffModeLine) diffModeLine.className = 'px-2.5 py-1 bg-orange-700 text-white font-medium transition shadow-[0_0_10px_rgba(194,65,12,0.4)]';
     if (diffModeText) diffModeText.className = 'px-2.5 py-1 text-slate-400 hover:text-orange-300 transition';
   }
   renderDiffView();
@@ -702,7 +702,7 @@ function processText() {
   statsBadgesEl.textContent = '';
   for (const { count, label, highlight } of badgeData) {
     const span = document.createElement('span');
-    span.className = `px-2 py-0.5 bg-slate-800 text-xs ${count ? `${highlight} font-semibold` : 'text-slate-400'}`;
+    span.className = `px-2 py-0.5 bg-slate-800 text-xs ${count ? `${highlight} font-semibold` : 'text-slate-300'}`;
     span.textContent = `${count || 0} ${label}`;
     statsBadgesEl.appendChild(span);
   }
@@ -728,8 +728,8 @@ async function copyOutput() {
   try {
     await navigator.clipboard.writeText(text);
     if (textCopy) textCopy.textContent = t('btnCopied', 'Copied!');
-    btnCopy.classList.replace('bg-orange-600', 'bg-emerald-600');
-    btnCopy.classList.replace('hover:bg-orange-500', 'hover:bg-emerald-500');
+    btnCopy.classList.replace('bg-orange-700', 'bg-emerald-600');
+    btnCopy.classList.replace('hover:bg-orange-600', 'hover:bg-emerald-500');
     btnCopy.title = t('btnCopied', 'Copied!');
     btnCopy.setAttribute('aria-label', t('btnCopied', 'Copied!'));
 
@@ -739,8 +739,8 @@ async function copyOutput() {
 
     setTimeout(() => {
       if (textCopy) textCopy.textContent = t('btnCopy', 'Copy');
-      btnCopy.classList.replace('bg-emerald-600', 'bg-orange-600');
-      btnCopy.classList.replace('hover:bg-emerald-500', 'hover:bg-orange-500');
+      btnCopy.classList.replace('bg-emerald-600', 'bg-orange-700');
+      btnCopy.classList.replace('hover:bg-emerald-500', 'hover:bg-orange-600');
       btnCopy.title = t('tooltipCopy', 'Copy cleaned text (Ctrl+Enter)');
       btnCopy.setAttribute('aria-label', t('tooltipCopy', 'Copy cleaned text (Ctrl+Enter)'));
       setSvgPath(iconCopy, 'M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z', '2');

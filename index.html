@@ -359,19 +359,19 @@
               <!-- Strip Inline Emphasis -->
               <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-orange-200 transition">
                 <input type="checkbox" id="optStripEmphasis" checked class="w-4 h-4 rounded-none border-slate-700 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
-                <span><span data-i18n="optEmphasis">Emphasis</span> <span class="text-slate-400 text-xs">(**bold**)</span></span>
+                <span><span data-i18n="optEmphasis">Emphasis</span> <span data-i18n="optEmphasisSub" class="text-slate-400 text-xs">(**bold**)</span></span>
               </label>
 
               <!-- Strip Inline Code -->
               <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-orange-200 transition">
                 <input type="checkbox" id="optStripInlineCode" checked class="w-4 h-4 rounded-none border-slate-700 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
-                <span><span data-i18n="optInlineCode">Inline Code</span> <span class="text-slate-400 text-xs">(`code`)</span></span>
+                <span><span data-i18n="optInlineCode">Inline Code</span> <span data-i18n="optInlineCodeSub" class="text-slate-400 text-xs">(`code`)</span></span>
               </label>
 
               <!-- Strip Blockquotes -->
               <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-orange-200 transition">
                 <input type="checkbox" id="optStripBlockquotes" checked class="w-4 h-4 rounded-none border-slate-700 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
-                <span><span data-i18n="optBlockquotes">Blockquotes</span> <span class="text-slate-400 text-xs">(&gt;)</span></span>
+                <span><span data-i18n="optBlockquotes">Blockquotes</span> <span data-i18n="optBlockquotesSub" class="text-slate-400 text-xs">(&gt;)</span></span>
               </label>
 
               <!-- Strip Lists -->
@@ -421,7 +421,7 @@
             </div>
 
             <!-- Group 3: AI Tone Cleaner -->
-            <label class="inline-flex items-center gap-2 cursor-pointer select-none font-semibold text-xs sm:text-sm text-orange-200 bg-gradient-to-r from-orange-950/80 via-amber-950/60 to-slate-950 hover:from-orange-900/80 hover:to-amber-900/60 border border-orange-500/50 px-3.5 py-1.5 shadow-[0_0_12px_rgba(255,107,0,0.2)] transition">
+            <label id="labelCleanFluff" class="inline-flex items-center gap-2 cursor-pointer select-none font-semibold text-xs sm:text-sm text-orange-200 bg-gradient-to-r from-orange-950/80 via-amber-950/60 to-slate-950 hover:from-orange-900/80 hover:to-amber-900/60 border border-orange-500/50 px-3.5 py-1.5 shadow-[0_0_12px_rgba(255,107,0,0.2)] transition">
               <input type="checkbox" id="optCleanFluff" checked class="w-4 h-4 rounded-none border-orange-500 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
               <span data-i18n="optCleanFluff">✨ Strip AI Tone &amp; Fluff</span>
             </label>

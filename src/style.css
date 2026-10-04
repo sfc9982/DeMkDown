@@ -244,10 +244,22 @@ html.light [class*="border-slate-700"] {
 }
 
 html.light select,
-html.light [class*="bg-slate-900"] {
+html.light [class*="bg-slate-900"]:not(input[type="checkbox"]) {
   background-color: #ffffff !important;
   border-color: #cbd5e1 !important;
   color: #0f172a !important;
+}
+
+html.light input[type="checkbox"] {
+  background-color: #ffffff !important;
+  border-color: #94a3b8 !important;
+  accent-color: #ea580c !important;
+}
+
+html.light input[type="checkbox"]:checked {
+  background-color: #ea580c !important;
+  border-color: #ea580c !important;
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e") !important;
 }
 
 html.light textarea,
@@ -359,4 +371,76 @@ html.light #toast {
 
 html.light #toast #toastMessage {
   color: #0f172a !important;
+}
+
+/* ==========================================================================
+   LIGHT MODE: OPTIONS PANEL, LABELS & STATS BADGES (HIGH CONTRAST)
+   ========================================================================== */
+html.light #optionsSection label {
+  color: #1e293b !important;
+}
+
+html.light #optionsSection label:hover {
+  color: #ea580c !important;
+}
+
+html.light #optionsSection label span[data-i18n$="Sub"],
+html.light #optionsSection label span.text-slate-400 {
+  color: #64748b !important;
+}
+
+html.light #optionsSection label:hover span[data-i18n$="Sub"],
+html.light #optionsSection label:hover span.text-slate-400 {
+  color: #ea580c !important;
+}
+
+/* Light mode AI Tone Cleaner button */
+html.light #labelCleanFluff {
+  background: linear-gradient(to right, #ffedd5, #fff7ed, #ffffff) !important;
+  color: #c2410c !important;
+  border-color: rgba(234, 88, 12, 0.45) !important;
+  box-shadow: 0 1px 4px rgba(234, 88, 12, 0.12) !important;
+}
+
+html.light #labelCleanFluff:hover {
+  background: linear-gradient(to right, #fed7aa, #ffedd5, #ffffff) !important;
+}
+
+/* Light mode Presets buttons */
+html.light #btnPresetMax,
+html.light #btnPresetDefault,
+html.light #btnPresetPreserveCode {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light #btnPresetMax:hover,
+html.light #btnPresetDefault:hover,
+html.light #btnPresetPreserveCode:hover {
+  background-color: rgba(255, 107, 0, 0.1) !important;
+  color: #ea580c !important;
+  border-color: #ea580c !important;
+}
+
+/* Light mode Telemetry Stats Badges */
+html.light #statsBadges span {
+  background-color: #e2e8f0 !important;
+  color: #334155 !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+html.light #statsBadges span.font-semibold,
+html.light #statsBadges span.text-orange-400,
+html.light #statsBadges span.text-amber-300 {
+  background-color: #ffedd5 !important;
+  color: #c2410c !important;
+  border: 1px solid #fdba74 !important;
+  font-weight: 600 !important;
+}
+
+html.light #outputPerf {
+  background-color: #fff7ed !important;
+  color: #c2410c !important;
+  border-color: rgba(234, 88, 12, 0.4) !important;
 }

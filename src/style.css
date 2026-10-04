@@ -149,12 +149,23 @@
 }
 
 /* ==========================================================================
+   PAGE LOAD STABILIZATION (Zero Layout Shift)
+   ========================================================================== */
+.preload,
+.preload * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -ms-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
+}
+
+/* ==========================================================================
    CONTENT CONTAINER WIDTH CONTROL (Standard vs Widescreen)
    ========================================================================== */
 .content-container {
   width: 100%;
   max-width: 80rem; /* 1280px standard (max-w-7xl) */
-  transition: max-width 0.25s cubic-bezier(0.16, 1, 0.3, 1), padding 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Widescreen mode: expands fluidly to fill wide displays */

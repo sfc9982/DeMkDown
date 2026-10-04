@@ -83,7 +83,7 @@
     } catch (e) {}
   </script>
 </head>
-<body class="h-full flex flex-col bg-[#06090e] text-slate-100 antialiased selection:bg-orange-500/30 selection:text-orange-200">
+<body class="preload h-full flex flex-col bg-[#06090e] text-slate-100 antialiased selection:bg-orange-500/30 selection:text-orange-200">
   <noscript>
     <div style="padding: 1.5rem; background: #090e17; color: #f8fafc; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; text-align: center; border-bottom: 2px solid #ea580c;">
       <h1 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 0.5rem; color: #ff6b00;">DeMkDown — Clean Markdown Stripper &amp; AI Fluff Remover</h1>
@@ -100,7 +100,7 @@
       <!-- Brand (Clean, no noisy badges) -->
       <div class="flex items-center gap-3 shrink-0">
         <div class="w-9 h-9 bg-gradient-to-tr from-orange-600 via-amber-600 to-orange-500 flex items-center justify-center shadow-lg shadow-orange-600/30 ring-1 ring-orange-400/40 shrink-0">
-          <svg class="w-5 h-5 text-white animate-shd-beacon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg class="w-5 h-5 text-white animate-shd-beacon" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2.2" d="M12 2v4m0 12v4M2 12h4m12 0h4m-3.5-6.5l-2.8 2.8m-7.4 7.4l-2.8 2.8m0-13l2.8 2.8m7.4 7.4l2.8 2.8" />
             <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" />
           </svg>
@@ -120,11 +120,11 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            <svg class="w-4 h-4 text-orange-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg class="w-4 h-4 text-orange-400 shrink-0" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
-            <span id="sampleCurrentLabel" data-i18n="sampleLabel">样例</span>
-            <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-200" id="sampleChevron" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <span id="sampleCurrentLabel" data-i18n="sampleLabel">Samples</span>
+            <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-200" width="14" height="14" id="sampleChevron" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
@@ -136,19 +136,19 @@
             role="menu"
           >
             <button type="button" id="btnSampleChat" data-i18n="sampleChat" class="w-full flex items-center gap-2 px-3.5 py-2 text-xs sm:text-sm text-slate-200 hover:bg-orange-600/20 hover:text-orange-200 transition text-left cursor-pointer">
-              <span>💬</span> <span class="truncate">对话问答</span>
+              <span>💬</span> <span class="truncate">Conversational Chat</span>
             </button>
             <button type="button" id="btnSampleCode" data-i18n="sampleCode" class="w-full flex items-center gap-2 px-3.5 py-2 text-xs sm:text-sm text-slate-200 hover:bg-orange-600/20 hover:text-orange-200 transition text-left cursor-pointer">
-              <span>💻</span> <span class="truncate">代码解析</span>
+              <span>💻</span> <span class="truncate">Code &amp; Logs</span>
             </button>
             <button type="button" id="btnSampleTable" data-i18n="sampleTable" class="w-full flex items-center gap-2 px-3.5 py-2 text-xs sm:text-sm text-slate-200 hover:bg-orange-600/20 hover:text-orange-200 transition text-left cursor-pointer">
-              <span>📊</span> <span class="truncate">表格数据</span>
+              <span>📊</span> <span class="truncate">Tables &amp; Data</span>
             </button>
             <button type="button" id="btnSampleChinese" data-i18n="sampleChinese" class="w-full flex items-center gap-2 px-3.5 py-2 text-xs sm:text-sm text-slate-200 hover:bg-orange-600/20 hover:text-orange-200 transition text-left cursor-pointer">
-              <span>🇨🇳</span> <span class="truncate">中文样例</span>
+              <span>🇨🇳</span> <span class="truncate">Chinese Sample</span>
             </button>
             <button type="button" id="btnSampleStress" data-i18n="sampleStress" class="w-full flex items-center gap-2 px-3.5 py-2 text-xs sm:text-sm text-slate-200 hover:bg-orange-600/20 hover:text-orange-200 transition text-left cursor-pointer">
-              <span>⚡</span> <span class="truncate">复杂嵌套</span>
+              <span>⚡</span> <span class="truncate">Complex Nested</span>
             </button>
           </div>
         </div>
@@ -172,11 +172,11 @@
           title="Toggle Options Panel"
           class="h-8.5 flex items-center gap-1.5 px-3 bg-[#0d1424]/90 hover:bg-[#131d33] border border-orange-500/20 text-xs sm:text-sm font-medium text-slate-200 hover:text-orange-200 transition shadow-sm cursor-pointer select-none"
         >
-          <svg class="w-4 h-4 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg class="w-4 h-4 text-orange-400" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
           </svg>
-          <span id="navToggleOptionsText" data-i18n="navConfigBtn">规则配置</span>
-          <svg id="navToggleOptionsChevron" class="w-3.5 h-3.5 text-orange-400 transition-transform duration-200 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <span id="navToggleOptionsText" data-i18n="navConfigBtn">Options</span>
+          <svg id="navToggleOptionsChevron" class="w-3.5 h-3.5 text-orange-400 transition-transform duration-200 rotate-180" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
@@ -189,17 +189,17 @@
           id="btnToggleWidth"
           type="button"
           data-i18n-title="tooltipWidth"
-          title="切换内容宽度 (正常宽度 / 适应宽屏)"
+          title="Toggle content width (Standard / Widescreen)"
           class="h-8.5 flex items-center gap-1.5 px-2.5 sm:px-3 bg-[#0d1424]/90 hover:bg-[#131d33] border border-orange-500/20 text-xs sm:text-sm font-medium text-slate-200 hover:text-orange-200 transition shadow-sm cursor-pointer select-none"
           aria-label="Toggle content width"
         >
-          <svg id="iconWidthExpand" class="w-4 h-4 text-orange-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg id="iconWidthExpand" class="w-4 h-4 text-orange-400 shrink-0" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 4l-5-5" />
           </svg>
-          <svg id="iconWidthCollapse" class="w-4 h-4 text-orange-400 shrink-0 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg id="iconWidthCollapse" class="w-4 h-4 text-orange-400 shrink-0 hidden" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M9 4v4H5m0 0l5-5m10 5h-4V4m0 4l5-5M9 20v-4H5m0 0l5 5m10-5h-4v4m0-4l5 5" />
           </svg>
-          <span id="txtWidthMode" class="hidden md:inline font-mono text-xs" data-i18n="widthStandard">正常宽度</span>
+          <span id="txtWidthMode" class="hidden md:inline font-mono text-xs" data-i18n="widthStandard">Standard</span>
         </button>
 
         <!-- 5. Theme Dropdown (Dark / Light / Follow System) -->
@@ -211,15 +211,15 @@
             aria-haspopup="true"
             aria-expanded="false"
             data-i18n-title="tooltipTheme"
-            title="外观主题（夜间 / 白天 / 跟随系统）"
+            title="Theme: Dark / Light / Follow System"
           >
             <span id="themeCurrentIcon" class="shrink-0 text-orange-400 flex items-center justify-center">
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg class="w-4 h-4" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
               </svg>
             </span>
-            <span id="themeCurrentLabel" class="hidden md:inline font-mono text-xs" data-i18n="themeDark">夜间模式</span>
-            <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-200" id="themeChevron" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <span id="themeCurrentLabel" class="hidden md:inline font-mono text-xs" data-i18n="themeDark">Dark Mode</span>
+            <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-200" width="14" height="14" id="themeChevron" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
@@ -231,30 +231,30 @@
           >
             <button type="button" data-theme="dark" class="theme-option w-full flex items-center justify-between px-3.5 py-2 text-xs sm:text-sm text-slate-200 hover:bg-orange-600/20 hover:text-orange-200 transition text-left cursor-pointer">
               <span class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-orange-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg class="w-4 h-4 text-orange-400 shrink-0" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                 </svg>
-                <span data-i18n="themeDark">夜间模式</span>
+                <span data-i18n="themeDark">Dark Mode</span>
               </span>
               <span class="theme-check text-orange-400 text-xs font-bold">✓</span>
             </button>
             <button type="button" data-theme="light" class="theme-option w-full flex items-center justify-between px-3.5 py-2 text-xs sm:text-sm text-slate-200 hover:bg-orange-600/20 hover:text-orange-200 transition text-left cursor-pointer">
               <span class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg class="w-4 h-4 text-amber-400 shrink-0" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <circle cx="12" cy="12" r="4" stroke-width="2" stroke="currentColor"/>
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.07-7.07l-1.41 1.41M8.34 15.66l-1.41 1.41m12.14 0l-1.41-1.41M8.34 8.34L6.93 6.93" />
                 </svg>
-                <span data-i18n="themeLight">白天模式</span>
+                <span data-i18n="themeLight">Light Mode</span>
               </span>
               <span class="theme-check text-orange-400 text-xs font-bold hidden">✓</span>
             </button>
             <button type="button" data-theme="system" class="theme-option w-full flex items-center justify-between px-3.5 py-2 text-xs sm:text-sm text-slate-200 hover:bg-orange-600/20 hover:text-orange-200 transition text-left cursor-pointer">
               <span class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg class="w-4 h-4 text-slate-400 shrink-0" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <rect x="2" y="3" width="20" height="14" rx="0" stroke-width="2" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8m-4-4v4" />
                 </svg>
-                <span data-i18n="themeSystem">跟随系统</span>
+                <span data-i18n="themeSystem">Follow System</span>
               </span>
               <span class="theme-check text-orange-400 text-xs font-bold hidden">✓</span>
             </button>
@@ -270,11 +270,11 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            <svg class="w-4 h-4 text-orange-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg class="w-4 h-4 text-orange-400 shrink-0" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
             </svg>
             <span id="langCurrentLabel">English (US)</span>
-            <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-200" id="langChevron" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-200" width="14" height="14" id="langChevron" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
@@ -297,7 +297,7 @@
 
         <!-- 7. API Modal Trigger -->
         <button id="btnOpenApiModal" class="h-8.5 flex items-center gap-1.5 px-3 bg-[#0d1424]/90 hover:bg-[#131d33] border border-orange-500/20 text-xs sm:text-sm font-medium text-slate-200 hover:text-orange-200 transition shadow-sm cursor-pointer select-none">
-          <svg class="w-4 h-4 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg class="w-4 h-4 text-orange-400" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
           </svg>
           <span data-i18n="apiDocsBtn">API</span>
@@ -309,7 +309,7 @@
   </header>
 
   <!-- Options & Config Bar (Collapsible Functional Sections) -->
-  <section id="optionsSection" class="border-b border-orange-500/20 bg-[#090e17]/70 backdrop-blur-md px-4 lg:px-6 transition-all duration-300">
+  <section id="optionsSection" class="border-b border-orange-500/20 bg-[#090e17]/70 backdrop-blur-md px-4 lg:px-6">
     <div class="content-container mx-auto">
       
       <!-- Collapsible Header Strip -->
@@ -317,11 +317,11 @@
         <div class="flex items-center gap-2.5 flex-wrap">
           <div class="flex items-center gap-2">
             <span class="w-1.5 h-1.5 bg-orange-500 shadow-[0_0_6px_#ff6b00]"></span>
-            <span data-i18n="configProtocolTitle" class="text-xs font-mono font-bold tracking-wider uppercase text-orange-400/90 group-hover:text-orange-300 transition">格式转换与处理规则 // CONFIG PROTOCOL</span>
+            <span data-i18n="configProtocolTitle" class="text-xs font-mono font-bold tracking-wider uppercase text-orange-400/90 group-hover:text-orange-300 transition">RULES &amp; TRANSFORMATION CONFIG</span>
           </div>
 
           <!-- Live telemetry badge summarizing active rules -->
-          <span id="configSummaryBadge" class="text-[11px] font-mono text-orange-300/80 bg-slate-900/90 px-2.5 py-0.5 border border-orange-500/20">4 基础剥离 · Unwrap Code · Aligned Tables · ✨AI过滤</span>
+          <span id="configSummaryBadge" class="text-[11px] font-mono text-orange-300/80 bg-slate-900/90 px-2.5 py-0.5 border border-orange-500/20">4 Base Strips · Unwrap Code · Aligned Tables · ✨AI Clean</span>
         </div>
 
         <!-- Collapse / Expand Trigger Button -->
@@ -331,8 +331,8 @@
             type="button"
             class="flex items-center gap-1.5 px-2.5 py-1 text-xs font-mono text-slate-300 hover:text-orange-200 bg-slate-900 hover:bg-orange-500/20 border border-slate-750 transition cursor-pointer select-none"
           >
-            <span id="txtToggleOptions" data-i18n="collapseOptions">收起配置</span>
-            <svg id="iconToggleOptions" class="w-3.5 h-3.5 text-orange-400 transition-transform duration-200 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <span id="txtToggleOptions" data-i18n="collapseOptions">Collapse</span>
+            <svg id="iconToggleOptions" class="w-3.5 h-3.5 text-orange-400 transition-transform duration-200 rotate-180" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
@@ -346,9 +346,9 @@
           <!-- Functional Groups Container -->
           <div class="flex flex-wrap items-center gap-2.5 sm:gap-3 text-slate-200 flex-1">
             
-            <!-- Group 1: 格式剥离 (Formatting) -->
+            <!-- Group 1: Base Stripping -->
             <div class="flex flex-wrap items-center gap-3 px-3.5 py-1.5 bg-[#060a12]/80 border border-slate-800/90 shadow-inner">
-              <span data-i18n="groupFormatting" class="text-[11px] font-bold uppercase tracking-wider text-orange-400/80 font-mono select-none mr-0.5">基础剥离</span>
+              <span data-i18n="groupFormatting" class="text-[11px] font-bold uppercase tracking-wider text-orange-400/80 font-mono select-none mr-0.5">Base Stripping</span>
               
               <!-- Strip Headings -->
               <label class="inline-flex items-center gap-1.5 cursor-pointer select-none text-xs sm:text-sm hover:text-orange-200 transition">
@@ -381,9 +381,9 @@
               </label>
             </div>
 
-            <!-- Group 2: 代码与表格转换 (Blocks & Tables) -->
+            <!-- Group 2: Blocks & Tables -->
             <div class="flex flex-wrap items-center gap-3 px-3.5 py-1.5 bg-[#060a12]/80 border border-slate-800/90 shadow-inner">
-              <span data-i18n="groupBlocks" class="text-[11px] font-bold uppercase tracking-wider text-orange-400/80 font-mono select-none mr-0.5">结构转换</span>
+              <span data-i18n="groupBlocks" class="text-[11px] font-bold uppercase tracking-wider text-orange-400/80 font-mono select-none mr-0.5">Structure</span>
               
               <!-- Code Blocks Handling -->
               <div class="inline-flex items-center gap-1.5">
@@ -420,17 +420,17 @@
               </div>
             </div>
 
-            <!-- Group 3: AI 句式过滤 (AI Tone Cleaner) -->
+            <!-- Group 3: AI Tone Cleaner -->
             <label class="inline-flex items-center gap-2 cursor-pointer select-none font-semibold text-xs sm:text-sm text-orange-200 bg-gradient-to-r from-orange-950/80 via-amber-950/60 to-slate-950 hover:from-orange-900/80 hover:to-amber-900/60 border border-orange-500/50 px-3.5 py-1.5 shadow-[0_0_12px_rgba(255,107,0,0.2)] transition">
               <input type="checkbox" id="optCleanFluff" checked class="w-4 h-4 rounded-none border-orange-500 bg-slate-900 text-orange-500 focus:ring-1 focus:ring-orange-400 cursor-pointer" />
-              <span data-i18n="optCleanFluff">✨ 过滤 AI 句式</span>
+              <span data-i18n="optCleanFluff">✨ Strip AI Tone &amp; Fluff</span>
             </label>
 
           </div>
 
-          <!-- Group 4: 快速预设 (Presets) -->
+          <!-- Group 4: Presets -->
           <div class="flex items-center gap-1.5 self-end xl:self-auto shrink-0 px-3 py-1.5 bg-[#060a12]/80 border border-slate-800/90 shadow-inner">
-            <span data-i18n="groupPresets" class="text-[11px] font-bold uppercase tracking-wider text-orange-400/80 font-mono select-none mr-1">预设</span>
+            <span data-i18n="groupPresets" class="text-[11px] font-bold uppercase tracking-wider text-orange-400/80 font-mono select-none mr-1">Presets</span>
             <button id="btnPresetMax" data-i18n="presetMax" class="px-2.5 py-1 bg-slate-900 hover:bg-orange-500/20 hover:text-orange-200 text-slate-300 transition text-xs font-medium border border-slate-750 shadow-sm">Max Strip</button>
             <button id="btnPresetDefault" data-i18n="presetDefault" class="px-2.5 py-1 bg-slate-900 hover:bg-orange-500/20 hover:text-orange-200 text-slate-300 transition text-xs font-medium border border-slate-750 shadow-sm">Default</button>
             <button id="btnPresetPreserveCode" data-i18n="presetKeepCode" class="px-2.5 py-1 bg-slate-900 hover:bg-orange-500/20 hover:text-orange-200 text-slate-300 transition text-xs font-medium border border-slate-750 shadow-sm">Keep Code</button>
@@ -447,10 +447,10 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 flex-1 min-h-[520px]">
       
       <!-- LEFT PANEL: Raw AI Markdown Input -->
-      <div class="hud-panel flex flex-col">
+      <div class="hud-panel flex flex-col min-h-[480px]">
         
         <!-- Input Header Toolbar -->
-        <div class="px-4 sm:px-5 py-2.5 bg-[#0b121e]/90 border-b border-orange-500/20 flex items-center justify-between text-xs sm:text-sm">
+        <div class="px-4 sm:px-5 py-2.5 bg-[#0b121e]/90 border-b border-orange-500/20 flex items-center justify-between text-xs sm:text-sm shrink-0">
           <div class="flex items-center gap-2.5">
             <span class="w-2 h-2 bg-orange-500 shadow-[0_0_8px_#ff6b00]"></span>
             <span data-i18n="inputTitle" class="font-semibold text-slate-100 tracking-wide uppercase text-xs sm:text-sm font-mono">Raw AI Markdown Input</span>
@@ -460,7 +460,7 @@
         </div>
 
         <!-- Input Textarea with Floating Actions -->
-        <div class="flex-1 relative bg-slate-950/40 group">
+        <div class="flex-1 relative bg-slate-950/40 group min-h-[340px]">
           
           <!-- Top-Right Floating Actions: Paste & Clear (Icon Only) -->
           <div class="absolute top-3 right-3 z-20 flex items-center gap-1 p-1 bg-[#090e17]/90 backdrop-blur-md border border-orange-500/30 shadow-lg opacity-85 group-hover:opacity-100 transition-opacity duration-200">
@@ -471,7 +471,7 @@
               aria-label="Paste"
               class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center bg-slate-900 hover:bg-orange-500/20 text-slate-300 hover:text-orange-200 border border-slate-750 active:scale-90 transition cursor-pointer select-none"
             >
-              <svg class="w-4 h-4 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg class="w-4 h-4 text-orange-400" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
             </button>
@@ -485,7 +485,7 @@
               aria-label="Clear"
               class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center hover:bg-rose-500/20 text-slate-400 hover:text-rose-300 active:scale-90 transition cursor-pointer select-none"
             >
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg class="w-4 h-4" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
             </button>
@@ -500,9 +500,9 @@
         </div>
 
         <!-- Input Footer Info -->
-        <div class="px-5 py-2 bg-[#090e17]/80 border-t border-orange-500/20 text-xs text-slate-400 flex items-center justify-between">
+        <div class="px-5 py-2 bg-[#090e17]/80 border-t border-orange-500/20 text-xs text-slate-400 flex items-center justify-between shrink-0">
           <span data-i18n="inputDropHint" class="hidden sm:inline-flex items-center gap-1.5 text-slate-400 font-mono text-[11px]">
-            <svg class="w-3.5 h-3.5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg class="w-3.5 h-3.5 text-orange-400" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
             </svg>
             Drag &amp; drop .md / .txt file here (max 5MB)
@@ -513,10 +513,10 @@
       </div>
 
       <!-- RIGHT PANEL: Clean Output / Diff View -->
-      <div class="hud-panel flex flex-col">
+      <div class="hud-panel flex flex-col min-h-[480px]">
         
         <!-- Output Header Toolbar -->
-        <div class="px-4 sm:px-5 py-2.5 bg-[#0b121e]/90 border-b border-orange-500/20 flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
+        <div class="px-4 sm:px-5 py-2.5 bg-[#0b121e]/90 border-b border-orange-500/20 flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm shrink-0">
           <div class="flex items-center flex-wrap gap-2.5">
             <span class="w-2 h-2 bg-emerald-400 shadow-[0_0_8px_#10b981]"></span>
 
@@ -526,7 +526,7 @@
                 <span data-i18n="viewClean">Clean</span>
               </button>
               <button id="viewModeDiff" class="px-3.5 py-1 text-slate-400 hover:text-orange-300 transition flex items-center gap-1.5">
-                <svg class="w-3.5 h-3.5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg class="w-3.5 h-3.5 text-orange-400" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                 </svg>
                 <span data-i18n="viewDiff">Diff View</span>
@@ -554,7 +554,7 @@
         </div>
 
         <!-- Output Display Area with Floating Actions -->
-        <div class="flex-1 relative bg-slate-950/40 overflow-hidden group">
+        <div class="flex-1 relative bg-slate-950/40 overflow-hidden group min-h-[340px]">
           
           <!-- Top-Right Floating Actions: Copy & Export (Icon Only) -->
           <div class="absolute top-3 right-3 z-20 flex items-center gap-1 p-1 bg-[#090e17]/90 backdrop-blur-md border border-orange-500/30 shadow-lg opacity-85 group-hover:opacity-100 transition-opacity duration-200">
@@ -566,7 +566,7 @@
               aria-label="Copy"
               class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center bg-orange-700 hover:bg-orange-600 active:scale-90 text-white shadow-sm shadow-orange-700/30 transition cursor-pointer select-none"
             >
-              <svg id="iconCopy" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg id="iconCopy" class="w-4 h-4 shrink-0" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
             </button>
@@ -581,7 +581,7 @@
               aria-label="Export"
               class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center bg-slate-900 hover:bg-orange-500/20 text-slate-300 hover:text-orange-200 active:scale-90 transition cursor-pointer select-none"
             >
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg class="w-4 h-4" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
             </button>
@@ -602,12 +602,13 @@
         </div>
 
         <!-- Output Footer Telemetry -->
-        <div class="px-5 py-2 bg-[#090e17]/80 border-t border-orange-500/20 text-xs text-slate-400 flex flex-wrap items-center justify-between gap-2.5">
+        <div class="px-5 py-2 bg-[#090e17]/80 border-t border-orange-500/20 text-xs text-slate-400 flex flex-wrap items-center justify-between gap-2.5 shrink-0">
           <div id="statsBadges" class="flex items-center flex-wrap gap-2 text-xs">
             <span class="px-2 py-0.5 bg-slate-800 text-slate-300">0 headings</span>
             <span class="px-2 py-0.5 bg-slate-800 text-slate-300">0 bold/italic</span>
             <span class="px-2 py-0.5 bg-slate-800 text-slate-300">0 code</span>
             <span class="px-2 py-0.5 bg-slate-800 text-slate-300">0 tables</span>
+            <span class="px-2 py-0.5 bg-slate-800 text-slate-300">0 quotes</span>
             <span class="px-2 py-0.5 bg-slate-800 text-slate-300">0 fluff</span>
           </div>
           <span id="outputPerf" class="text-orange-100 font-mono bg-[#431407] px-2 py-0.5 border border-orange-600/60 text-xs font-semibold">0.0ms</span>
@@ -628,7 +629,7 @@
           <h2 class="text-base sm:text-lg font-bold text-white font-mono">Cloudflare Pages Functions API</h2>
         </div>
         <button id="btnCloseApiModal" class="text-slate-400 hover:text-white p-1.5 hover:bg-slate-800 transition">
-          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg class="w-5 h-5" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
@@ -684,7 +685,7 @@ console.log(result);</pre>
       </div>
 
       <div class="pt-4 border-t border-orange-500/20 flex justify-end">
-        <button id="btnGotItApiModal" class="px-5 py-2 bg-orange-600 hover:bg-orange-500 text-white font-medium text-xs sm:text-sm transition shadow-md shadow-orange-600/30 font-mono">Got it</button>
+        <button id="btnGotItApiModal" class="px-5 py-2 bg-orange-700 hover:bg-orange-600 text-white font-medium text-xs sm:text-sm transition shadow-md shadow-orange-700/30 font-mono">Got it</button>
       </div>
 
     </div>
@@ -692,7 +693,7 @@ console.log(result);</pre>
 
   <!-- Toast Notification -->
   <div id="toast" class="fixed bottom-12 right-6 z-50 pointer-events-none hidden items-center gap-2.5 px-4.5 py-3 bg-[#0a101d] text-orange-200 border border-orange-500/60 shadow-[0_0_20px_rgba(255,107,0,0.3)] text-xs sm:text-sm font-mono ring-1 ring-orange-500/30">
-    <svg class="w-4.5 h-4.5 text-orange-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <svg class="w-4.5 h-4.5 text-orange-400 shrink-0" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
     </svg>
     <span id="toastMessage">Copied to clipboard!</span>

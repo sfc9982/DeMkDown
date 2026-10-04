@@ -827,13 +827,15 @@ function downloadOutput() {
 /**
  * Load a sample preset into input
  */
-function loadSample(sampleKey) {
+function loadSample(sampleKey, showNotification = true) {
   toggleSampleDropdown(false);
   const sample = SAMPLES[sampleKey];
   if (sample) {
     inputEl.value = sample.content;
     processText();
-    showToast(`${t('toastSampleLoaded', 'Loaded sample:')} ${sample.title}`);
+    if (showNotification) {
+      showToast(`${t('toastSampleLoaded', 'Loaded sample:')} ${sample.title}`);
+    }
   }
 }
 
@@ -1137,4 +1139,11 @@ if (state.viewMode !== 'clean') {
 if (state.diffMode !== 'text') {
   switchDiffMode(state.diffMode);
 }
-loadSample(state.currentLang === 'zh' ? 'chinese' : 'conversational');
+loadSample(state.currentLang === 'zh' ? 'chinese' : 'conversational', false);
+
+// Remove preload class after initial render has settled to enable user-triggered transitions
+requestAnimationFrame(() => {
+  requestAnimationFrame(() => {
+    document.body.classList.remove('preload');
+  });
+});

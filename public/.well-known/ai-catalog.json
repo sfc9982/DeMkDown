@@ -1,36 +1,30 @@
 {
   "$schema": "https://agenticresourcediscovery.org/spec/v1/schema.json",
-  "name": "DeMkDown",
-  "description": "High-performance AST-based Markdown stripper and AI conversational fluff filter.",
-  "version": "1.0.0",
-  "url": "https://demkdown.alocal.host/",
-  "contact": {
-    "url": "https://github.com/sfc9982/DeMkDown"
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "DeMkDown",
+    "identifier": "did:web:demkdown.alocal.host",
+    "documentationUrl": "https://demkdown.alocal.host/docs"
   },
-  "capabilities": [
+  "entries": [
     {
-      "name": "demark",
-      "type": "api",
-      "description": "Strip markdown formatting and AI filler text from LLM outputs",
-      "endpoint": "https://demkdown.alocal.host/api/demark",
-      "method": "POST",
-      "input": {
-        "contentType": "application/json",
-        "schema": {
-          "type": "object",
-          "properties": {
-            "markdown": {
-              "type": "string"
-            },
-            "options": {
-              "type": "object"
-            }
-          },
-          "required": [
-            "markdown"
-          ]
-        }
-      }
+      "identifier": "urn:ai:demkdown.alocal.host:api:demark",
+      "displayName": "DeMkDown API",
+      "type": "application/json",
+      "url": "https://demkdown.alocal.host/api/demark",
+      "description": "High-performance AST-based Markdown stripper and AI conversational fluff filter.",
+      "representativeQueries": [
+        "clean markdown text",
+        "strip markdown syntax",
+        "remove AI filler phrases",
+        "convert markdown table to CSV or TSV"
+      ],
+      "tags": [
+        "markdown",
+        "nlp",
+        "llm-postprocessing",
+        "cleaner"
+      ]
     }
   ]
 }

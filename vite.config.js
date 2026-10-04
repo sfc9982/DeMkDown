@@ -1,9 +1,29 @@
 import { defineConfig } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
 
+function inlineCss() {
+  return {
+    name: 'inline-css',
+    enforce: 'post',
+    transformIndexHtml(html, ctx) {
+      if (!ctx || !ctx.bundle) return html;
+      let inlinedHtml = html;
+      for (const [fileName, chunk] of Object.entries(ctx.bundle)) {
+        if (fileName.endsWith('.css') && chunk.type === 'asset') {
+          const cssRegex = new RegExp(`<link[^>]+href="[^"]*${fileName}"[^>]*>`, 'i');
+          inlinedHtml = inlinedHtml.replace(cssRegex, `<style>\n${chunk.source}\n</style>`);
+          delete ctx.bundle[fileName];
+        }
+      }
+      return inlinedHtml;
+    },
+  };
+}
+
 export default defineConfig({
   plugins: [
     tailwindcss(),
+    inlineCss(),
   ],
   build: {
     target: 'esnext',

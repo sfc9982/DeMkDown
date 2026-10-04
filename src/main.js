@@ -694,8 +694,8 @@ function processText() {
   const badgeData = [
     { count: counts.headings, label: t('optHeadings', 'headings'), highlight: 'text-orange-400' },
     { count: counts.emphasis, label: t('optEmphasis', 'bold/italic'), highlight: 'text-orange-400' },
-    { count: counts.codeBlocks, label: t('codeBlocksLabel', 'code').replace(':', ''), highlight: 'text-orange-400' },
-    { count: counts.tables, label: t('tablesLabel', 'tables').replace(':', ''), highlight: 'text-orange-400' },
+    { count: counts.codeBlocks, label: t('codeBlocksLabel', 'code').replace(/[:：]/g, ''), highlight: 'text-orange-400' },
+    { count: counts.tables, label: t('tablesLabel', 'tables').replace(/[:：]/g, ''), highlight: 'text-orange-400' },
     { count: counts.blockquotes, label: t('optBlockquotes', 'quotes'), highlight: 'text-orange-400' },
     { count: counts.fluff, label: t('fluffCount', 'fluff'), highlight: 'text-amber-300' },
   ];

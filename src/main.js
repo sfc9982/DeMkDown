@@ -1164,7 +1164,8 @@ if (state.viewMode !== 'clean') {
 if (state.diffMode !== 'text') {
   switchDiffMode(state.diffMode);
 }
-loadSample(state.currentLang === 'zh' ? 'chinese' : 'conversational', false);
+inputEl.value = '';
+processText();
 
 // Remove preload class after initial render has settled to enable user-triggered transitions
 requestAnimationFrame(() => {

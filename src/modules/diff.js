@@ -290,13 +290,8 @@ export function renderLineDiffHTML(diffResult, labels = { noChanges: 'No differe
       symbolClass += 'text-slate-600';
     }
 
-    const oldNum = line.oldLine !== null ? line.oldLine : '';
-    const newNum = line.newLine !== null ? line.newLine : '';
-
     return `
       <div class="${rowClass}">
-        <span class="w-10 select-none text-slate-500 text-right pr-2 shrink-0 font-mono text-xs">${oldNum}</span>
-        <span class="w-10 select-none text-slate-500 text-right pr-2 shrink-0 font-mono text-xs border-r border-slate-800 mr-2.5">${newNum}</span>
         <span class="${symbolClass}">${symbol}</span>
         <span class="flex-1 whitespace-pre-wrap break-all leading-relaxed">${escapeHTML(line.value) || '&nbsp;'}</span>
       </div>

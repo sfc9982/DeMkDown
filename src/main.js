@@ -1,6 +1,6 @@
 import { demark, DEFAULT_OPTIONS } from './modules/demark.js';
 import { SAMPLES } from './modules/samples.js';
-import { TRANSLATIONS } from './modules/i18n.js';
+import { TRANSLATIONS, LANG_LABELS } from './modules/i18n.js';
 import {
   computeLineDiff,
   computeTextDiff,
@@ -22,10 +22,23 @@ function setSvgPath(svgEl, d, strokeWidth = '2') {
   svgEl.appendChild(path);
 }
 
-const LANG_LABELS = {
-  en: 'English (US)',
-  zh: '简体中文',
-};
+/**
+ * Detect user's preferred language from browser settings
+ */
+function detectBrowserLanguage() {
+  const navLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+  if (navLang.startsWith('zh-tw') || navLang.startsWith('zh-hk') || navLang.startsWith('zh-mo') || navLang.startsWith('zh-hant')) {
+    return 'zh-TW';
+  }
+  if (navLang.startsWith('zh')) return 'zh';
+  if (navLang.startsWith('ja')) return 'ja';
+  if (navLang.startsWith('ko')) return 'ko';
+  if (navLang.startsWith('es')) return 'es';
+  if (navLang.startsWith('fr')) return 'fr';
+  if (navLang.startsWith('de')) return 'de';
+  if (navLang.startsWith('ru')) return 'ru';
+  return 'en';
+}
 
 /**
  * Safely load user options from browser storage
@@ -59,7 +72,7 @@ function saveOptionsToStorage() {
 // Application State
 const state = {
   options: loadSavedOptions(),
-  currentLang: localStorage.getItem('demkdown_lang') || localStorage.getItem('demark_lang') || (navigator.language.startsWith('zh') ? 'zh' : 'en'),
+  currentLang: localStorage.getItem('demkdown_lang') || localStorage.getItem('demark_lang') || detectBrowserLanguage(),
   optionsCollapsed: (localStorage.getItem('demkdown_options_collapsed') || localStorage.getItem('demark_options_collapsed')) === 'true',
   widthMode: localStorage.getItem('demkdown_width_mode') || 'standard',
   theme: localStorage.getItem('demkdown_theme') || 'system',
@@ -182,13 +195,25 @@ function t(key, fallback = '') {
   return dict[key] || TRANSLATIONS.en[key] || fallback || key;
 }
 
+const HTML_LANG_MAP = {
+  en: 'en',
+  zh: 'zh-CN',
+  'zh-TW': 'zh-TW',
+  ja: 'ja',
+  ko: 'ko',
+  es: 'es',
+  fr: 'fr',
+  de: 'de',
+  ru: 'ru',
+};
+
 /**
  * Switch UI language dynamically and update custom dropdown state
  */
 function setLanguage(lang) {
   if (!TRANSLATIONS[lang]) lang = 'en';
   state.currentLang = lang;
-  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  document.documentElement.lang = HTML_LANG_MAP[lang] || 'en';
   localStorage.setItem('demkdown_lang', lang);
   localStorage.setItem('demark_lang', lang);
 

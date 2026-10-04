@@ -8,6 +8,13 @@
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://demkdown.alocal.host/" />
     <xhtml:link rel="alternate" hreflang="zh" href="https://demkdown.alocal.host/" />
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://demkdown.alocal.host/" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://demkdown.alocal.host/" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://demkdown.alocal.host/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://demkdown.alocal.host/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://demkdown.alocal.host/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://demkdown.alocal.host/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://demkdown.alocal.host/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://demkdown.alocal.host/" />
   </url>
 </urlset>

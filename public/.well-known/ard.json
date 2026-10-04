@@ -1,16 +1,14 @@
 {
-  "$schema": "https://agenticresourcediscovery.org/spec/v1/schema.json",
   "specVersion": "1.0",
   "host": {
     "displayName": "DeMkDown",
-    "identifier": "did:web:demkdown.alocal.host",
-    "documentationUrl": "https://demkdown.alocal.host/docs"
+    "identifier": "did:web:demkdown.alocal.host"
   },
   "entries": [
     {
-      "identifier": "urn:ai:demkdown.alocal.host:api:demark",
+      "identifier": "urn:air:demkdown.alocal.host:tool:demark",
       "displayName": "DeMkDown API",
-      "type": "application/json",
+      "type": "application/agent-card+json",
       "url": "https://demkdown.alocal.host/api/demark",
       "description": "High-performance AST-based Markdown stripper and AI conversational fluff filter.",
       "representativeQueries": [
@@ -18,12 +16,6 @@
         "strip markdown syntax",
         "remove AI filler phrases",
         "convert markdown table to CSV or TSV"
-      ],
-      "tags": [
-        "markdown",
-        "nlp",
-        "llm-postprocessing",
-        "cleaner"
       ]
     }
   ]

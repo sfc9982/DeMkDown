@@ -702,7 +702,7 @@ function processText() {
   statsBadgesEl.textContent = '';
   for (const { count, label, highlight } of badgeData) {
     const span = document.createElement('span');
-    span.className = `px-2 py-0.5 bg-slate-800 text-xs ${count ? `${highlight} font-semibold` : 'text-slate-300'}`;
+    span.className = `px-2 py-0.5 bg-slate-800 text-xs ${count ? `${highlight} font-semibold` : 'text-slate-200'}`;
     span.textContent = `${count || 0} ${label}`;
     statsBadgesEl.appendChild(span);
   }

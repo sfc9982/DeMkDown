@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en" class="min-h-full">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DeMkDown — Clean Markdown Stripper &amp; AI Fluff Remover</title>
-  <meta name="description" content="High-performance AST-based Markdown stripper and AI conversational fluff filter. Strip headings, bold, inline code, fences, blockquotes, tables, and AI tone in real-time." />
-  <meta name="keywords" content="markdown stripper, clean markdown, remove markdown, strip markdown, ai fluff remover, markdown to plain text, chatgpt markdown strip, claude markdown converter, ast markdown, demkdown, demark" />
+  <meta name="description" content="Free online Markdown stripper and AI fluff remover. Convert ChatGPT, Claude, DeepSeek &amp; Gemini responses into clean plain text without Markdown formatting. 100% private &amp; client-side." />
+  <meta name="keywords" content="markdown stripper, strip markdown, remove markdown formatting, markdown to plain text, chatgpt markdown remover, copy chatgpt without formatting, claude markdown cleaner, ai fluff remover, markdown table to text, markdown table to csv, markdown 去除格式, markdown 转纯文本, 去除 chatgpt 格式, ai 废话过滤, ast markdown parser, online markdown cleaner" />
   <meta name="author" content="DeMkDown" />
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
   <meta name="theme-color" content="#06090e" />
@@ -28,7 +28,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://demkdown.alocal.host/" />
   <meta property="og:title" content="DeMkDown — Clean Markdown Stripper &amp; AI Fluff Remover" />
-  <meta property="og:description" content="High-performance AST-based Markdown stripper and AI conversational fluff filter. Convert AI responses into clean plain text or pristine Markdown in real-time." />
+  <meta property="og:description" content="Free online Markdown stripper and AI fluff remover. Convert ChatGPT, Claude, and DeepSeek responses into clean plain text in real time. 100% private." />
   <meta property="og:image" content="https://demkdown.alocal.host/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -41,35 +41,119 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:url" content="https://demkdown.alocal.host/" />
   <meta name="twitter:title" content="DeMkDown — Clean Markdown Stripper &amp; AI Fluff Remover" />
-  <meta name="twitter:description" content="High-performance AST-based Markdown stripper and AI conversational fluff filter. Convert AI responses into clean plain text or pristine Markdown in real-time." />
+  <meta name="twitter:description" content="Free online Markdown stripper and AI fluff remover. Convert ChatGPT, Claude, and DeepSeek responses into clean plain text in real time." />
   <meta name="twitter:image" content="https://demkdown.alocal.host/og-image.png" />
 
-  <!-- Structured Data (JSON-LD) -->
+  <!-- Comprehensive Structured Data (JSON-LD: WebApplication, FAQPage, HowTo) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "DeMkDown",
-    "alternateName": ["DeMark", "DeMark Down"],
-    "url": "https://demkdown.alocal.host/",
-    "logo": "https://demkdown.alocal.host/og-image.png",
-    "image": "https://demkdown.alocal.host/og-image.png",
-    "description": "High-performance AST-based Markdown stripper and AI conversational fluff filter. Strip Markdown formatting and robotic filler from ChatGPT, Claude, DeepSeek, and Gemini in real time.",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "All",
-    "browserRequirements": "Requires JavaScript. Requires HTML5.",
-    "softwareVersion": "1.0.0",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "featureList": [
-      "AST-based Markdown stripping without regex corruption",
-      "AI conversational fluff and boilerplate remover",
-      "Table to Aligned Plain Text, TSV, or CSV",
-      "Real-time visual character-level Diff View",
-      "Zero telemetry, 100% client-side local privacy"
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "@id": "https://demkdown.alocal.host/#webapp",
+        "name": "DeMkDown",
+        "alternateName": ["DeMark", "DeMark Down", "Markdown Stripper", "AI Fluff Remover"],
+        "url": "https://demkdown.alocal.host/",
+        "logo": "https://demkdown.alocal.host/apple-touch-icon.png",
+        "image": "https://demkdown.alocal.host/og-image.png",
+        "description": "High-performance AST-based Markdown stripper and AI conversational fluff filter. Strip Markdown formatting and robotic filler from ChatGPT, Claude, DeepSeek, and Gemini in real time.",
+        "applicationCategory": "DeveloperApplication",
+        "applicationSubCategory": "Text Processing Utility",
+        "operatingSystem": "All",
+        "browserRequirements": "Requires JavaScript. Requires HTML5.",
+        "softwareVersion": "1.0.0",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": [
+          "AST-based Markdown stripping without regex corruption",
+          "AI conversational fluff and boilerplate remover",
+          "Table to Aligned Plain Text, TSV, or CSV",
+          "Real-time visual character-level Diff View",
+          "Zero telemetry, 100% client-side local privacy",
+          "Developer Cloudflare Pages Functions API"
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://demkdown.alocal.host/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do I strip Markdown formatting from ChatGPT, Claude, or DeepSeek?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Simply copy the AI response and paste it into DeMkDown. The tool parses the text into an Abstract Syntax Tree (AST) in real time and strips headings, bold asterisks, blockquotes, and code fences, producing clean plain text ready to paste into Word, Google Docs, Slack, or email."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why is AST parsing better than Regex for removing Markdown?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Regex-based cleaners use simple pattern matching that often corrupts text containing asterisks (e.g. mathematical formulas or programming code pointers) or nested blocks. DeMkDown uses a full AST parser (Remark/Unified) that understands nested document structure, safely extracting plain text without false deletions."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does DeMkDown remove AI conversational fluff?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "DeMkDown has a dedicated AI Tone Cleaner engine with benchmarked patterns for English and Chinese. It detects and strips opening pleasantries ('Certainly, here is...', 'Sure!'), closing boilerplate ('Hope this helps!', 'Feel free to ask...'), and robotic disclaimers ('As an AI language model...')."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does DeMkDown convert Markdown tables?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "DeMkDown supports multiple table conversion modes: Aligned Plain Text (with full CJK double-width character padding for Chinese/Japanese/Korean), TSV (Tab-Separated Values for pasting directly into Excel or Google Sheets), CSV (Comma-Separated Values), or preserving the original Markdown table syntax."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is my text data private and secure?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, 100%. DeMkDown runs entirely client-side inside your web browser. No text, prompts, or documents are ever uploaded to remote servers or tracked by telemetry. It is completely safe for confidential business documents, code, and proprietary data."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I use DeMkDown via API or CLI?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, DeMkDown provides a serverless Cloudflare Pages Functions API endpoint at POST /api/demark that accepts JSON payloads with Markdown text and configuration options, returning clean text and detailed telemetry."
+            }
+          }
+        ]
+      },
+      {
+        "@type": "HowTo",
+        "@id": "https://demkdown.alocal.host/#howto",
+        "name": "How to Strip Markdown Formatting from Text Online",
+        "description": "Convert AI-generated Markdown into clean plain text in 3 simple steps.",
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "Paste Markdown Text",
+            "text": "Paste your text from ChatGPT, Claude, or any Markdown file into the input panel on the left."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Configure Stripping Options",
+            "text": "Choose which elements to strip (headings, bold/italic, code blocks, tables, AI fluff) or select a preset like Max Strip or Default."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Copy or Export Clean Text",
+            "text": "Instantly copy the cleaned plain text to your clipboard or download it as a .txt file."
+          }
+        ]
+      }
     ]
   }
   </script>
@@ -95,10 +179,10 @@
     } catch (e) {}
   </script>
 </head>
-<body class="preload h-full flex flex-col bg-[#06090e] text-slate-100 antialiased selection:bg-orange-500/30 selection:text-orange-200">
+<body class="preload min-h-full flex flex-col bg-[#06090e] text-slate-100 antialiased selection:bg-orange-500/30 selection:text-orange-200">
   <noscript>
     <div style="padding: 1.5rem; background: #090e17; color: #f8fafc; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; text-align: center; border-bottom: 2px solid #ea580c;">
-      <h1 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 0.5rem; color: #ff6b00;">DeMkDown — Clean Markdown Stripper &amp; AI Fluff Remover</h1>
+      <h2 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 0.5rem; color: #ff6b00;">DeMkDown — Clean Markdown Stripper &amp; AI Fluff Remover</h2>
       <p style="max-width: 700px; margin: 0 auto; line-height: 1.6; color: #94a3b8; font-size: 0.875rem;">
         High-performance AST-based Markdown stripper and AI conversational fluff filter. Strip headings, bold, inline code, code fences, blockquotes, tables, and AI opening/closing fluff from ChatGPT, Claude, Gemini, and DeepSeek responses in real time. Please enable JavaScript to run DeMkDown in your browser.
       </p>
@@ -109,7 +193,7 @@
   <header class="border-b border-orange-500/20 bg-[#090e17]/85 backdrop-blur-md sticky top-0 z-30 px-4 lg:px-6 py-2">
     <div class="content-container mx-auto flex items-center justify-between gap-4">
       
-      <!-- Brand (Clean, no noisy badges) -->
+      <!-- Brand (Clean, semantic H1) -->
       <div class="flex items-center gap-3 shrink-0">
         <div class="w-9 h-9 bg-gradient-to-tr from-orange-600 via-amber-600 to-orange-500 flex items-center justify-center shadow-lg shadow-orange-600/30 ring-1 ring-orange-400/40 shrink-0">
           <svg class="w-5 h-5 text-white animate-shd-beacon" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -117,7 +201,7 @@
             <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" />
           </svg>
         </div>
-        <span id="txtAppTitle" data-i18n="appTitle" class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-100 to-orange-200 bg-clip-text text-transparent font-mono select-none">DeMkDown</span>
+        <h1 id="txtAppTitle" data-i18n="appTitle" class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-100 to-orange-200 bg-clip-text text-transparent font-mono select-none">DeMkDown</h1>
       </div>
 
       <!-- Right Navigation Actions: Neatly clustered -->
@@ -658,6 +742,249 @@
 
     </div>
   </main>
+
+  <!-- Semantic SEO, Guides & Documentation Section -->
+  <section id="guide" class="content-container w-full mx-auto px-4 sm:px-6 py-12 border-t border-orange-500/20 text-slate-300 space-y-12">
+    
+    <!-- Hero / Value Proposition -->
+    <div class="text-center max-w-3xl mx-auto space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-mono font-semibold uppercase tracking-wider">
+        <span>✨ AST-Powered Syntax Purification</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-100 tracking-tight font-mono">
+        Why Strip Markdown &amp; AI Boilerplate?
+      </h2>
+      <p class="text-xs sm:text-sm md:text-base text-slate-400 leading-relaxed">
+        Copying responses from ChatGPT, Claude, DeepSeek, or Gemini into Microsoft Word, Google Docs, corporate emails, Slack, or CMS often introduces unwanted asterisks (<code class="text-orange-300">**bold**</code>), hashes (<code class="text-orange-300"># Header</code>), code backticks, and robotic polite filler. DeMkDown parses text into an Abstract Syntax Tree (AST) to reliably strip formatting without regex corruption.
+      </p>
+    </div>
+
+    <!-- 4 Core Pillars Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="hud-panel p-5 flex flex-col justify-between space-y-3">
+        <div class="space-y-2">
+          <div class="w-9 h-9 bg-orange-600/20 border border-orange-500/40 flex items-center justify-center text-orange-400 font-mono text-base font-bold">
+            01
+          </div>
+          <h3 class="font-bold text-slate-100 text-base">AST-Based Parser</h3>
+          <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+            Built on unified and remark AST. Unlike naive regular expressions that break on inline formulas (<code class="text-slate-300">$x * y * z$</code>) or code symbols, DeMkDown accurately parses hierarchical Markdown nodes.
+          </p>
+        </div>
+        <div class="pt-2 text-xs font-mono text-orange-400/90 flex items-center gap-1.5">
+          <span>✓ Zero regex pitfalls</span>
+        </div>
+      </div>
+
+      <div class="hud-panel p-5 flex flex-col justify-between space-y-3">
+        <div class="space-y-2">
+          <div class="w-9 h-9 bg-orange-600/20 border border-orange-500/40 flex items-center justify-center text-orange-400 font-mono text-base font-bold">
+            02
+          </div>
+          <h3 class="font-bold text-slate-100 text-base">AI Tone &amp; Fluff Filter</h3>
+          <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+            Eliminates conversational AI filler phrases in both English and Chinese: opening preambles ("Sure, here is..."), transition fluff, and trailing boilerplate ("Hope this helps!").
+          </p>
+        </div>
+        <div class="pt-2 text-xs font-mono text-orange-400/90 flex items-center gap-1.5">
+          <span>✓ 100% benchmark accuracy</span>
+        </div>
+      </div>
+
+      <div class="hud-panel p-5 flex flex-col justify-between space-y-3">
+        <div class="space-y-2">
+          <div class="w-9 h-9 bg-orange-600/20 border border-orange-500/40 flex items-center justify-center text-orange-400 font-mono text-base font-bold">
+            03
+          </div>
+          <h3 class="font-bold text-slate-100 text-base">Smart Table Formatting</h3>
+          <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+            Converts pipe tables into neatly aligned monospace plain text (with East Asian CJK double-width calculation), Excel-ready TSV, or standard CSV format.
+          </p>
+        </div>
+        <div class="pt-2 text-xs font-mono text-orange-400/90 flex items-center gap-1.5">
+          <span>✓ Aligned text, TSV, or CSV</span>
+        </div>
+      </div>
+
+      <div class="hud-panel p-5 flex flex-col justify-between space-y-3">
+        <div class="space-y-2">
+          <div class="w-9 h-9 bg-orange-600/20 border border-orange-500/40 flex items-center justify-center text-orange-400 font-mono text-base font-bold">
+            04
+          </div>
+          <h3 class="font-bold text-slate-100 text-base">100% Client-Side Privacy</h3>
+          <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+            Zero telemetry. No sensitive documents, company prompts, or personal texts are ever sent to remote servers. All AST parsing runs directly inside your browser.
+          </p>
+        </div>
+        <div class="pt-2 text-xs font-mono text-orange-400/90 flex items-center gap-1.5">
+          <span>✓ Completely private &amp; offline</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Supported Markdown Syntax Reference Table -->
+    <div class="space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-100 font-mono">Supported Markdown Elements &amp; Stripping Rules</h3>
+        <span class="text-xs text-orange-400 font-mono">GFM Compliant</span>
+      </div>
+      <div class="hud-panel overflow-x-auto">
+        <table class="w-full text-left text-xs sm:text-sm border-collapse min-w-[600px]">
+          <thead>
+            <tr class="border-b border-orange-500/20 bg-[#090e17]/80 text-orange-400 font-mono">
+              <th class="p-3.5">Syntax Type</th>
+              <th class="p-3.5">Input Example</th>
+              <th class="p-3.5">Stripped Output</th>
+              <th class="p-3.5">Behavior &amp; Options</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-orange-500/10 text-slate-300">
+            <tr>
+              <td class="p-3.5 font-semibold text-slate-200">Headings</td>
+              <td class="p-3.5 font-mono text-orange-300/90"># Title / ### Section</td>
+              <td class="p-3.5 font-mono text-slate-200">Title / Section</td>
+              <td class="p-3.5 text-slate-400">Removes leading hashes and trailing underlines while preserving text hierarchy</td>
+            </tr>
+            <tr>
+              <td class="p-3.5 font-semibold text-slate-200">Emphasis</td>
+              <td class="p-3.5 font-mono text-orange-300/90">**bold** or *italic*</td>
+              <td class="p-3.5 font-mono text-slate-200">bold or italic</td>
+              <td class="p-3.5 text-slate-400">Strips asterisks and underscores without corrupting mathematical multiplication</td>
+            </tr>
+            <tr>
+              <td class="p-3.5 font-semibold text-slate-200">Inline Code</td>
+              <td class="p-3.5 font-mono text-orange-300/90">`npm install`</td>
+              <td class="p-3.5 font-mono text-slate-200">npm install</td>
+              <td class="p-3.5 text-slate-400">Removes backticks while preserving technical identifiers and variable names</td>
+            </tr>
+            <tr>
+              <td class="p-3.5 font-semibold text-slate-200">Code Blocks</td>
+              <td class="p-3.5 font-mono text-orange-300/90">```ts\ncode\n```</td>
+              <td class="p-3.5 font-mono text-slate-200">code</td>
+              <td class="p-3.5 text-slate-400">Configurable: Unwrap code content, strip completely, or preserve triple backticks</td>
+            </tr>
+            <tr>
+              <td class="p-3.5 font-semibold text-slate-200">Blockquotes</td>
+              <td class="p-3.5 font-mono text-orange-300/90">&gt; Important quote</td>
+              <td class="p-3.5 font-mono text-slate-200">Important quote</td>
+              <td class="p-3.5 text-slate-400">Removes angle brackets (&gt;) and un-indents nested quotations</td>
+            </tr>
+            <tr>
+              <td class="p-3.5 font-semibold text-slate-200">Tables (GFM)</td>
+              <td class="p-3.5 font-mono text-orange-300/90">| Item | Price |</td>
+              <td class="p-3.5 font-mono text-slate-200">Item   Price</td>
+              <td class="p-3.5 text-slate-400">Transforms pipe tables to CJK-aligned text, TSV (Excel/Sheets), CSV, or Markdown</td>
+            </tr>
+            <tr>
+              <td class="p-3.5 font-semibold text-slate-200">Lists</td>
+              <td class="p-3.5 font-mono text-orange-300/90">- Item 1 / 1. Step 1</td>
+              <td class="p-3.5 font-mono text-slate-200">Item 1 / Step 1</td>
+              <td class="p-3.5 text-slate-400">Optionally remove bullet points or numbered markers for continuous reading flow</td>
+            </tr>
+            <tr>
+              <td class="p-3.5 font-semibold text-slate-200">AI Fluff &amp; Tone</td>
+              <td class="p-3.5 font-mono text-orange-300/90">Certainly! Here is...</td>
+              <td class="p-3.5 font-mono text-emerald-400">[Removed]</td>
+              <td class="p-3.5 text-slate-400">Filters robotic pleasantries, disclaimer notices, and closing boilerplate</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FAQ Accordion (Frequently Asked Questions) -->
+    <div class="space-y-5">
+      <div class="space-y-2">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-100 font-mono">Frequently Asked Questions</h3>
+        <p class="text-xs sm:text-sm text-slate-400">Common questions about stripping Markdown, cleaning AI outputs, and data privacy.</p>
+      </div>
+
+      <div class="space-y-3">
+        <details class="hud-panel p-4 group cursor-pointer" open>
+          <summary class="font-semibold text-sm sm:text-base text-slate-100 flex items-center justify-between list-none">
+            <span>How do I strip Markdown formatting from ChatGPT, Claude, or DeepSeek?</span>
+            <span class="text-orange-400 text-lg transition-transform duration-200 group-open:rotate-180">▾</span>
+          </summary>
+          <p class="pt-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Simply copy the AI response and paste it into DeMkDown. The tool parses the text into an Abstract Syntax Tree (AST) in real time and strips headings, bold asterisks, blockquotes, and code fences, producing clean plain text ready to paste into Word, Google Docs, Slack, or email.
+          </p>
+        </details>
+
+        <details class="hud-panel p-4 group cursor-pointer">
+          <summary class="font-semibold text-sm sm:text-base text-slate-100 flex items-center justify-between list-none">
+            <span>Why is AST parsing better than Regex for removing Markdown?</span>
+            <span class="text-orange-400 text-lg transition-transform duration-200 group-open:rotate-180">▾</span>
+          </summary>
+          <p class="pt-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Regex-based cleaners use simple pattern matching that often corrupts text containing asterisks (e.g., mathematical formulas like <code class="text-orange-300">$a * b * c$</code>), C/C++ pointer dereferences, or nested code blocks. DeMkDown uses a full AST parser (Remark/Unified) that understands nested document structure, safely extracting plain text without false deletions.
+          </p>
+        </details>
+
+        <details class="hud-panel p-4 group cursor-pointer">
+          <summary class="font-semibold text-sm sm:text-base text-slate-100 flex items-center justify-between list-none">
+            <span>How does the AI Tone &amp; Fluff filter work?</span>
+            <span class="text-orange-400 text-lg transition-transform duration-200 group-open:rotate-180">▾</span>
+          </summary>
+          <p class="pt-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
+            DeMkDown includes an AI Tone Cleaner engine with benchmarked patterns for English and Chinese. It detects and strips opening pleasantries ("Certainly! Here is...", "好的，以下是为您整理的内容："), conversational transitions, and trailing boilerplate ("Hope this helps!", "Let me know if you have questions."), leaving only pure substantive content.
+          </p>
+        </details>
+
+        <details class="hud-panel p-4 group cursor-pointer">
+          <summary class="font-semibold text-sm sm:text-base text-slate-100 flex items-center justify-between list-none">
+            <span>How does DeMkDown handle Markdown tables?</span>
+            <span class="text-orange-400 text-lg transition-transform duration-200 group-open:rotate-180">▾</span>
+          </summary>
+          <p class="pt-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
+            DeMkDown offers 4 table output formats: <strong>Aligned Plain Text</strong> (computes character display widths, including East Asian wide characters, to ensure column alignment in monospace font), <strong>TSV</strong> (Tab-Separated Values for pasting directly into Excel or Google Sheets), <strong>CSV</strong> (Comma-Separated Values), or <strong>Markdown</strong> preservation.
+          </p>
+        </details>
+
+        <details class="hud-panel p-4 group cursor-pointer">
+          <summary class="font-semibold text-sm sm:text-base text-slate-100 flex items-center justify-between list-none">
+            <span>Is my text data private and secure?</span>
+            <span class="text-orange-400 text-lg transition-transform duration-200 group-open:rotate-180">▾</span>
+          </summary>
+          <p class="pt-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Yes, 100%. DeMkDown runs entirely client-side inside your web browser. No text, prompts, or documents are ever uploaded to remote servers, and there is zero tracking or telemetry. It is completely safe for confidential business documents, code, and proprietary data.
+          </p>
+        </details>
+
+        <details class="hud-panel p-4 group cursor-pointer">
+          <summary class="font-semibold text-sm sm:text-base text-slate-100 flex items-center justify-between list-none">
+            <span>Is there an API or programmatic way to strip Markdown?</span>
+            <span class="text-orange-400 text-lg transition-transform duration-200 group-open:rotate-180">▾</span>
+          </summary>
+          <p class="pt-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Yes! DeMkDown provides a serverless Cloudflare Pages Functions API endpoint at <code class="text-orange-300">POST /api/demark</code> that accepts JSON payloads with Markdown text and configuration options, returning clean plain text and detailed conversion metrics.
+          </p>
+        </details>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Semantic Site Footer -->
+  <footer class="border-t border-orange-500/20 bg-[#090e17]/90 py-8 px-4 sm:px-6 text-xs text-slate-400">
+    <div class="content-container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="font-mono font-bold text-slate-200">DeMkDown</span>
+        <span class="text-slate-600">•</span>
+        <span>AST Markdown Stripper &amp; AI Tone Cleaner</span>
+        <span class="text-slate-600">•</span>
+        <span class="text-orange-400/90 font-mono">100% Client-Side Privacy</span>
+      </div>
+
+      <nav class="flex items-center flex-wrap gap-4 font-mono text-xs">
+        <a href="https://github.com/sfc9982/DeMkDown" target="_blank" rel="noopener noreferrer" class="hover:text-orange-300 transition">GitHub</a>
+        <button type="button" id="btnFooterApiDocs" class="hover:text-orange-300 transition cursor-pointer">API Docs</button>
+        <a href="/llms.txt" target="_blank" class="hover:text-orange-300 transition">llms.txt</a>
+        <a href="/ai-catalog.json" target="_blank" class="hover:text-orange-300 transition">ai-catalog.json</a>
+        <a href="/sitemap.xml" target="_blank" class="hover:text-orange-300 transition">Sitemap</a>
+        <a href="/robots.txt" target="_blank" class="hover:text-orange-300 transition">robots.txt</a>
+      </nav>
+    </div>
+  </footer>
 
   <!-- API Documentation Modal -->
   <div id="apiModal" class="fixed inset-0 z-50 bg-[#06090e]/85 backdrop-blur-md hidden items-center justify-center p-4">

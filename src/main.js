@@ -1099,10 +1099,19 @@ if (btnSampleChinese) btnSampleChinese.addEventListener('click', () => loadSampl
 if (btnSampleStress) btnSampleStress.addEventListener('click', () => loadSample('messyMarkdown'));
 
 // Modal Controls
-btnOpenApiModal.addEventListener('click', () => {
-  apiModal.classList.remove('hidden');
-  apiModal.classList.add('flex');
-});
+if (btnOpenApiModal) {
+  btnOpenApiModal.addEventListener('click', () => {
+    apiModal.classList.remove('hidden');
+    apiModal.classList.add('flex');
+  });
+}
+const btnFooterApiDocs = document.getElementById('btnFooterApiDocs');
+if (btnFooterApiDocs) {
+  btnFooterApiDocs.addEventListener('click', () => {
+    apiModal.classList.remove('hidden');
+    apiModal.classList.add('flex');
+  });
+}
 
 function closeModal() {
   apiModal.classList.remove('flex');

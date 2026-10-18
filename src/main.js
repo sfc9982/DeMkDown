@@ -4,8 +4,6 @@ import { TRANSLATIONS, LANG_LABELS } from './modules/i18n.js';
 import {
   computeLineDiff,
   computeTextDiff,
-  renderLineDiffHTML,
-  renderTextDiffHTML,
 } from './modules/diff.js';
 
 /**
@@ -599,6 +597,135 @@ function toggleOptionsCollapsed() {
 }
 
 /**
+ * Create a localized "no changes" diff banner safely without innerHTML
+ */
+function createDiffNoChangesBanner(text, marginClass) {
+  const banner = document.createElement('div');
+  banner.className = `${marginClass} px-3.5 py-2 bg-slate-800/80 border border-slate-700/80 text-slate-300 text-xs sm:text-sm flex items-center gap-2 select-none`;
+
+  const svg = document.createElementNS(SVG_NS, 'svg');
+  svg.setAttribute('class', 'w-4 h-4 text-emerald-400 shrink-0');
+  svg.setAttribute('fill', 'none');
+  svg.setAttribute('viewBox', '0 0 24 24');
+  svg.setAttribute('stroke', 'currentColor');
+
+  const path = document.createElementNS(SVG_NS, 'path');
+  path.setAttribute('stroke-linecap', 'round');
+  path.setAttribute('stroke-linejoin', 'round');
+  path.setAttribute('stroke-width', '2');
+  path.setAttribute('d', 'M5 13l4 4L19 7');
+  svg.appendChild(path);
+  banner.appendChild(svg);
+
+  const span = document.createElement('span');
+  span.textContent = text;
+  banner.appendChild(span);
+
+  return banner;
+}
+
+/**
+ * Safely render Line Diff into container using DOM APIs (XSS-safe)
+ */
+function renderLineDiffDOM(container, diffResult, labels = { noChanges: 'No differences detected' }) {
+  container.textContent = '';
+  const { lines, stats } = diffResult;
+  if (!lines || lines.length === 0) {
+    const emptyEl = document.createElement('div');
+    emptyEl.className = 'p-12 text-center text-slate-400 font-sans text-sm';
+    emptyEl.textContent = labels.noChanges || 'No differences detected';
+    container.appendChild(emptyEl);
+    return;
+  }
+
+  const root = document.createElement('div');
+  root.className = 'flex flex-col min-w-full py-2';
+
+  if (stats && stats.totalChanges === 0) {
+    root.appendChild(createDiffNoChangesBanner(labels.noChanges, 'mx-4 my-2.5'));
+  }
+
+  const rowsContainer = document.createElement('div');
+  rowsContainer.className = 'divide-y divide-slate-800/30';
+
+  for (const line of lines) {
+    let rowClass = 'flex items-start py-1 px-3.5 border-l-2 text-xs sm:text-sm font-mono select-text transition-colors ';
+    let symbol = ' ';
+    let symbolClass = 'w-5 select-none shrink-0 font-bold text-xs sm:text-sm ';
+
+    if (line.type === 'removed') {
+      rowClass += 'bg-red-500/15 text-red-200 border-red-500/80 hover:bg-red-500/20';
+      symbol = '-';
+      symbolClass += 'text-red-400';
+    } else if (line.type === 'added') {
+      rowClass += 'bg-emerald-500/15 text-emerald-200 border-emerald-500/80 hover:bg-emerald-500/20';
+      symbol = '+';
+      symbolClass += 'text-emerald-400';
+    } else {
+      rowClass += 'border-transparent text-slate-300 hover:bg-slate-800/40';
+      symbolClass += 'text-slate-600';
+    }
+
+    const rowEl = document.createElement('div');
+    rowEl.className = rowClass;
+
+    const symbolSpan = document.createElement('span');
+    symbolSpan.className = symbolClass;
+    symbolSpan.textContent = symbol;
+    rowEl.appendChild(symbolSpan);
+
+    const textSpan = document.createElement('span');
+    textSpan.className = 'flex-1 whitespace-pre-wrap break-all leading-relaxed';
+    textSpan.textContent = line.value || '\u00A0';
+    rowEl.appendChild(textSpan);
+
+    rowsContainer.appendChild(rowEl);
+  }
+
+  root.appendChild(rowsContainer);
+  container.appendChild(root);
+}
+
+/**
+ * Safely render Text Diff into container using DOM APIs (XSS-safe)
+ */
+function renderTextDiffDOM(container, diffResult, labels = { noChanges: 'No differences detected' }) {
+  container.textContent = '';
+  const { tokens, stats } = diffResult;
+  if (!tokens || tokens.length === 0) {
+    const emptyEl = document.createElement('div');
+    emptyEl.className = 'p-12 text-center text-slate-400 font-sans text-sm';
+    emptyEl.textContent = labels.noChanges || 'No differences detected';
+    container.appendChild(emptyEl);
+    return;
+  }
+
+  const root = document.createElement('div');
+  root.className = 'p-5 whitespace-pre-wrap font-mono-code text-sm sm:text-[15px] lg:text-base leading-relaxed tracking-normal';
+
+  if (stats && stats.totalChanges === 0) {
+    root.appendChild(createDiffNoChangesBanner(labels.noChanges, 'mb-4'));
+  }
+
+  for (const token of tokens) {
+    const span = document.createElement('span');
+    if (token.type === 'removed') {
+      span.className = 'bg-red-500/25 text-red-200 line-through decoration-red-500/80 px-1.5 py-0.5 mx-0.5 border border-red-500/30 select-text font-normal';
+      span.title = 'Removed / Stripped';
+    } else if (token.type === 'added') {
+      span.className = 'bg-emerald-500/25 text-emerald-200 font-medium px-1.5 py-0.5 mx-0.5 border border-emerald-500/30 select-text';
+      span.title = 'Added / Formatted';
+    } else {
+      span.className = 'text-slate-200 select-text';
+    }
+    span.textContent = token.value;
+    root.appendChild(span);
+  }
+
+  container.appendChild(root);
+}
+
+/**
  * Render Diff View (Line or Text mode)
  */
 function renderDiffView() {
@@ -609,12 +736,12 @@ function renderDiffView() {
 
   if (state.diffMode === 'line') {
     const lineDiff = computeLineDiff(oldText, newText);
-    diffContainer.innerHTML = renderLineDiffHTML(lineDiff, { noChanges: noChangesLabel });
+    renderLineDiffDOM(diffContainer, lineDiff, { noChanges: noChangesLabel });
     if (diffDeletionsCount) diffDeletionsCount.textContent = `-${lineDiff.stats.deletions}`;
     if (diffAdditionsCount) diffAdditionsCount.textContent = `+${lineDiff.stats.additions}`;
   } else {
     const textDiff = computeTextDiff(oldText, newText);
-    diffContainer.innerHTML = renderTextDiffHTML(textDiff, { noChanges: noChangesLabel });
+    renderTextDiffDOM(diffContainer, textDiff, { noChanges: noChangesLabel });
     if (diffDeletionsCount) diffDeletionsCount.textContent = `-${textDiff.stats.deletions}`;
     if (diffAdditionsCount) diffAdditionsCount.textContent = `+${textDiff.stats.additions}`;
   }
